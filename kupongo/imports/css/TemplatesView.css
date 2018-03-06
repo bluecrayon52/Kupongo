@@ -1,11 +1,17 @@
 .templateContainer {
-    background-color: #fdfdfd;
+    background-color: #fafafa;
     padding: 10px;
     display: inline-block;
     float: left;
     width: 45%;
     border: 1px solid #c5c5c5;
     height: 700px;
+}
+
+.area {
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid lightgray;
 }
 
 .selected {

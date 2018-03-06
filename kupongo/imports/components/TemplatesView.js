@@ -6,6 +6,7 @@ import '../css/TemplatesView.css';
 import EditTemplate from './EditTemplate';
 import Popup from 'react-popup';
 import CouponTemplate from '../api/CouponTemplate';
+import ScrollArea from 'react-scrollbar';
 
 
 class TemplatesView extends Component {
@@ -14,17 +15,6 @@ class TemplatesView extends Component {
     super(props);
     this.props.tempaltes = this.props.templates || [];
     this.render = this.render.bind(this);
-    this.state = {
-      selectedTemplate: null
-    };
-
-  }
-
-  selectTempate(template) {
-    this.props.onSelectTemplate(template);
-    this.setState({
-      selectedTemplate: template
-    });
   }
 
   render() {
@@ -32,44 +22,56 @@ class TemplatesView extends Component {
         <div className="templateContainer">
           <h2>Coupon Templates</h2>
           <p>Select template to pin.</p>
-          {this.props.templates.map((template, index) => {
-            let selected = this.state.selectedTemplate === template ? 'selected' : '';
-            let classes = `${selected} couponTemplateContainer `;
-            return (
-                <div className="singleTemplate">
-                  <div className={classes}
-                       onClick={() => this.selectTempate(template)}>
-                    <div className="templateTitle">
-                      {template.title}
+          <ScrollArea
+              className="area"
+              contentClassName="content"
+              style={{
+                height: '500px'
+              }}
+              smoothScrolling={true}
+              horizontal={false}
+          >
+            {this.props.templates.map((template, index) => {
+              let selected = (this.props.selectedTemplate !== null && this.props.selectedTemplate._id === template._id) ? 'selected' : '';
+              let classes = `${selected} couponTemplateContainer `;
+              return (
+                  <div className="singleTemplate"
+                       key={template._id}
+                  >
+                    <div className={classes}
+                         onClick={() => this.props.onSelectTemplate(template)}>
+                      <div className="templateTitle">
+                        {template.title}
+                      </div>
+                      <p>{template.description}</p>
                     </div>
-                    <p>{template.description}</p>
+                    <div className="templateTools">
+                      <button className="tool"
+                              onClick={() => {
+                                Popup.plugins().editTemplate(template, (values) => {
+                                  this.props.updateTemplate(index, new CouponTemplate(values));
+                                });
+                              }}
+                      >Edit
+                      </button>
+                      <button className="tool"
+                              onClick={() => {
+                                // TODO(david): Add "are you sure" prompt.
+                                this.props.removeTemplate(index);
+                              }}
+                      >Delete
+                      </button>
+                    </div>
                   </div>
-                  <div className="templateTools">
-                    <button className="tool"
-                            onClick={() => {
-                              Popup.plugins().editTemplate(template, (values) => {
-                                this.props.updateTemplate(index, new CouponTemplate(values));
-                              });
-                            }}
-                    >Edit</button>
-                    <button className="tool"
-                            onClick={() => {
-                              // TODO(david): Add "are you sure" prompt.
-                              this.props.removeTemplate(index);
-                            }}
-                    >Delete</button>
-                  </div>
-                </div>
-            );
-          })}
-          <br/>
+              );
+            })}
+          </ScrollArea>
           <button
               onClick={() => {
                 Popup.plugins().newTemplate((values) => {
                   this.props.addTemplate(new CouponTemplate(values));
                 });
-              }
-              }
+              }}
           >Create new template
           </button>
         </div>

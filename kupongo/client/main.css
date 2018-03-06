@@ -4,3 +4,27 @@ body {
     color: #484848;
 }
 
+h1 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h2 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+button {
+    color: #484848;
+    padding: 7px;
+    font-family: 'Montserrat', sans-serif;
+    margin: 5px;
+    font-size: 1em;
+    border: 1px solid #bfbfbf;
+    border-radius: 4px;
+    background-color: #fafafa;
+}
+

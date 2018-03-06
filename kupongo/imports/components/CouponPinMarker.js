@@ -14,14 +14,18 @@ class CouponPinMarker extends Component {
   }
 
   render() {
-    // TODO: Change to compare IDs instead.
-    let icon = this.props.pin.template === this.props.selectedTemplate ? 'assets/highlighted_coupon.png' : 'assets/coupon_icon.png';
+    let icon;
+    if (this.props.selectedTemplate === null || this.props.selectedTemplate === undefined) {
+      icon = 'assets/coupon_icon.png';
+    } else {
+      icon = (this.props.pin.templateId === this.props.selectedTemplate._id) ? 'assets/highlighted_coupon.png' : 'assets/coupon_icon.png';
+    }
     return (
         <Marker
             onClick={() => {
               this.setState({clicked: true})
             }}
-            draggable={true}
+            draggable={this.props.markersDraggable}
             onDragEnd={this.updateLocation.bind(this)}
             position={{
               lat: this.props.pin.lat,

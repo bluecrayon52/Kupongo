@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import "../css/EditTemplate.css";
-import CouponTemplate from '../api/CouponTemplate';
 import DatePicker from 'react-date-picker';
 
 
@@ -9,16 +8,13 @@ class EditTemplate extends Component {
     super(props);
 
     this.state = {
+      _id: this.props._id,
       title: this.props.title || '',
       description: this.props.description || '',
       upcCode: this.props.upcCode || '',
       instances: this.props.instances || 0,
       expirationDate: this.props.expirationDate || new Date()
     };
-  }
-
-  getValues() {
-    return new CouponTemplate(this.state);
   }
 
   render() {
@@ -58,6 +54,7 @@ class EditTemplate extends Component {
             OR
             <label htmlFor="">
               QR Image <br/>
+              {/* TODO(david): Add a way to save images to MongoDB, right now this does nothing. */}
               <input type="file" accept="image/*"/></label>
           </div>
 
@@ -71,6 +68,7 @@ class EditTemplate extends Component {
                    }}
                    value={this.state.instances}/>
           </label>
+
 
           <div className="expirationContainer">
             <p>Experiation Date:</p>
@@ -86,6 +84,8 @@ class EditTemplate extends Component {
                 value={this.state.expirationDate}
             />
           </div>
+
+          {/* TODO(david): Start adding input for rest of fields here. */}
         </div>
     );
   }

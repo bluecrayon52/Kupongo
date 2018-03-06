@@ -2,20 +2,23 @@
  * Page for the user to pin coupons on a map.
  */
 import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
+import {withTracker} from 'meteor/react-meteor-data';
 import '../css/PinCoupon.css';
 import "../css/Popup.css"
 import PinCouponMap from '../components/PinCouponMap';
 import TemplatesView from '../components/TemplatesView';
-import CouponTemplate from '../api/CouponTemplate';
+import CouponTemplate, {CouponTemplateDB} from '../api/CouponTemplate';
+import {CouponDB} from '../api/Coupon';
 import Popup from 'react-popup';
 
-
-export default class PinCoupon extends Component {
+class PinCoupon extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
-    this.state.templates = this.fetchTemplatesForUser();
+    this.state.templates = this.props.templates;
+    console.log('props to', this.props.templates);
     this.state.selectedTemplate = null;
     this.state.pins = [];
     this.render = this.render.bind(this);
@@ -32,6 +35,7 @@ export default class PinCoupon extends Component {
           <div className="pinningContainer">
             <TemplatesView
                 templates={this.state.templates}
+                selectedTemplate={this.state.selectedTemplate}
                 updateTemplate={this.updateTemplate.bind(this)}
                 removeTemplate={this.removeTemplate.bind(this)}
                 addTemplate={this.addTemplate.bind(this)}
@@ -55,10 +59,11 @@ export default class PinCoupon extends Component {
     );
   }
 
-  // TODO(david): Change to query for templates the user has made. Using dummy data for now.
+  // TODO(david): Remove once template database is all ready for use.
   fetchTemplatesForUser() {
     return [
       new CouponTemplate({
+        _id: '12nsdf',
         company: 'Coke',
         upcCode: '25OFF',
         description: '25% off your next coke!',
@@ -67,6 +72,7 @@ export default class PinCoupon extends Component {
         experiationDate: new Date('March 30, 2018')
       }),
       new CouponTemplate({
+        _id: '843nv',
         company: 'Coke',
         upcCode: '10OFF',
         description: '25% off your next coke!',
@@ -75,6 +81,7 @@ export default class PinCoupon extends Component {
         experiationDate: new Date('March 30, 2018')
       }),
       new CouponTemplate({
+        _id: 'skdand',
         company: 'Coke',
         upcCode: 'FREECOKEBABY',
         description: 'One whole free coke!',
@@ -85,8 +92,21 @@ export default class PinCoupon extends Component {
     ];
   }
 
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      templates: newProps.templates || this.state.templates
+    });
+  }
+
   // TODO(david): Send request to server to save this.state.pins to mongoDB as a Coupon collection.
   publishCoupons() {
+    for (let coupon of this.state.pins) {
+      CouponDB.insert(coupon.toMongoDoc());
+    }
+
+    this.setState({
+      pins: []
+    });
   }
 
   selectTemplate(template) {
@@ -101,21 +121,22 @@ export default class PinCoupon extends Component {
     // Update the pins to reflect this change.
     let pins = [...this.state.pins];
     pins = pins.map((item) => {
-      if (item.template === templates[index])  {
+      if (item.templateId === templates[index]._id) {
         item.template = template;
-        item.title = template.title;
-        item.description = template.description;
+        item.copyTemplateInfo(template);
       }
       return item;
     });
 
+    // TODO(david): Add logic to update changes in database.
+
+    let isSelected = this.state.selectedTemplate._id === this.state.templates[index].id;
+
     templates[index] = template;
-
-
 
     this.setState({
       templates: templates,
-      selectedTemplate: this.state.selectedTemplate === this.state.templates[index] ? template : this.state.selectedTemplate,
+      selectedTemplate: isSelected ? template : this.state.selectedTemplate,
       pins: pins
     });
   }
@@ -123,19 +144,33 @@ export default class PinCoupon extends Component {
   removeTemplate(index) {
     let templates = [...this.state.templates];
     let pins = [...this.state.pins];
-    pins = pins.filter((item) => item.template !== templates[index]);
+    let isSelected = false;
+    if (this.state.selectedTemplate !== null)
+      isSelected = this.state.selectedTemplate._id === templates[index]._id;
+    pins = pins.filter((item) => item.templateId !== templates[index]._id);
+
+    CouponTemplateDB.remove({
+      _id: templates[index]._id
+    });
+
     templates.splice(index, 1);
+
 
     this.setState({
       templates: templates,
-      selectedTemplate: this.state.selectedTemplate === this.state.templates[index] ? null : this.state.selectedTemplate,
+      selectedTemplate: isSelected ? null : this.state.selectedTemplate,
       pins: pins
     });
   }
 
   addTemplate(template) {
     let templates = [...this.state.templates];
+
+    // TODO(david): Placeholder value, update to user company once login portion is done.
+    template.company = 'Coke';
+    template._id = CouponTemplateDB.insert(template.toMongoDoc());
     templates.push(template);
+
     this.setState({
       templates: templates
     });
@@ -166,3 +201,13 @@ export default class PinCoupon extends Component {
   }
 
 }
+
+export default withTracker(() => {
+  Meteor.subscribe('CouponTemplate');
+  return {
+    templates: CouponTemplateDB.find({
+      // TODO(david): Change to look for current user's company name/id
+      company: 'Coke'
+    }).fetch()
+  };
+})(PinCoupon);
