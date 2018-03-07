@@ -20,12 +20,12 @@ class Coupon {
     this.lowerLat         = values.lowerLat;
     this.eastLong         = values.eastLong;
     this.westLong         = values.westLong;
-    this.quantity         = values.quantity; 
-    this.preViewingDate   = values.preViewingDate || new Date();
-    this.collectStartDate = values.collectStartDate || new Date();
-    this.collectEndDate   = values.collectEndDate || new Date();
-    this.redeemStartDate  = values.redeemStartDate || new Date();
-    this.redeemEndDate    = values.redeemEndDate || new Date();
+    this.quantity         = values.quantity; // default 1
+    this.preViewingDate   = values.preViewingDate || new Date();  // default date of pinning
+    this.collectStartDate = values.collectStartDate || new Date(); // default date of pinning
+    this.collectEndDate   = values.collectEndDate || new Date();  // default collectStartDate + 24 hrs 
+    this.redeemStartDate  = values.redeemStartDate || new Date(); // default date of pinning 
+    this.redeemEndDate    = values.redeemEndDate || new Date(); // default redeemStartDate + 30 days
    
     // UI attributes.
     // TODO(david): Maybe move this to wrapper class.
@@ -43,8 +43,8 @@ class Coupon {
     this.salesID          = template.salesID
     this.templateID       = template._id;
     this.companyName      = template.companyName;
-    this.upcCode          = template.upcCode;
-    this.qrImage          = template.qrImage;
+    this.upcCode          = template.upcCode; // redacted until redemption is initiated
+    this.qrImage          = template.qrImage; // redacted until redemption is initiated
     this.couponImage      = template.couponImage;
     this.description      = template.description;
     this.title            = template.title;
@@ -63,8 +63,8 @@ class Coupon {
       salesID:          this.salesID,
       templateId:       this.templateId,
       companyName:      this.companyName,
-      upcCode:          this.upcCode,
-      qrImage:          this.qrImage,
+      upcCode:          this.upcCode, // redacted until redemption is initiated
+      qrImage:          this.qrImage, // redacted until redemption is initiated
       couponImage:      this.couponImage,
       description:      this.description,
       title:            this.title,
@@ -76,11 +76,11 @@ class Coupon {
       eastLong:         this.eastLong,
       westLong:         this.westLong,
       quantity:         this.quantity, 
-      preViewingDate:   this.preViewingDate,
-      collectStartDate: this.collectStartDate,
-      collectEndDate:   this.collectEndDate,
-      redeemStartDate:  this.redeemStartDate,
-      redeemEndDate:    this.redeemEndDate,
+      preViewingDate:   this.preViewingDate,  // default date of pinning
+      collectStartDate: this.collectStartDate,  // default date of pinning
+      collectEndDate:   this.collectEndDate,  // default collectStartDate + 24 hrs
+      redeemStartDate:  this.redeemStartDate, // default date of pinning
+      redeemEndDate:    this.redeemEndDate, // default redeemStartDate + 30 days
     };
   }
 }

@@ -16,9 +16,9 @@ if (Meteor.isServer) {
 // TODO(david): Add to this so that it can accurately represent the Coupon Template collection. May be missing some fields.
 class CouponTemplate {
   constructor(values) {         
-    this._id              = values._id || ''; //template ID (MongoDB ID to quickly query this information.)
-    this.upcCode          = values.upcCode;
-    this.qrImage          = values.qrImage;
+    this._id              = values._id || ''; //  template ID (MongoDB ID to quickly query this information.)
+    this.upcCode          = values.upcCode; // redacted until redemption is initiated
+    this.qrImage          = values.qrImage; // redacted until redemption is initiated
     this.couponImage      = values.couponImage;
     this.description      = values.description;
     this.title            = values.title;
