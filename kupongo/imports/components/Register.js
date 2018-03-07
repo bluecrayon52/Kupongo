@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import {withRouter} from 'react-router-dom';
 
 class Register extends Component {
 
@@ -18,32 +20,32 @@ class Register extends Component {
             <div>
                 <form className="registerForm">
                     <div className="registerContainer">
-                        <label id="emailLabel" htmlFor="email"><b>Email: </b></label>
-                        <input type="text" ref="emailInput"
+                        <label className="regLabel" id="emailLabel" htmlFor="email"><b>Email: </b></label>
+                        <input className="textInput" type="text" ref="emailInput"
                             placeholder="Email" name="email">
                         </input><br />
 
-                        <label id="firstNameLabel" htmlFor="text"><b>First name: </b></label>
-                        <input type="text" ref="firstNameInput"
+                        <label className="regLabel" id="firstNameLabel" htmlFor="text"><b>First name: </b></label>
+                        <input className="textInput" type="text" ref="firstNameInput"
                             placeholder="First name" name="firstName">
                         </input><br />
 
-                        <label id="lastNameLabel" htmlFor="text"><b>Last name: </b></label>
-                        <input type="text" ref="lastNameInput"
+                        <label className="regLabel" id="lastNameLabel" htmlFor="text"><b>Last name: </b></label>
+                        <input className="textInput" type="text" ref="lastNameInput"
                             placeholder="Last name" name="lastName">
                         </input><br />
 
-                        <label id="phoneNumberLabel" htmlFor="text"><b>Phone number: </b></label>
-                        <input type="text" ref="phoneNumberInput"
+                        <label className="regLabel" id="phoneNumberLabel" htmlFor="text"><b>Phone number: </b></label>
+                        <input className="textInput" type="text" ref="phoneNumberInput"
                             placeholder="Phone number" name="phoneNumber">
                         </input><br />
 
-                        <label id="passwordLabel" htmlFor="password"><b>Password: </b></label>
-                        <input type="password" ref="passwordInput"
+                        <label className="regLabel" id="passwordLabel" htmlFor="password"><b>Password: </b></label>
+                        <input className="textInput" type="password" ref="passwordInput"
                             placeholder="Password" name="password">
                         </input><br />
 
-                        <button type="submit">Register</button>
+                        <button className="regButton" type="submit" onClick={this.handleRegister.bind(this)}>Register</button>
                     </div>
                 </form>
             </div>
@@ -79,9 +81,13 @@ class Register extends Component {
                 ReactDOM.findDOMNode(this.refs.firstNameInputInput).value = '';
                 ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
                 ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
+
             }
         });
+
+      // Redirect
+      this.props.history.push('/home')
     }
 }
 
-export default Register;
+export default withRouter(Register);
