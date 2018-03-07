@@ -14,11 +14,34 @@ if (Meteor.isServer) {
 
 class Coupon {
   constructor(values) {
-    // Coupon specific attributes.
-    this._id              = values._id || ''; // MongoDB ID to quickly query this information.
-    this.lat              = values.lat;
-    this.lng              = values.lng;
+    // inherited attributes from coupon template.
+    this.templateId       = values.templateId || ''; //template ID from referenced template 
+    this.company          = values.company || ''; // MongoDB ID of user.
+    this.salesEmail       = values.salesEmail;
+    this.salesName        = values.salesName;
+    this.salesPhone       = values.salesPhone;
+    this.upcCode          = values.upcCode;
+    this.qrImage          = values.qrImage;
+    this.couponImage      = values.couponImage;
+    this.description      = values.description;
+    this.title            = values.title;
+    this.instructions     = values.instructions;
+    this.productCtgs      = values.productCtgs; // product categories
+    this.template         = values.template;  // graphic format template (not used fo
 
+    // attributes specific to a coupon instance
+    this._id              = values._id || ''; // Coupon ID (MongoDB ID to quickly query this information).
+    this.upperLat         = values.upperLat;
+    this.lowerLat         = values.lowerLat;
+    this.upperLong        = values.upperLong;
+    this.lowerLong        = values.lowerLong;
+    this.quantity        = values.quantity; 
+    this.collectStartDate = values.collectStartDate || new Date();
+    this.collectEndDate   = values.collectEndDate || new Date();
+    this.preViewingDate   = values.preViewingDate || new Date();
+    this.redeemStartDate  = values.redeemStartDate || new Date();
+    this.redeemEndDate    = values.redeemEndDate || new Date();
+   
     // UI attributes.
     // TODO(david): Maybe move this to wrapper class.
     this.clicked          = values.clicked || false;
@@ -34,19 +57,17 @@ class Coupon {
   copyTemplateInfo(template) {
     this.templateId       = template._id;
     this.company          = template.company;
+    this.salesEmail       = template.salesEmail;
+    this.salesName        = template.salesName;
+    this.salesPhone       = template.salesPhone;
     this.upcCode          = template.upcCode;
     this.qrImage          = template.qrImage;
     this.couponImage      = template.couponImage;
     this.description      = template.description;
     this.title            = template.title;
     this.instructions     = template.instructions;
-    this.instances        = template.instances;
-    this.collectStartDate = template.collectStartDate || new Date();
-    this.collectEndDate   = template.collectEndDate || new Date();
-    this.preViewingDate   = template.preViewingDate || new Date();
-    this.redeemStartDate  = template.redeemStartDate || new Date();
-    this.redeemEndDate    = template.redeemEndDate || new Date();
-    this.expirationDate   = template.expirationDate || new Date();
+    this.productCtgs      = template.productCtgs; // product categories
+    this.template         = template.template; 
   }
 
   /**

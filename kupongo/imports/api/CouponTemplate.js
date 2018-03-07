@@ -16,21 +16,19 @@ if (Meteor.isServer) {
 // TODO(david): Add to this so that it can accurately represent the Coupon Template collection. May be missing some fields.
 class CouponTemplate {
   constructor(values) {
-    this._id              = values._id || ''; // MongoDB ID to quickly query this information.
     this.company          = values.company || ''; // MongoDB ID of user.
+    this.salesEmail       = values.salesEmail;
+    this.salesName        = values.salesName;
+    this.salesPhone       = values.salesPhone;
+    this._id              = values._id || ''; //template ID (MongoDB ID to quickly query this information.)
     this.upcCode          = values.upcCode;
     this.qrImage          = values.qrImage;
     this.couponImage      = values.couponImage;
     this.description      = values.description;
     this.title            = values.title;
     this.instructions     = values.instructions;
-    this.instances        = values.instances;
-    this.collectStartDate = values.collectStartDate || new Date();
-    this.collectEndDate   = values.collectEndDate || new Date();
-    this.preViewingDate   = values.preViewingDate || new Date();
-    this.redeemStartDate  = values.redeemStartDate || new Date();
-    this.redeemEndDate    = values.redeemEndDate || new Date();
-    this.expirationDate   = values.expirationDate || new Date();
+    this.productCtgs      = values.productCtgs; // product categories
+    this.template         = values.template;  // graphic format template (not used for now)
   }
 
 
@@ -38,19 +36,17 @@ class CouponTemplate {
   toMongoDoc() {
     return {
       company          : this.company,
+      salesEmail       : this.salesEmail,
+      salesName        : this.salesName,
+      salesPhone       : this.salesPhone,
       upcCode          : this.upcCode,
       qrImage          : this.qrImage,
       couponImage      : this.couponImage,
       description      : this.description,
       title            : this.title,
       instructions     : this.instructions,
-      instances        : this.instances,
-      collectStartDate : this.collectStartDate,
-      collectEndDate   : this.collectEndDate,
-      preViewingDate   : this.preViewingDate,
-      redeemStartDate  : this.redeemStartDate,
-      redeemEndDate    : this.redeemEndDate,
-      expirationDate   : this.expirationDate
+     productCtgs       : this.productCtgs,
+     template          : this.template
     };
   }
 }
