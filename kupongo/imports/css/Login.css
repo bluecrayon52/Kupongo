@@ -1,16 +1,16 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-  }
+}
   
-  input[type=text], input[type=password] {
+  .textInput {
     width: 10%;
     padding: 12px 20px;
     margin: 8px 0;
     border: 1px solid #ccc;
   }
   
-  button {
+  .loginButton {
     background-color: rgb(32, 151, 172);
     color: white;
     padding: 14px 20px;
@@ -24,7 +24,7 @@ body {
     opacity: 0.8;
   }
   
-  .loginContainer, h1 {
+  .loginContainer, .loginTitle {
     text-align: center;
     padding: 16px;
   }

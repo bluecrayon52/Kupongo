@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 import {Marker, InfoWindow} from 'react-google-maps';
 import '../css/CouponPinMarker.css';
+import CouponPreview from './CouponPreview';
 
 class CouponPinMarker extends Component {
   constructor(props) {
@@ -41,10 +42,9 @@ class CouponPinMarker extends Component {
               onCloseClick={() => this.setState({clicked: false})}
           >
             <div className="couponPinInfoWindow">
-              <div className="templateTitle">
-                <p>{this.props.pin.title}</p>
-              </div>
-              <p>{this.props.pin.description}</p>
+              <CouponPreview
+                  coupon={this.props.pin}
+              />
               <button
                   onClick={() => this.props.onRemovePin(this.props.index)}
               >Delete

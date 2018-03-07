@@ -8,7 +8,7 @@ label {
     margin: 5px;
 }
 
-input[type="text"] {
+.templateTextInput {
     margin: 4px;
     padding: 5px
 }

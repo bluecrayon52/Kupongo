@@ -23,7 +23,7 @@ class EditTemplate extends Component {
         <div className="editTemplateContainer">
           <label htmlFor="">
             Title <br/>
-            <input type="text"
+            <input className="templateTextInput" type="text"
                    onChange={(change) => {
                      this.setState({title: change.target.value}, () => {
                        this.props.onValuesChange(this.state);
@@ -33,7 +33,7 @@ class EditTemplate extends Component {
 
           <label htmlFor="">
             Description <br/>
-            <input type="text"
+            <input className="templateTextInput" type="text"
                    onChange={(change) => {
                      this.setState({description: change.target.value}, () => {
                            this.props.onValuesChange(this.state);
@@ -45,7 +45,7 @@ class EditTemplate extends Component {
           <div className="discountCodeContainer">
             <label htmlFor="">
               UPC Code <br/>
-              <input type="text"
+              <input className="templateTextInput" type="text"
                      onChange={(change) => {
                        this.setState({upcCode: change.target.value}, () => {
                          this.props.onValuesChange(this.state);

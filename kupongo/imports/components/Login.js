@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 class Login extends Component {
 
@@ -13,21 +14,29 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <h1>Kupongo Pro</h1>
+                <h1 className="loginTitle">Kupongo Pro</h1>
                 <form className="loginForm">
                     <div className="loginContainer">
                         <label id="emailLabel" htmlFor="email"><b>Email: </b></label>
-                        <input type="text" ref="emailInput"
+                        <input className="textInput" type="text" ref="emailInput"
                             placeholder="Enter Email" name="email">
                         </input><br />
 
                         <label id="passwordLabel" htmlFor="password"><b>Password: </b></label>
-                        <input type="password" ref="passwordInput"
+                        <input className="textInput" type="password" ref="passwordInput"
                             placeholder="Enter Password" name="password">
                         </input><br />
 
-                        <button type="submit">Login</button><br />
-                        <button type="submit">Register</button>
+                        <Link to="/home">
+                        <button className="loginButton" type="submit">
+                              Login
+                        </button><br />
+                        </Link>
+                        <Link to="/register">
+                        <button className="loginButton" type="submit">
+                            Register
+                        </button>
+                        </Link>
                     </div>
                 </form>
             </div>

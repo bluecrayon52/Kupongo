@@ -2,11 +2,11 @@
 Home page for logged in users
 */
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import '../css/HomePage.css';
 import HomePage from '../components/HomePage'
+import Header from '../components/Header';
 
 class Dashboard extends Component {
 
@@ -17,6 +17,7 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
+                <Header/>
                 <HomePage/>
             </div>
         );
