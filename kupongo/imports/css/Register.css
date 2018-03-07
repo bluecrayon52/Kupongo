@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  input[type=text], input[type=password] {
+    width: 10%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    background-color: rgb(32, 151, 172);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 16.5%;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  .registerContainer {
+    text-align: center;
+    padding: 16px;
+  }
+  
+  label {
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+    padding: 16px;
+  }
