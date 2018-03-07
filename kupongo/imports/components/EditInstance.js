@@ -1,46 +1,60 @@
 import React, {Component} from 'react';
-import "../css/EditTemplate.css";
+import "../css/EditInstance.css";
 import DatePicker from 'react-date-picker';
 
 
-class EditTemplate extends Component {
+class EditInstance extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-     
-      _id: this.props._id,
-      title: this.props.title || '',
-      description: this.props.description || '',
-      upcCode: this.props.upcCode || '',
-      instances: this.props.instances || 0,
-      expirationDate: this.props.expirationDate || new Date()
+        _id: this.props._id,
+        companyName: this.companyName,
+        upcCode: this.props.upcCode || '',
+        qrImage: this.props.qrImage || '',
+        couponImage: this.props.couponImage || '',
+        description: this.props.description || '',
+        title: this.props.title || '',
+        instructions: this.props.instructions || '',
+        productCtgs: this.props.productCtgs || [],
+        layout: this.props.layout || '',
+        upperLat: this.props.upperLat,
+        lowerLat: this.props.lowerLat,
+        eastLong: this.props.eastLong,
+        westLong: this.props.westLong,
+        quantity: this.props.quantity,
+        preViewingDate: this.props.preViewingDate,
+        collectStartDate: this.props.collectStartDate,
+        collectEndDate: this.props.collectEndDate,
+        redeemStartDate: this.props.redeemStartDate,
+        redeemEndDate: this.props.redeemEndDate
     };
   }
 
   render() {
     return (
-        <div className="editTemplateContainer">
-          <label htmlFor="">
-            Title <br/>
-            <input type="text"
-                   onChange={(change) => {
-                     this.setState({title: change.target.value}, () => {
-                       this.props.onValuesChange(this.state);
-                     });
+        <div className="editInstanceContainer">
+            <label htmlFor="">
+                Title <br/>
+                <input type="text"
+                    onChange={(change) => {
+                        this.setState({title: change.target.value}, () => {
+                            this.props.onValuesChange(this.state);
+                        });
                    }}
-                   value={this.state.title}/></label>
+                   value={this.state.title}/>
+            </label>
 
-          <label htmlFor="">
-            Description <br/>
-            <input type="text"
-                   onChange={(change) => {
-                     this.setState({description: change.target.value}, () => {
-                           this.props.onValuesChange(this.state);
-                         }
-                     );
-                   }}
-                   value={this.state.description}/></label>
+            <label htmlFor="">
+                Description <br/>
+                <input type="text"
+                    onChange={(change) => {
+                        this.setState({description: change.target.value}, () => {
+                            this.props.onValuesChange(this.state);
+                         });
+                    }}
+                   value={this.state.description}/>
+            </label>
 
           <div className="discountCodeContainer">
             <label htmlFor="">

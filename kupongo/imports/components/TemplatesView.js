@@ -13,7 +13,7 @@ class TemplatesView extends Component {
 
   constructor(props) {
     super(props);
-    this.props.tempaltes = this.props.templates || [];
+    this.props.tempalates = this.props.templates || [];
     this.render = this.render.bind(this);
   }
 

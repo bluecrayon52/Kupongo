@@ -2,19 +2,40 @@
 *   MongoDB template for the company document in the database
 */
 
-class CouponTemplate {
+import {Mongo} from 'meteor/mongo';
+import {Meteor} from 'meteor/meteor';
+
+export const CompanyDB = new Mongo.Collection('Company');
+
+class Company {
   constructor(values) {
-    this.id               = values.id || ''; // MongoDB ID to quickly query this information.
+    this._id               = values._id || ''; // Company ID (MongoDB ID to quickly query this information.)
     this.companyName      = values.companyName;
     this.email            = values.email;
-    this.signupDate       = values.signupDate;
+    this.passWord         = values.passWord;
+    this.firstName        = values.firstName;
+    this.lastName         = values.lastName;
+    this.phone            = values.phone;
+    this.signUpDate       = values.signUpDate;
     this.availableTokens  = values.availableTokens;
     this.usedTokens       = values.usedTokens;
   }
 
-  // TODO(david): Should return Coupon instance to upload to MongoDB.
-  convertToCoupon(upperLeft, lowerRight) {
+  toMongoDoc() {
+    return {
+      companyName:      this.companyName,
+      email:            this.email,
+      password:         this.password,
+      firstName:        this.firstName, 
+      lastName:         this.lastName,
+      phone:            this.phone,
+      signUpDate:       this.signUpDate,
+      availableTokens:  this.availableTokens,
+      usedTokens:       this.usedTokens
+
+    };
   }
+
 }
 
 export default CouponTemplate;
