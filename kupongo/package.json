@@ -15,6 +15,7 @@
     "react-google-maps": "^9.4.5",
     "react-popup": "^0.9.2",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "react-scrollbar": "^0.5.4",
     "webpack": "^4.0.1"
   }
