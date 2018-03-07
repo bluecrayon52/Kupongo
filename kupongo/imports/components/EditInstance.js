@@ -9,6 +9,8 @@ class EditInstance extends Component {
 
     this.state = {
         _id: this.props._id,
+        salesID: this.props.salesID,
+        templateID: this.props.templateID,
         companyName: this.companyName,
         upcCode: this.props.upcCode || '',
         qrImage: this.props.qrImage || '',
