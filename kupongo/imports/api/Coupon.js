@@ -28,20 +28,37 @@ class Coupon {
     this.redeemEndDate    = values.redeemEndDate || new Date(); // default redeemStartDate + 30 days
    
     // UI attributes.
-    // TODO(david): Maybe move this to wrapper class.
-    this.clicked          = values.clicked || false;
+    // TODO(david): Change this so that we use upperLat and lowerLat instead.
+    this.lat              = values.lat;
+    this.lng              = values.lng;
 
     // Inherited Template attributes. (values are checked in case we are retrieving them from Mongo).
     // TODO(david): Look into may just refer from the Template document instead of duplicating fields.
     if (values.template !== null)
       this.copyTemplateInfo(values.template);
     else
-      this.copyTemplateInfo(values);
+      this.copyFromMongo(values);
+  }
+
+  // Made this since in copyTemplateInfo, the line with "template._id" will copy the coupon ID not the templateId.
+  // TODO(david): Maybe find a way so there isn't so much code duplication?
+  copyFromMongo(values) {
+    this.salesID          = values.salesID;
+    this.templateId       = values.templateId;
+    this.companyName      = values.companyName;
+    this.upcCode          = values.upcCode; // redacted until redemption is initiated
+    this.qrImage          = values.qrImage; // redacted until redemption is initiated
+    this.couponImage      = values.couponImage;
+    this.description      = values.description;
+    this.title            = values.title;
+    this.instructions     = values.instructions;
+    this.productCtgs      = values.productCtgs; // product categories
+    this.layout           = values.layout;
   }
 
   copyTemplateInfo(template) {
-    this.salesID          = template.salesID
-    this.templateID       = template._id;
+    this.salesID          = template.salesID;
+    this.templateId       = template._id;
     this.companyName      = template.companyName;
     this.upcCode          = template.upcCode; // redacted until redemption is initiated
     this.qrImage          = template.qrImage; // redacted until redemption is initiated
