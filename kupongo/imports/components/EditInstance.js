@@ -12,22 +12,22 @@ class EditInstance extends Component {
         companyName: this.companyName,
         upcCode: this.props.upcCode || '',
         qrImage: this.props.qrImage || '',
-        couponImage: this.props.couponImage || '',
-        description: this.props.description || '',
-        title: this.props.title || '',
-        instructions: this.props.instructions || '',
+        couponImage: this.props.couponImage || '',      
+        description: this.props.description || '',      // editable 
+        title: this.props.title || '',                  // editable 
+        instructions: this.props.instructions || '',    // editable 
         productCtgs: this.props.productCtgs || [],
         layout: this.props.layout || '',
         upperLat: this.props.upperLat,
         lowerLat: this.props.lowerLat,
         eastLong: this.props.eastLong,
         westLong: this.props.westLong,
-        quantity: this.props.quantity,
-        preViewingDate: this.props.preViewingDate,
-        collectStartDate: this.props.collectStartDate,
-        collectEndDate: this.props.collectEndDate,
-        redeemStartDate: this.props.redeemStartDate,
-        redeemEndDate: this.props.redeemEndDate
+        quantity: this.props.quantity,                  // editable 
+        preViewingDate: this.props.preViewingDate,      // editable 
+        collectStartDate: this.props.collectStartDate,  // editable 
+        collectEndDate: this.props.collectEndDate,      // editable 
+        redeemStartDate: this.props.redeemStartDate,    // editable 
+        redeemEndDate: this.props.redeemEndDate         // editable 
     };
   }
 
@@ -56,51 +56,90 @@ class EditInstance extends Component {
                    value={this.state.description}/>
             </label>
 
-          <div className="discountCodeContainer">
             <label htmlFor="">
-              UPC Code <br/>
-              <input type="text"
-                     onChange={(change) => {
-                       this.setState({upcCode: change.target.value}, () => {
-                         this.props.onValuesChange(this.state);
-                       });
-                     }}
-                     value={this.state.upcCode}/></label>
-            OR
+                Instructions <br/>
+                <input type="text"
+                    onChange={(change) => {
+                        this.setState({description: change.target.value}, () => {
+                            this.props.onValuesChange(this.state);
+                         });
+                    }}
+                   value={this.state.instructions}/>
+            </label>
+
             <label htmlFor="">
-              QR Image <br/>
-              {/* TODO(david): Add a way to save images to MongoDB, right now this does nothing. */}
-              <input type="file" accept="image/*"/></label>
-          </div>
+                Quantity <br/>
+                <input type="text"
+                    onChange={(change) => {
+                        this.setState({description: change.target.value}, () => {
+                            this.props.onValuesChange(this.state);
+                         });
+                    }}
+                   value={this.state.instructions}/>
+            </label>
 
-          <label htmlFor="">
-            Number of times it can be collected:
-            <input type="number"
-                   onChange={(change) => {
-                     this.setState({instances: change.target.value}, () => {
-                       this.props.onValuesChange(this.state);
-                     });
-                   }}
-                   value={this.state.instances}/>
-          </label>
+            <div className="dateContainer">
+                <p>Preview Date:</p>
+                    <DatePicker
+                            minDate={new Date()}
+                            onChange={(date) => {
+                                this.setState({expirationDate: date}, () => {
+                                    this.props.onValuesChange(this.state);
+                                });
+                            }}
+                        value={this.state.preViewingDate}
+                     />
+            </div>
+            <div className="dateContainer">
+                <p>Collection Start Date:</p>
+                    <DatePicker
+                            minDate={new Date()}
+                            onChange={(date) => {
+                                this.setState({expirationDate: date}, () => {
+                                    this.props.onValuesChange(this.state);
+                                });
+                            }}
+                        value={this.state.collectStartDate}
+                     />
+            </div>
+            <div className="dateContainer">
+                <p>Collection End Date:</p>
+                    <DatePicker
+                            minDate={new Date()}
+                            onChange={(date) => {
+                                this.setState({expirationDate: date}, () => {
+                                    this.props.onValuesChange(this.state);
+                                });
+                            }}
+                        value={this.state.collectEndDate}
+                     />
+            </div>
+            <div className="dateContainer">
+                <p>Redemption Start Date:</p>
+                    <DatePicker
+                            minDate={new Date()}
+                            onChange={(date) => {
+                                this.setState({expirationDate: date}, () => {
+                                    this.props.onValuesChange(this.state);
+                                });
+                            }}
+                        value={this.state.redeemStartDate}
+                     />
+            </div>              
+            <div className="dateContainer">
+                <p>Redemption End Date:</p>
+                    <DatePicker
+                            minDate={new Date()}
+                            onChange={(date) => {
+                                this.setState({expirationDate: date}, () => {
+                                    this.props.onValuesChange(this.state);
+                                });
+                            }}
+                        value={this.state.redeemEndDate}
+                     />
+            </div>
 
-
-          <div className="expirationContainer">
-            <p>Experiation Date:</p>
-            <DatePicker
-                minDate={new Date()}
-                onChange={(date) => {
-                  this.setState({
-                    expirationDate: date
-                  }, () => {
-                    this.props.onValuesChange(this.state);
-                  });
-                }}
-                value={this.state.expirationDate}
-            />
-          </div>
-
-          {/* TODO(david): Start adding input for rest of fields here. */}
+         
         </div>
     );
   }
