@@ -33,6 +33,7 @@ class PinCoupon extends Component {
           <p>Select a template and click on the map place the coupon.</p>
 
           <div className="pinningContainer">
+          
             <TemplatesView
                 templates={this.state.templates}
                 selectedTemplate={this.state.selectedTemplate}

@@ -23,7 +23,7 @@ class CouponTemplate {
     this.description      = values.description;
     this.title            = values.title;
     this.instructions     = values.instructions;
-    this.productCtgs      = values.productCtgs; // product categories
+    this.productCtgs      = values.productCtgs || []; // product categories array
     this.layout           = values.layout;  // graphic format template (not used for now)
   }
 
