@@ -14,11 +14,19 @@ if (Meteor.isServer) {
 
 class Coupon {
   constructor(values) {
-    // Coupon specific attributes.
-    this._id              = values._id || ''; // MongoDB ID to quickly query this information.
-    this.lat              = values.lat;
-    this.lng              = values.lng;
-
+    // attributes specific to a coupon instance
+    this._id              = values._id || ''; // Coupon ID (MongoDB ID to quickly query this information).
+    this.upperLat         = values.upperLat;
+    this.lowerLat         = values.lowerLat;
+    this.eastLong         = values.eastLong;
+    this.westLong         = values.westLong;
+    this.quantity         = values.quantity; // default 1
+    this.preViewingDate   = values.preViewingDate || new Date();  // default date of pinning
+    this.collectStartDate = values.collectStartDate || new Date(); // default date of pinning
+    this.collectEndDate   = values.collectEndDate || new Date();  // default collectStartDate + 24 hrs 
+    this.redeemStartDate  = values.redeemStartDate || new Date(); // default date of pinning 
+    this.redeemEndDate    = values.redeemEndDate || new Date(); // default redeemStartDate + 30 days
+   
     // UI attributes.
     // TODO(david): Maybe move this to wrapper class.
     this.clicked          = values.clicked || false;
@@ -32,21 +40,17 @@ class Coupon {
   }
 
   copyTemplateInfo(template) {
-    this.templateId       = template._id;
-    this.company          = template.company;
-    this.upcCode          = template.upcCode;
-    this.qrImage          = template.qrImage;
+    this.salesID          = template.salesID
+    this.templateID       = template._id;
+    this.companyName      = template.companyName;
+    this.upcCode          = template.upcCode; // redacted until redemption is initiated
+    this.qrImage          = template.qrImage; // redacted until redemption is initiated
     this.couponImage      = template.couponImage;
     this.description      = template.description;
     this.title            = template.title;
     this.instructions     = template.instructions;
-    this.instances        = template.instances;
-    this.collectStartDate = template.collectStartDate || new Date();
-    this.collectEndDate   = template.collectEndDate || new Date();
-    this.preViewingDate   = template.preViewingDate || new Date();
-    this.redeemStartDate  = template.redeemStartDate || new Date();
-    this.redeemEndDate    = template.redeemEndDate || new Date();
-    this.expirationDate   = template.expirationDate || new Date();
+    this.productCtgs      = template.productCtgs; // product categories
+    this.layout           = template.layout; 
   }
 
   /**
@@ -56,21 +60,27 @@ class Coupon {
   toMongoDoc() {
     // TODO(david): Maybe there is a better way of doing this?
     return {
-      company: this.company,
-      templateId: this.templateId,
-      upcCode: this.upcCode,
-      title: this.title,
-      description: this.description,
-      instances: this.instances,
-      instructions: this.instructions,
-      collectStartDate: this.collectStartDate,
-      collectEndDate: this.collectEndDate,
-      preViewingDate: this.preViewingDate,
-      redeemStartDate: this.redeemStartDate,
-      redeemEndDate: this.redeemEndDate,
-      expirationDate: this.expirationDate,
-      lat: this.lat,
-      lng: this.lng
+      salesID:          this.salesID,
+      templateId:       this.templateId,
+      companyName:      this.companyName,
+      upcCode:          this.upcCode, // redacted until redemption is initiated
+      qrImage:          this.qrImage, // redacted until redemption is initiated
+      couponImage:      this.couponImage,
+      description:      this.description,
+      title:            this.title,
+      instructions:     this.instructions,
+      productCtgs:      this.productCtgs,
+      layout:           this.layout,
+      upperLat:         this.upperLat,
+      lowerLat:         this.lowerLat,
+      eastLong:         this.eastLong,
+      westLong:         this.westLong,
+      quantity:         this.quantity, 
+      preViewingDate:   this.preViewingDate,  // default date of pinning
+      collectStartDate: this.collectStartDate,  // default date of pinning
+      collectEndDate:   this.collectEndDate,  // default collectStartDate + 24 hrs
+      redeemStartDate:  this.redeemStartDate, // default date of pinning
+      redeemEndDate:    this.redeemEndDate, // default redeemStartDate + 30 days
     };
   }
 }
