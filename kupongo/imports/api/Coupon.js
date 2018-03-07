@@ -14,31 +14,16 @@ if (Meteor.isServer) {
 
 class Coupon {
   constructor(values) {
-    // inherited attributes from coupon template.
-    this.templateId       = values.templateId || ''; //template ID from referenced template 
-    this.company          = values.company || ''; // MongoDB ID of user.
-    this.salesEmail       = values.salesEmail;
-    this.salesName        = values.salesName;
-    this.salesPhone       = values.salesPhone;
-    this.upcCode          = values.upcCode;
-    this.qrImage          = values.qrImage;
-    this.couponImage      = values.couponImage;
-    this.description      = values.description;
-    this.title            = values.title;
-    this.instructions     = values.instructions;
-    this.productCtgs      = values.productCtgs; // product categories
-    this.template         = values.template;  // graphic format template (not used fo
-
     // attributes specific to a coupon instance
     this._id              = values._id || ''; // Coupon ID (MongoDB ID to quickly query this information).
     this.upperLat         = values.upperLat;
     this.lowerLat         = values.lowerLat;
-    this.upperLong        = values.upperLong;
-    this.lowerLong        = values.lowerLong;
-    this.quantity        = values.quantity; 
+    this.eastLong         = values.eastLong;
+    this.westLong         = values.westLong;
+    this.quantity         = values.quantity; 
+    this.preViewingDate   = values.preViewingDate || new Date();
     this.collectStartDate = values.collectStartDate || new Date();
     this.collectEndDate   = values.collectEndDate || new Date();
-    this.preViewingDate   = values.preViewingDate || new Date();
     this.redeemStartDate  = values.redeemStartDate || new Date();
     this.redeemEndDate    = values.redeemEndDate || new Date();
    
@@ -55,11 +40,9 @@ class Coupon {
   }
 
   copyTemplateInfo(template) {
-    this.templateId       = template._id;
-    this.company          = template.company;
-    this.salesEmail       = template.salesEmail;
-    this.salesName        = template.salesName;
-    this.salesPhone       = template.salesPhone;
+    this.salesID          = template.salesID
+    this.templateID       = template._id;
+    this.companyName      = template.companyName;
     this.upcCode          = template.upcCode;
     this.qrImage          = template.qrImage;
     this.couponImage      = template.couponImage;
@@ -67,7 +50,7 @@ class Coupon {
     this.title            = template.title;
     this.instructions     = template.instructions;
     this.productCtgs      = template.productCtgs; // product categories
-    this.template         = template.template; 
+    this.layout           = template.layout; 
   }
 
   /**
@@ -77,21 +60,27 @@ class Coupon {
   toMongoDoc() {
     // TODO(david): Maybe there is a better way of doing this?
     return {
-      company: this.company,
-      templateId: this.templateId,
-      upcCode: this.upcCode,
-      title: this.title,
-      description: this.description,
-      instances: this.instances,
-      instructions: this.instructions,
+      salesID:          this.salesID,
+      templateId:       this.templateId,
+      companyName:      this.companyName,
+      upcCode:          this.upcCode,
+      qrImage:          this.qrImage,
+      couponImage:      this.couponImage,
+      description:      this.description,
+      title:            this.title,
+      instructions:     this.instructions,
+      productCtgs:      this.productCtgs,
+      layout:           this.layout,
+      upperLat:         this.upperLat,
+      lowerLat:         this.lowerLat,
+      eastLong:         this.eastLong,
+      westLong:         this.westLong,
+      quantity:         this.quantity, 
+      preViewingDate:   this.preViewingDate,
       collectStartDate: this.collectStartDate,
-      collectEndDate: this.collectEndDate,
-      preViewingDate: this.preViewingDate,
-      redeemStartDate: this.redeemStartDate,
-      redeemEndDate: this.redeemEndDate,
-      expirationDate: this.expirationDate,
-      lat: this.lat,
-      lng: this.lng
+      collectEndDate:   this.collectEndDate,
+      redeemStartDate:  this.redeemStartDate,
+      redeemEndDate:    this.redeemEndDate,
     };
   }
 }
