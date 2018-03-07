@@ -1,4 +1,3 @@
-import {Players} from './../imports/api/players';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Meteor} from 'meteor/meteor';

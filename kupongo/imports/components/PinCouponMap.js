@@ -2,7 +2,7 @@
  * Component that handles pinning coupons into the map.
  */
 import React, {Component} from 'react';
-import mapsToken from '../config/passwords';
+// import mapsToken from '../config/passwords';
 import PinMap from './PinMap';
 import Coupon from '../api/Coupon';
 
