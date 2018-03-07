@@ -5,7 +5,7 @@ Sales account information that will be stored in MongoDB
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from 'meteor/meteor';
 
-export const SalesAccount = new Mongo.Collection('SalesAccount');
+export const SalesAccountDB = new Mongo.Collection('SalesAccount');
 
 if (Meteor.isServer) {
   Meteor.publish('SalesAccount', () =>{
