@@ -11,6 +11,7 @@ import TemplatesView from '../components/TemplatesView';
 import CouponTemplate, {CouponTemplateDB} from '../api/CouponTemplate';
 import {CouponDB} from '../api/Coupon';
 import Popup from 'react-popup';
+import Header from '../components/Header';
 
 class PinCoupon extends Component {
 
@@ -27,6 +28,7 @@ class PinCoupon extends Component {
   render() {
     return (
         <div>
+          <Header/>
           <Popup/>
           <h1>Pin your coupons</h1>
 
