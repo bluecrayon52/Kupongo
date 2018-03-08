@@ -25,6 +25,11 @@ class Register extends Component {
                             placeholder="Email" name="email">
                         </input><br />
 
+                        <label className="regLabel" id="companyName" htmlFor="text"><b>Company Name: </b></label>
+                        <input className="textInput" type="text" ref="companyNameInput"
+                            placeholder="Company Name" name="companyName">
+                        </input><br />
+
                         <label className="regLabel" id="firstNameLabel" htmlFor="text"><b>First name: </b></label>
                         <input className="textInput" type="text" ref="firstNameInput"
                             placeholder="First name" name="firstName">
@@ -68,6 +73,7 @@ class Register extends Component {
                 alert('Email ' + email + ' is already taken!')
                 // Clear form
                 ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
                 ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
                 ReactDOM.findDOMNode(this.refs.firstNameInputInput).value = '';
                 ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
@@ -77,6 +83,7 @@ class Register extends Component {
                 Meteor.call('ListOfUsers.register', email, password);
                 // Clear form
                 ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
                 ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
                 ReactDOM.findDOMNode(this.refs.firstNameInputInput).value = '';
                 ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
