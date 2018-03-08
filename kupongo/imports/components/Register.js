@@ -10,6 +10,7 @@ class Register extends Component {
             firstName: '',
             lastname: '',
             email: '',
+            companyName: '',
             password: '',
             phoneNumber: ''
         }
@@ -50,7 +51,7 @@ class Register extends Component {
                             placeholder="Password" name="password">
                         </input><br />
 
-                        <button className="regButton" type="submit" onClick={this.handleRegister.bind(this)}>Register</button>
+                          <button className="regButton" type="submit" onClick={this.handleRegister.bind(this)}>Register</button>
                     </div>
                 </form>
             </div>
