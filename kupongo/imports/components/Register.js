@@ -66,32 +66,21 @@ class Register extends Component {
 
         // Get entered information from form
         const email = ReactDOM.findDOMNode(this.refs.emailInput).value.trim();
+        const companyName = ReactDOM.findDOMNode(this.refs.companyNameInput).value.trim();
+        const firstName = ReactDOM.findDOMNode(this.refs.firstNameInput).value.trim();
+        const lastName = ReactDOM.findDOMNode(this.refs.lastNameInput).value.trim();
+        const phoneNumber = ReactDOM.findDOMNode(this.refs.phoneNumberInput).value.trim();
+        const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
 
-        //Warn user if email has been used
-        Meteor.call('ListOfUsers.checkUser', email, function (err, result) {
-            if (result) {
-                //Email/User is already registered
-                alert('Email ' + email + ' is already taken!')
-                // Clear form
-                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
-                ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
-                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
-                ReactDOM.findDOMNode(this.refs.firstNameInputInput).value = '';
-                ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
-                ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
-            } else {
-                //If new user add to database
-                Meteor.call('ListOfUsers.register', email, password);
-                // Clear form
-                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
-                ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
-                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
-                ReactDOM.findDOMNode(this.refs.firstNameInputInput).value = '';
-                ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
-                ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
-
-            }
-        });
+        //If new user add to database
+        Meteor.call('register', email, companyName, password, firstName, lastName, phoneNumber);
+        // Clear form
+        ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+        ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
+        ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+        ReactDOM.findDOMNode(this.refs.firstNameInput).value = '';
+        ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
+        ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
 
       // Redirect
       this.props.history.push('/home')

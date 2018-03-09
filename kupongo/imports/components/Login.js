@@ -43,8 +43,6 @@ class Login extends Component {
         );
     }
 
-    //TODO(Preston) Redirect to register page when register buton is clicked
-
     //Login button clicked
     handleSubmit(event) {
         event.preventDefault();
@@ -55,7 +53,7 @@ class Login extends Component {
         const email = ReactDOM.findDOMNode(this.refs.emailInput).value.trim();
         const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
 
-        Meteor.call('ListOfUsers.login', email, password);
+        Meteor.call('login', email, password);
 
         // Clear form
         ReactDOM.findDOMNode(this.refs.emailInput).value = '';

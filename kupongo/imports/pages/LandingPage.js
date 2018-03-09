@@ -24,8 +24,8 @@ class LandingPage extends Component {
 }
 
 export default withTracker(() => {
-    //MongoDB subscription to userList
-    Meteor.subscribe('userList');
+    //MongoDB subscription to User
+    Meteor.subscribe('User');
     return {
 
     };
