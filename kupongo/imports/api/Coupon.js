@@ -3,9 +3,14 @@
  */
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from 'meteor/meteor';
-import { SimpleSchema } from 'simpl-schema';
 
+export const CouponDB = new Mongo.Collection('Coupon');
 
+if (Meteor.isServer) {
+  Meteor.publish('Coupon', () =>{
+    return CouponDB.find();
+  });
+}
 
 class Coupon {
   constructor(values) {
@@ -18,8 +23,8 @@ class Coupon {
     this.quantity         = values.quantity; // default 1
     this.preViewingDate   = values.preViewingDate || new Date();  // default date of pinning
     this.collectStartDate = values.collectStartDate || new Date(); // default date of pinning
-    this.collectEndDate   = values.collectEndDate || new Date();  // default collectStartDate + 24 hrs
-    this.redeemStartDate  = values.redeemStartDate || new Date(); // default date of pinning
+    this.collectEndDate   = values.collectEndDate || new Date();  // default collectStartDate + 24 hrs 
+    this.redeemStartDate  = values.redeemStartDate || new Date(); // default date of pinning 
     this.redeemEndDate    = values.redeemEndDate || new Date(); // default redeemStartDate + 30 days
 
     // UI attributes.
@@ -89,7 +94,7 @@ class Coupon {
       lowerLat:         this.lowerLat,
       eastLong:         this.eastLong,
       westLong:         this.westLong,
-      quantity:         this.quantity,
+      quantity:         this.quantity, 
       preViewingDate:   this.preViewingDate,  // default date of pinning
       collectStartDate: this.collectStartDate,  // default date of pinning
       collectEndDate:   this.collectEndDate,  // default collectStartDate + 24 hrs
@@ -98,113 +103,5 @@ class Coupon {
     };
   }
 }
+
 export default Coupon;
-
-
-
-
-
-// The override of the collection specific to coupons to allow for checks to be
-// performed prior to any inserts, deletes, etc.
-class CouponCollection extends Mongo.Collection{
-  insert(couponDoc, callback, language = 'en'){
-    const thisCoupon = couponDoc
-    var today = new Date();
-    /*
-        Checks to ensure the coupon has all the necessary fields. The image
-        fields are not mandatory since an image may not be included in every
-        coupon
-    */
-    if( (!couponDoc.hasOwnProperty("salesID") && couponDoc.salesID) ||
-        (!couponDoc.hasOwnProperty("templateId") && couponDoc.templateId) ||
-        (!couponDoc.hasOwnProperty("companyName") && couponDoc.companyName) ||
-        (!couponDoc.hasOwnProperty("couponImage") && couponDoc.couponImage) ||
-        (!couponDoc.hasOwnProperty("description") && couponDoc.description) ||
-        (!couponDoc.hasOwnProperty("title") && couponDoc.title) ||
-        (!couponDoc.hasOwnProperty("instructions") && couponDoc.instructions) ||
-        (!couponDoc.hasOwnProperty("productCtgs") && couponDoc.productCtgs) ||
-        (!couponDoc.hasOwnProperty("layout") && couponDoc.layout) ||
-        (!couponDoc.hasOwnProperty("upperLat") && couponDoc.upperLat) ||
-        (!couponDoc.hasOwnProperty("lowerLat") && couponDoc.lowerLat) ||
-        (!couponDoc.hasOwnProperty("eastLong") && couponDoc.eastLong) ||
-        (!couponDoc.hasOwnProperty("westLong") && couponDoc.westLong) ||
-        (!couponDoc.hasOwnProperty("quantity") && couponDoc.quantity) ||
-        (!couponDoc.hasOwnProperty("preViewingDate") && couponDoc.preViewingDate) ||
-        (!couponDoc.hasOwnProperty("collectStartDate") && couponDoc.collectStartDate) ||
-        (!couponDoc.hasOwnProperty("collectEndDate") && couponDoc.collectEndDate) ||
-        (!couponDoc.hasOwnProperty("redeemStartDate") && couponDoc.redeemStartDate)
-    ){
-      // Something is not right in the coupon document. More checks to come
-      callback("Missing a required field", null);
-    }
-    // Check if the time values are valid
-    else if(!isTodayOrLater(couponDoc.preViewingDate) || !isTodayOrLater(couponDoc.collectStartDate)
-    || !isTodayOrLater(couponDoc.collectEndDate) || !isTodayOrLater(couponDoc.redeemStartDate)){
-      callback("One of the dates provided is in the past", null);
-    }
-    else if(couponDoc.upperLat < -90 || couponDoc.upperLat > 90 || couponDoc.lowerLat < -90
-    || couponDoc.lowerLat > 90 || couponDoc.eastLong < -90 || couponDoc.eastLong > 90
-    || couponDoc.westLong < -90 || couponDoc.westLong > 90){
-      callback("Coupon position is impossible", null);
-    }
-    // Everything has been checked but the validity of the account
-    else{
-      return super.insert(thisCoupon, callback)
-    }
-  }
-}
-export const CouponDB = new CouponCollection('Coupon');
-CouponDB.deny({
-  insert(){ return true; },
-  update(){ return true; },
-  remove(){return true; },
-})
-
-//TODO (Kevin) Figure out why the schema's existance causes a crash even though examples say it should work as is.
-// CouponDB.schema = new SimpleSchema({
-//   _id:              { type: String },
-//   salesID:          { type: String },
-//   templateId:       { type: String },
-//   companyName:      { type: String },
-//   upcCode:          { type: String, optional: true },
-//   qrImage:          { type: String, optional: true },
-//   couponImage:      { type: String, optional: true },
-//   description:      { type: String },
-//   title:            { type: String },
-//   instructions:     { type: String },
-//   productCtgs:      { type: Array },
-//   layout:           { type: String },
-//   upperLat:         { type: Number, min: -90, max: 90},
-//   lowerLat:         { type: Number, min: -90, max: 90},
-//   eastLong:         { type: Number, min: -90, max: 90},
-//   westLong:         { type: Number, min: -90, max: 90},
-//   quantity:         { type: Number, min: 0},
-//   preViewingDate:   { type: Date, defaultValue: new Date()},
-//   collectStartDate: { type: Date, defaultValue: new Date()},
-//   collectEndDate:   { type: Date, defaultValue: new Date()},
-//   redeemStartDate:  { type: Date, defaultValue: new Date()},
-//   redeemEndDate:    { type: Date, defaultValue: new Date()},
-// })
-//
-// CouponDB.attachSchema(CouponDB.schema)
-
-// Checks to see if the date provided is today or later
-function isTodayOrLater(date){
-  today = new Date();
-  if(today.getYear > date.getYear){ return false }
-  else if(today.getYear == date.getYear){
-    if(today.getMonth > date.getMonth){ return false }
-    else if(today.getMonth == date.getMonth){
-      if(today.getDay > date.getDay){ return false }
-      else{ return true }
-    }
-    else{ return true }
-  }
-  else{ return true }
-}
-
-if (Meteor.isServer) {
-  Meteor.publish('Coupon', () =>{
-    return CouponDB.find();
-  });
-}

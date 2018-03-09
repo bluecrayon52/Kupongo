@@ -10,14 +10,13 @@
     "lodash": "^4.17.5",
     "meteor-node-stubs": "^0.3.2",
     "react": "^16.2.0",
-    "react-date-picker": "^6.9.0",
+    "react-date-picker": "^6.8.2",
     "react-dom": "^16.2.0",
     "react-google-maps": "^9.4.5",
     "react-popup": "^0.9.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scrollbar": "^0.5.4",
-    "simpl-schema": "^1.4.2",
     "webpack": "^4.0.1"
   }
 }
