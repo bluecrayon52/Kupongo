@@ -156,6 +156,11 @@ class CouponCollection extends Mongo.Collection{
       return super.insert(thisCoupon, callback)
     }
   }
+  // Functions like find, only does not give the entirety of the coupon. Only
+  // shows the portion necessary to inform the user.
+  findRedacted(query, callback){
+
+  }
 }
 export const CouponDB = new CouponCollection('Coupon');
 CouponDB.deny({

@@ -26,7 +26,7 @@ class Company {
       companyName:      this.companyName,
       email:            this.email,
       password:         this.password,
-      firstName:        this.firstName, 
+      firstName:        this.firstName,
       lastName:         this.lastName,
       phone:            this.phone,
       signUpDate:       this.signUpDate,
@@ -38,4 +38,4 @@ class Company {
 
 }
 
-export default CouponTemplate;
+export default Company;

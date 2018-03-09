@@ -8,7 +8,7 @@ export const UserDB = new Mongo.Collection('User');
 
 class  SalesExec {
   constructor(values) {
-    this._id                  = values._id || '';    // sales ID 
+    this._id                  = values._id || '';    // sales ID
     this.authenticationToken  = values.authenticationToken;
     this.email                = values.email;
     this.password             = values.password;
@@ -25,7 +25,7 @@ class  SalesExec {
     this.companyName    = company.companyName;
     this.companyEmail   = company.email;
     this.companyRepName = company.firstName + ' ' + company.lastName;
-    this.companyPhone   = company.phone; 
+    this.companyPhone   = company.phone;
   }
 
   toMongoDoc() {
@@ -41,26 +41,26 @@ class  SalesExec {
       firstName:            this.firstName,
       lastName:             this.lastName,
       phoneNumber:          this.phoneNumber,
-      address:              this.address, 
+      address:              this.address,
       signUpDate:           this.signUpDate,
       lastSignInDate:       this.lastSignInDate
     };
   }
-  
+
 }
 
 class Customer {
   constructor(values){
     this._id              = values._id || ''; // customer ID
-    this.email            = values.email; 
-    this.password         = values.password; 
-    this.firstName        = values.firstName; 
+    this.email            = values.email;
+    this.password         = values.password;
+    this.firstName        = values.firstName;
     this.lastName         = values.lastName;
     this.phone            = values.phone;
-    this.address          = values.address; 
+    this.address          = values.address;
     this.signUpDate       = values.signUpDate;
     this.lastSignInDate   = values.lastSignInDate;
-    this.couponWallet     = []; // array of Collected Coupon objects, empty at first 
+    this.couponWallet     = []; // array of Collected Coupon objects, empty at first
   }
   toMongoDoc() {
     return {
@@ -80,5 +80,5 @@ class Customer {
 
 
 
-export default SalesExec;
+export {SalesExec};
 export default Customer;

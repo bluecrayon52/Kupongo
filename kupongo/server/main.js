@@ -3,6 +3,9 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import {CouponTemplateDB} from './../imports/api/CouponTemplate';
 import {CouponDB} from './../imports/api/Coupon';
+import {UserDB} from './../imports/api/UserDoc';
+import {CompanyDB} from './../imports/api/CompanyDoc';
+import {validate} from './../imports/server/ServerFunctions';
 
 Meteor.startup(function () {
   // Test coupon
@@ -61,5 +64,38 @@ Meteor.methods({
 
         check(email, String);
         check(password, String);
-    }
+    },
+
+    // Insert a new coupon
+    'insertCoupon'(userID, coupon){
+      validate(userID, coupon, function(error, message){
+        if(error){
+          throw new Meteor.Error(error, message);
+        }
+        else{
+          CouponDB.insert(coupon, function(){
+            // TODO Publish the changes (KEVIN)
+
+          })
+        }
+      })
+
+    },
+
+    // Delete an existing coupon
+    'removeCoupon'(userID, coupon){
+      validate(userID, coupon, function(error, message){
+        if(error){
+          throw new Meteor.Error(error, message);
+        }
+        else{
+          CouponDB.remove(coupon, function(){
+            // TODO Publish the changes (KEVIN)
+            
+          })
+        }
+      })
+    },
+
+
 });
