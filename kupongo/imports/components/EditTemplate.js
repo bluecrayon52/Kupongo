@@ -11,8 +11,8 @@ const options = ['None','Clothing & Accessories', 'Electronics', 'Grocery & Gour
 'Outdoors', 'Personal Computers', 'Professional Services', 'Shoes, Handbags & Sunglasses', 'Software & Computer Games', 'Sports', 'Tools & Home Improvement', 
 'Toys & Games', 'Video Games & Video Game Consoles']; 
 
-
 class EditTemplate extends Component {
+
   constructor(props) {
     super(props);
 
@@ -23,13 +23,18 @@ class EditTemplate extends Component {
       companyName:  this.props.companyName,
       upcCode:      this.props.upcCode || '',        // editable 5
       qrImage:      this.props.qrImage,              // editable 6
-      couponImage:  this.props.couponImage,          // editable 7
+      couponImage:  this.props.couponImage || [],    // editable 7
       description:  this.props.description || '',    // editable 2
       title:        this.props.title || '',          // editable 1
       instructions: this.props.instructions || '',   // editable 3
       productCtg:   this.props.prouctCtg || '',      // editable 4
       layout:       this.props.layout,               // editable 8 (not used for now)
+
     };
+  }
+  
+  imageUploadHandler = () => {
+
   }
 
   render() {
@@ -96,14 +101,48 @@ class EditTemplate extends Component {
           <label htmlFor="">
             QR Image <br/>
               {/* TODO: Add a way to save images to MongoDB, right now this does nothing. */}
-              <input type="file" accept="image/*"/>
+              <input style= {{display:'none'}} type="file" accept="image/*" 
+                onChange={(event) => {
+                  var file = event.target.files[0];
+                  console.log(file); 
+                  var reader = new FileReader();
+                  var url = reader.readAsDataURL(file);
+                  reader.onloadend=(e) => {
+                    this.setState({
+                      qrImage: [reader.result]
+                    });
+                    console.log(this.state.qrImage);
+                  }    
+                }} 
+              ref={fileInput => this.fileInput = fileInput}/>
+              {/* preview the image before saving */}
+               <img src={this.state.qrImage} width='300' />
+               <br/>
+              <button onClick={()=> this.fileInput.click()}>Choose Image</button>
           </label>
-          
+
           <br/>
           <label htmlFor="">
             Coupon Image <br/>
               {/* TODO: Add a way to save images to MongoDB, right now this does nothing. */}
-              <input type="file" accept="image/*"/>
+              <input style= {{display:'none'}} type="file" accept="image/*"
+                onChange={(event) => {
+                  var file = event.target.files[0];
+                  console.log(file);
+                  var reader = new FileReader();
+                  var url = reader.readAsDataURL(file);
+                  reader.onloadend=(e) => {
+                    this.setState({
+                      couponImage: [reader.result]
+                    });
+                    console.log(this.state.couponImage);
+                  }
+                }} 
+              ref={fileInput2 => this.fileInput2 = fileInput2}/>
+              {/* preview the image before upload */}
+              <img src={this.state.couponImage} width='300' /> 
+              <br/>
+              <button onClick={()=> this.fileInput2.click()}>Choose Image</button>
           </label>
 
           {/* TODO(david): Start adding input for rest of fields here. */}
