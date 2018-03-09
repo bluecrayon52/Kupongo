@@ -12,8 +12,6 @@ if (Meteor.isServer) {
   });
 }
 
-
-// TODO(david): Add to this so that it can accurately represent the Coupon Template collection. May be missing some fields.
 class CouponTemplate {
   constructor(values) {         
     this._id              = values._id || ''; //  template ID (MongoDB ID to quickly query this information.)
@@ -23,7 +21,7 @@ class CouponTemplate {
     this.description      = values.description;
     this.title            = values.title;
     this.instructions     = values.instructions;
-    this.productCtgs      = values.productCtgs || []; // product categories array
+    this.productCtg      = values.productCtg; // product category
     this.layout           = values.layout;  // graphic format template (not used for now)
 
     if (values.hasOwnProperty('salesInfo'))
@@ -46,7 +44,7 @@ class CouponTemplate {
       description:  this.description,
       title:        this.title,
       instructions: this.instructions,
-      productCtgs:  this.productCtgs,
+      productCtg:  this.productCtg,
       layout:       this.layout
     };
   }

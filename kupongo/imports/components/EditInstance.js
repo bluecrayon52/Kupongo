@@ -18,7 +18,7 @@ class EditInstance extends Component {
         description: this.props.description || '',      // editable 
         title: this.props.title || '',                  // editable 
         instructions: this.props.instructions || '',    // editable 
-        productCtgs: this.props.productCtgs || [],
+        productCtg: this.props.productCtg || '',
         layout: this.props.layout || '',
         upperLat: this.props.upperLat,
         lowerLat: this.props.lowerLat,

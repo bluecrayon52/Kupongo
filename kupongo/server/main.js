@@ -18,7 +18,7 @@ Meteor.startup(function () {
       "description":      "A fake coupon for nothing",
       "title":            "The fake coupon",
       //"instructions":     "Redeem me",
-      //"productCtgs":      {"Jewelery",},
+      //"productCtg":      {"Jewelery",},
       "layout":           "DW91n2ne",
       "upperLat":         -35.12380,
       "lowerLat":         -35.11111,

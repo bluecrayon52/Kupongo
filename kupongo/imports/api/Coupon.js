@@ -52,7 +52,7 @@ class Coupon {
     this.description      = values.description;
     this.title            = values.title;
     this.instructions     = values.instructions;
-    this.productCtgs      = values.productCtgs; // product categories
+    this.productCtg      = values.productCtg; // product categories
     this.layout           = values.layout;
   }
 
@@ -66,7 +66,7 @@ class Coupon {
     this.description      = template.description;
     this.title            = template.title;
     this.instructions     = template.instructions;
-    this.productCtgs      = template.productCtgs; // product categories
+    this.productCtg      = template.productCtg; // product categories
     this.layout           = template.layout;
   }
 
@@ -87,7 +87,7 @@ class Coupon {
       description:      this.description,
       title:            this.title,
       instructions:     this.instructions,
-      productCtgs:      this.productCtgs,
+      productCtg:      this.productCtg,
       layout:           this.layout,
       upperLat:         this.upperLat,
       lowerLat:         this.lowerLat,
@@ -126,7 +126,7 @@ class CouponCollection extends Mongo.Collection{
         (!couponDoc.hasOwnProperty("description") && couponDoc.description) ||
         (!couponDoc.hasOwnProperty("title") && couponDoc.title) ||
         (!couponDoc.hasOwnProperty("instructions") && couponDoc.instructions) ||
-        (!couponDoc.hasOwnProperty("productCtgs") && couponDoc.productCtgs) ||
+        (!couponDoc.hasOwnProperty("productCtg") && couponDoc.productCtg) ||
         (!couponDoc.hasOwnProperty("layout") && couponDoc.layout) ||
         (!couponDoc.hasOwnProperty("upperLat") && couponDoc.upperLat) ||
         (!couponDoc.hasOwnProperty("lowerLat") && couponDoc.lowerLat) ||
@@ -181,7 +181,7 @@ CouponDB.deny({
 //   description:      { type: String },
 //   title:            { type: String },
 //   instructions:     { type: String },
-//   productCtgs:      { type: Array },
+//   productCtg:      { type: Array },
 //   layout:           { type: String },
 //   upperLat:         { type: Number, min: -90, max: 90},
 //   lowerLat:         { type: Number, min: -90, max: 90},
