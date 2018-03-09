@@ -5,7 +5,11 @@ import {Mongo} from 'meteor/mongo';
 import {Meteor} from 'meteor/meteor';
 import { SimpleSchema } from 'simpl-schema';
 
-
+if (Meteor.isServer) {
+  Meteor.publish('Coupon', () =>{
+    return CouponDB.find();
+  });
+}
 
 class Coupon {
   constructor(values) {
