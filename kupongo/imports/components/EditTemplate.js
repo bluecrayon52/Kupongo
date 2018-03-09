@@ -3,6 +3,7 @@ import "../css/EditTemplate.css";
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import ScrollArea from 'react-scrollbar';
 
 // this array is for testing the product categories dropdown, ripped off of amazon product catergories
 const options = ['None','Clothing & Accessories', 'Electronics', 'Grocery & Gourmet Food', 'Restaurant and Dinning', 'Automotive & Powersports',
@@ -40,6 +41,12 @@ class EditTemplate extends Component {
   render() {
     return (
         <div className="editTemplateContainer">
+        <ScrollArea
+              className="scrollArea"
+              contentClassName="content"
+              smoothScrolling={true}
+              horizontal={false}
+          >
 
           <label htmlFor="">
             Title <br/>
@@ -54,7 +61,7 @@ class EditTemplate extends Component {
 
           <label htmlFor="">
             Description <br/>
-              <input className="templateTextInput" type="text"
+              <textarea className="templateTextInputLong"
                 onChange={(change) => {
                   this.setState({description: change.target.value}, () => {
                     this.props.onValuesChange(this.state);
@@ -65,7 +72,7 @@ class EditTemplate extends Component {
           
           <label htmlFor="">
             Instructions<br/>
-              <input className="templateTextInput" type="text"
+              <textarea className="templateTextInputLong" 
                 onChange={(change) => {
                   this.setState({instructions: change.target.value}, () => {
                     this.props.onValuesChange(this.state);
@@ -146,6 +153,7 @@ class EditTemplate extends Component {
           </label>
 
           {/* TODO(david): Start adding input for rest of fields here. */}
+          </ScrollArea>
         </div>
     );
   }

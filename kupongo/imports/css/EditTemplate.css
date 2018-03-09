@@ -13,6 +13,20 @@ label {
     padding: 5px
 }
 
+.templateTextInputLong {
+    width: 300px;
+    height: 100px;
+    margin: 4px;
+    padding: 5px
+}
+
 .expirationContainer {
     margin-top: 170px;
+}
+
+.scrollArea {
+    background-color: white;
+    height: 600px;
+    /* border-radius: 5px; */
+    /* border: 1px solid lightgray; */
 }
