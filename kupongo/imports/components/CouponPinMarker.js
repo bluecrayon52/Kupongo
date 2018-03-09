@@ -29,8 +29,8 @@ class CouponPinMarker extends Component {
             draggable={this.props.markersDraggable}
             onDragEnd={this.updateLocation.bind(this)}
             position={{
-              lat: this.props.pin.lat,
-              lng: this.props.pin.lng
+              lat: this.props.pin.location.coordinates[1],
+              lng: this.props.pin.location.coordinates[0]
             }}
             icon={{
               url: icon,
@@ -58,8 +58,7 @@ class CouponPinMarker extends Component {
 
   updateLocation(event) {
     let pin = this.props.pin;
-    pin.lat = event.latLng.lat();
-    pin.lng = event.latLng.lng();
+    pin.location.coordinates = [event.latLng.lng(), event.latLng.lat()];
 
     this.props.onDragEnd(this.props.index, pin);
   }

@@ -17,7 +17,13 @@ class PinCoupon extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      // Placeholder name until user back-end is done.
+      salesInfo: this.props.salesInfo  || {
+        _id: 'safns',
+        companyName: 'Coke'
+      }
+    };
     this.state.templates = this.props.templates;
     console.log('props to', this.props.templates);
     this.state.selectedTemplate = null;
@@ -38,6 +44,7 @@ class PinCoupon extends Component {
           
             <TemplatesView
                 templates={this.state.templates}
+                salesInfo={this.state.salesInfo}
                 selectedTemplate={this.state.selectedTemplate}
                 updateTemplate={this.updateTemplate.bind(this)}
                 removeTemplate={this.removeTemplate.bind(this)}
@@ -170,7 +177,6 @@ class PinCoupon extends Component {
     let templates = [...this.state.templates];
 
     // TODO(david): Placeholder value, update to user company once login portion is done.
-    template.company = 'Coke';
     template._id = CouponTemplateDB.insert(template.toMongoDoc());
     templates.push(template);
 
@@ -210,7 +216,7 @@ export default withTracker(() => {
   return {
     templates: CouponTemplateDB.find({
       // TODO(david): Change to look for current user's company name/id
-      company: 'Coke'
+      companyName: 'Coke'
     }).fetch()
   };
 })(PinCoupon);

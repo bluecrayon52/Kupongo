@@ -26,15 +26,16 @@ class Coupon {
     this.collectEndDate   = values.collectEndDate || new Date();  // default collectStartDate + 24 hrs 
     this.redeemStartDate  = values.redeemStartDate || new Date(); // default date of pinning 
     this.redeemEndDate    = values.redeemEndDate || new Date(); // default redeemStartDate + 30 days
-   
+
     // UI attributes.
     // TODO(david): Change this so that we use upperLat and lowerLat instead.
-    this.lat              = values.lat;
-    this.lng              = values.lng;
+    this.location = {
+      type: 'Point',
+      coordinates: [values.lng, values.lat]
+    };
 
     // Inherited Template attributes. (values are checked in case we are retrieving them from Mongo).
-    // TODO(david): Look into may just refer from the Template document instead of duplicating fields.
-    if (values.template !== null)
+    if (values.hasOwnProperty('template'))
       this.copyTemplateInfo(values.template);
     else
       this.copyFromMongo(values);
@@ -67,7 +68,7 @@ class Coupon {
     this.title            = template.title;
     this.instructions     = template.instructions;
     this.productCtgs      = template.productCtgs; // product categories
-    this.layout           = template.layout; 
+    this.layout           = template.layout;
   }
 
   /**
@@ -79,6 +80,7 @@ class Coupon {
     return {
       salesID:          this.salesID,
       templateId:       this.templateId,
+      location:         this.location,
       companyName:      this.companyName,
       upcCode:          this.upcCode, // redacted until redemption is initiated
       qrImage:          this.qrImage, // redacted until redemption is initiated

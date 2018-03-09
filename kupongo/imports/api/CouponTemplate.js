@@ -25,6 +25,9 @@ class CouponTemplate {
     this.instructions     = values.instructions;
     this.productCtgs      = values.productCtgs || []; // product categories array
     this.layout           = values.layout;  // graphic format template (not used for now)
+
+    if (values.hasOwnProperty('salesInfo'))
+      this.copySalesInfo(values.salesInfo);
   }
 
   copySalesInfo(sales) {

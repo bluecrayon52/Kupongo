@@ -52,7 +52,7 @@ export default withTracker(() => {
   return {
     pins: CouponDB.find({
       // TODO(david): Change to look for current user's company name/id
-      company: 'Coke'
+      companyName: 'Coke'
     }).fetch()
   };
 })(PinnedCoupons);

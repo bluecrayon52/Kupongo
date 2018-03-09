@@ -49,6 +49,7 @@ class TemplatesView extends Component {
                       <button className="tool"
                               onClick={() => {
                                 Popup.plugins().editTemplate(template, (values) => {
+                                  values.salesInfo = this.props.salesInfo;
                                   this.props.updateTemplate(index, new CouponTemplate(values));
                                 });
                               }}
@@ -69,6 +70,7 @@ class TemplatesView extends Component {
           <button
               onClick={() => {
                 Popup.plugins().newTemplate((values) => {
+                  values.salesInfo = this.props.salesInfo;
                   this.props.addTemplate(new CouponTemplate(values));
                 });
               }}
