@@ -105,7 +105,7 @@ Meteor.methods({
           })
         }
       })
-    }
+    },
 
     // Delete an existing coupon
     'removeCoupon'(userID, coupon){
