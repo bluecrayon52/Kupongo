@@ -4,7 +4,7 @@
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from 'meteor/meteor';
 import { SimpleSchema } from 'simpl-schema';
-import {getRedactedCoupons} from './../server/ServerFunctions';
+import {getRedactedCoupons} from '../srvr/ServerFunctions';
 
 if (Meteor.isServer) {
   Meteor.publish('Coupon', () =>{

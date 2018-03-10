@@ -5,7 +5,7 @@ import {CouponTemplateDB} from './../imports/api/CouponTemplate';
 import {CouponDB} from './../imports/api/Coupon';
 import {UserDB} from './../imports/api/UserDoc';
 import {CompanyDB} from './../imports/api/CompanyDoc';
-import {validate} from './../imports/server/ServerFunctions';
+import {validate} from './../imports/srvr/ServerFunctions';
 
 Meteor.startup(function () {
   // Test coupon
