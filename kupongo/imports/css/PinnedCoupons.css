@@ -2,14 +2,14 @@ p {
     text-align: center;
 }
 
-.mapViewContainer {
+/* .mapViewContainer {
     border: 1px solid #e2e2e2;
     background-color: #fcfcfc;
     width: 100%;
-}
+} */
 
 .pinnedMapContainer {
-    margin: 0 auto;
+    float: right;
     width: 50%!important;
     height: 700px!important;
 }

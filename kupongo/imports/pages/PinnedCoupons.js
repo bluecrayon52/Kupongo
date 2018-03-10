@@ -1,5 +1,5 @@
 /**
- * Page to view the pins that have been placed on the map.
+ * Page to view the coupons that have been pinned on the map.
  */
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
@@ -8,6 +8,7 @@ import {CouponDB} from '../api/Coupon';
 import '../css/PinnedCoupons.css';
 import PinMap from '../components/PinMap';
 import Header from '../components/Header';
+import PinnedView from '../components/PinnedView';
 
 class PinnedCoupons extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class PinnedCoupons extends Component {
     this.state = {
       pins: this.props.pins
     };
+
   }
 
   render() {
@@ -23,8 +25,13 @@ class PinnedCoupons extends Component {
           <Header/>
           <h1>View pinned coupons</h1>
           <p>Below are your currently pinned coupons.</p>
-          <div className="mapViewContainer">
 
+          <div className="mapViewContainer">
+            <PinnedView
+              pinned={this.state.pins}
+              selectedPin={this.state.selectedPin}
+              
+            />
             <PinMap
                 pins={this.state.pins}
                 markersDraggable={false}
@@ -34,7 +41,6 @@ class PinnedCoupons extends Component {
             />
 
           </div>
-          <button>Edit Pinned Coupons</button>
         </div>
     );
   }

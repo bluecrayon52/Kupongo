@@ -38,7 +38,7 @@ class PinCoupon extends Component {
           <Popup/>
           <h1>Pin your coupons</h1>
 
-          <p>Select a template and click on the map place the coupon.</p>
+          <p>Select a template and click on the map to place the coupon.</p>
 
           <div className="pinningContainer">
           

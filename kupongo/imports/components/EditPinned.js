@@ -1,9 +1,13 @@
+/**
+ * Renders pinned coupons in order for viewing and editing.
+ */
+
 import React, {Component} from 'react';
-import "../css/EditInstance.css";
+import "../css/EditPinned.css";
 import DatePicker from 'react-date-picker';
 
 
-class EditInstance extends Component {
+class EditPinned extends Component {
   constructor(props) {
     super(props);
 
@@ -35,7 +39,7 @@ class EditInstance extends Component {
 
   render() {
     return (
-        <div className="editInstanceContainer">
+        <div className="editPinnedContainer">
             <label htmlFor="">
                 Title <br/>
                 <input type="text"
@@ -147,4 +151,4 @@ class EditInstance extends Component {
   }
 }
 
-export default EditTemplate;
+export default EditPinned;

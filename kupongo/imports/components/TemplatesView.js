@@ -21,7 +21,7 @@ class TemplatesView extends Component {
     return (
         <div className="templateContainer">
           <h2>Coupon Templates</h2>
-          <p>Select template to pin.</p>
+          <p>Select a template to pin.</p>
           <ScrollArea
               className="area"
               contentClassName="content"
@@ -35,35 +35,35 @@ class TemplatesView extends Component {
               let selected = (this.props.selectedTemplate !== null && this.props.selectedTemplate._id === template._id) ? 'selected' : '';
               let classes = `${selected} couponTemplateContainer `;
               return (
-                  <div className="singleTemplate"
-                       key={template._id}
-                  >
-                    <div className={classes}
-                         onClick={() => this.props.onSelectTemplate(template)}>
-                      <div className="templateTitle">
-                        {template.title}
-                      </div>
-                      <p>{template.description}</p>
-                    </div>
-                    <div className="templateTools">
-                      <button className="tool"
-                              onClick={() => {
-                                Popup.plugins().editTemplate(template, (values) => {
-                                  values.salesInfo = this.props.salesInfo;
-                                  this.props.updateTemplate(index, new CouponTemplate(values));
-                                });
-                              }}
-                      >Edit
-                      </button>
-                      <button className="tool"
-                              onClick={() => {
-                                // TODO(david): Add "are you sure" prompt.
-                                this.props.removeTemplate(index);
-                              }}
-                      >Delete
-                      </button>
-                    </div>
+                <div className="singleTemplate" key={template._id}>
+
+                  <div className={classes}  onClick={() => this.props.onSelectTemplate(template)}>
+                    <div className="templateTitle">{template.title}</div>
+                    <p>{template.description}</p>
                   </div>
+
+                  <div className="templateTools">
+                  
+                    <button className="tool"
+                      onClick={() => {
+                        Popup.plugins().editTemplate(template, (values) => {
+                          values.salesInfo = this.props.salesInfo;
+                          this.props.updateTemplate(index, new CouponTemplate(values));
+                        });
+                      }}
+                    >Edit
+                    </button>
+
+                    <button className="tool"
+                      onClick={() => {
+                        // TODO(david): Add "are you sure" prompt.
+                        this.props.removeTemplate(index);
+                      }}
+                    >Delete
+                    </button>
+
+                  </div>
+                </div>
               );
             })}
           </ScrollArea>
