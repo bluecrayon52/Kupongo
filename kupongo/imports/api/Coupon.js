@@ -4,6 +4,7 @@
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from 'meteor/meteor';
 import { SimpleSchema } from 'simpl-schema';
+import {getRedactedCoupons} from './../server/ServerFunctions';
 
 if (Meteor.isServer) {
   Meteor.publish('Coupon', () =>{
@@ -147,8 +148,8 @@ class CouponCollection extends Mongo.Collection{
       callback("One of the dates provided is in the past", null);
     }
     else if(couponDoc.upperLat < -90 || couponDoc.upperLat > 90 || couponDoc.lowerLat < -90
-    || couponDoc.lowerLat > 90 || couponDoc.eastLong < -90 || couponDoc.eastLong > 90
-    || couponDoc.westLong < -90 || couponDoc.westLong > 90){
+    || couponDoc.lowerLat > 90 || couponDoc.eastLong < -180 || couponDoc.eastLong > 180
+    || couponDoc.westLong < -180 || couponDoc.westLong > 180){
       callback("Coupon position is impossible", null);
     }
     // Everything has been checked but the validity of the account
@@ -212,8 +213,30 @@ function isTodayOrLater(date){
   else{ return true }
 }
 
+
 if (Meteor.isServer) {
-  Meteor.publish('Coupon', () =>{
-    return CouponDB.find();
+  // Publishes all of the coupons for the individual sales execs
+  Meteor.publish('salesCoupons', (salesID) =>{
+    CouponDB.find({"salesID" : salesID}, function(err, couponDocs){
+      if(err){
+        throw new Meteor.Error("Problem finding sales exec's coupons", err)
+      }
+      else{
+        return couponDocs
+      }
+    });
   });
+
+  //TODO Implement the user coupon publish functions
+  // Handles the redacted coupons for users
+  Meteor.publish('userCoupons', (longitude, latitude) =>{
+    getRedactedCoupons(this.userID, longitude, latitude, function(err, results){
+      if(err){
+        throw new Meteor.Error(err, results)
+      }
+      else{
+        return results
+      }
+    })
+  })
 }

@@ -97,12 +97,14 @@ Meteor.methods({
         }
         else{
           CouponDB.remove(coupon, function(){
-            // TODO Publish the changes (KEVIN)
-            
+            return true
           })
         }
       })
     },
+
+
+
 
 
 });

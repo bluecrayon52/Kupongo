@@ -47,3 +47,96 @@ function validateSalesUser(userID, coupon, callback){
 	})
 }
 export {validateSalesUser};
+
+
+
+
+/*
+	Title: 				getAllCreatedCoupons
+	Description: 	Gets all coupons that the user specified has created. First checked to ensure
+	Arguments:		salesID - The _id field attached to this sales exec's document.
+								callback - The function that will run after the search is complete
+	Returns:			Done via callback, it will return two arguments:
+								1) Error Code - Null if no error, otherwise contains error name
+								2) Error Description or array of coupon documents depending on if an error occurs
+*/
+function getAllCreatedCoupons(salesID, callback){
+	CouponDB.find({"salesID" : salesID}, function(err, couponDocs){
+		if(err){
+			callback("Problem finding coupons for this user", err)
+		}
+		else{
+			callback(null, couponDocs)
+		}
+	})
+}
+
+
+
+/*
+	Title: 				getRedactedCoupons
+	Description: 	Gets all coupons near the user but only gives the fields necessary for the
+								basic display function. The info contained here is not enough to redeem the
+								coupon but is enough to show it on a map and give basic info.
+	Arguments:		userID - The _id field attached to this user's document.
+								callback - The function that will run after the search is complete
+	Returns:			Done via callback, it will return two arguments:
+								1) Error Code - Null if no error, otherwise contains error name
+								2) Error Description or array of coupon documents depending on if an error occurs
+*/
+function getRedactedCoupons(userID, longitude, latitude, callback){
+	if(longitude == null || latitude == null){
+		UserDB.findOne({"_id":userID}, function(err, userDoc){
+			if(err || userDoc == null){
+				callback("Problem finding the user described", err)
+			}
+			else{
+				CouponDB.find(
+					// The search parameters
+				{"upperLat": {$gt: userDoc.lastLattitude},
+				"lowerLat": {$lt: userDoc.lastLattitude},
+				"westLong": {$lt: userDoc.lastLongitude},
+				"eastLong": {$gt: userDoc.lastLongitude}},
+				// The fields to exclude
+				{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
+				// The function the complete upon execution
+				function(err2, couponDocs){
+					if(err2){
+						callback("Error finding coupons", err2)
+					}
+					else{
+						callback(null, couponDocs)
+					}
+				})
+			}
+		})
+	}
+	else{
+		CouponDB.find(
+			// The search parameters
+		{"upperLat": {$gt: latitude},
+		"lowerLat": {$lt: latitude},
+		"westLong": {$lt: longitude},
+		"eastLong": {$gt: longitude}},
+		// The fields to exclude
+		{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
+		// The function the complete upon execution
+		function(err2, couponDocs){
+			if(err2){
+				callback("Error finding coupons", err2)
+			}
+			else{
+				UserDB.updateOne({"_id":userID}, {$set:{lastLattitude:latitude, lastLongitude:longitude}},
+				function(err3, res){
+					if(err3){
+						callback("Failed updating user location", err3)
+					}
+					else{
+						callback(null, couponDocs)
+					}
+				})
+			}
+		})
+	}
+}
+export {getRedactedCoupons};
