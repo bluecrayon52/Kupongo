@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.40",
+    "bcryptjs": "^2.4.3",
     "google-maps-react": "latest",
     "lodash": "^4.17.5",
     "meteor-node-stubs": "^0.3.2",

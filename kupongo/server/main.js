@@ -6,6 +6,7 @@ import {CouponDB} from './../imports/api/Coupon';
 import {UserDB} from './../imports/api/UserDoc';
 import {CompanyDB} from './../imports/api/CompanyDoc';
 import {validateSalesUser} from './../imports/srvr/ServerFunctions';
+import bcrypt from 'bcryptjs';
 
 Meteor.startup(function () {
   // Test coupon
@@ -68,8 +69,17 @@ Meteor.methods({
         check(email, String);
         check(password, String);
 
-        if(UserDB.find({'email': email}).count() > 0 && UserDB.find({'password': password}).count() > 0) {
-          //Login user
+        if(UserDB.find({'email': email})) {
+          //Compare password to hashed password
+          bcrypt.compare(password, hash, function(err, res) {
+            //If they match, login user otherwise show error
+            if(res == true) {
+              //Login user
+              console.log("Login complete.");
+            } else {
+              //Give error
+            }
+          });
         } else {
           //Tell user entered information is incorrect
           throw new Meteor.Error('Incorrect information','You have enetered a wrong email or password.');

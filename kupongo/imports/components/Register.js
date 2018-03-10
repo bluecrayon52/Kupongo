@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
 
 class Register extends Component {
 
@@ -70,8 +71,12 @@ class Register extends Component {
         const phoneNumber = ReactDOM.findDOMNode(this.refs.phoneNumberInput).value.trim();
         const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
 
-        //If new user add to database
-        Meteor.call('register', email, companyName, password, firstName, lastName, phoneNumber);
+        //Hash password
+        const saltRounds = 10;
+        bcrypt.hash(password, saltRounds, function(err, hash) {
+            //Add user information and hashed password to database
+            Meteor.call('register', email, companyName, hash, firstName, lastName, phoneNumber);
+          });
 
         // Clear form
         ReactDOM.findDOMNode(this.refs.emailInput).value = '';
