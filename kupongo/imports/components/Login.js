@@ -47,8 +47,6 @@ class Login extends Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        console.log("login form submitted");
-
         // Get entered information from form
         const email = ReactDOM.findDOMNode(this.refs.emailInput).value.trim();
         const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
@@ -58,6 +56,8 @@ class Login extends Component {
         // Clear form
         ReactDOM.findDOMNode(this.refs.emailInput).value = '';
         ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+
+        console.log("login form submitted");
     }
 }
 

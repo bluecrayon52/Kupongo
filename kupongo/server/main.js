@@ -45,20 +45,22 @@ Meteor.methods({
     //Register new user
     'register'(email, companyName, password, firstName, lastName, phoneNumber) {
 
-        check(email, String);
-        check(companyName, String);
-        check(password, String);
-        check(firstName, String);
-        check(lastName, String);
-        check(phoneNumber, String);
+      check(email, String);
+      check(companyName, String);
+      check(password, String);
+      check(firstName, String);
+      check(lastName, String);
+      check(phoneNumber, String);
 
-        if(UserDB.find({'email': email}).count() > 0) {
-          //Tell user email already has an account
-        } else {
-          //User is new, so insert information into databse
-          UserDB.insert({email: email, companyName: companyName, password: password, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber});
-        }
-    },
+      if(UserDB.find({'email': email}).count() > 0) {
+        //Tell user email already has an account
+        throw new Meteor.Error('Account taken','This email has already been assigned to an existing account.');
+        console.log("Error = " + error);
+      } else {
+        //User is new, so insert information into databse
+        UserDB.insert({email: email, companyName: companyName, password: password, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber});
+      }
+  },
 
     //Login user
     'login'(email, password) {
@@ -66,10 +68,12 @@ Meteor.methods({
         check(email, String);
         check(password, String);
 
-        if(UserDB.find({'email': email}).count() == 1) {
+        if(UserDB.find({'email': email}).count() > 0 && UserDB.find({'password': password}).count() > 0) {
           //Login user
         } else {
           //Tell user entered information is incorrect
+          throw new Meteor.Error('Incorrect information','You have enetered a wrong email or password.');
+          console.log("Error = " + error);
         }
     },
 

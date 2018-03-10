@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class Register extends Component {
 
@@ -51,7 +51,7 @@ class Register extends Component {
                             placeholder="Password" name="password">
                         </input><br />
 
-                          <button className="regButton" type="submit" onClick={this.handleRegister.bind(this)}>Register</button>
+                        <button className="regButton" type="submit" onClick={this.handleRegister.bind(this)}>Register</button>
                     </div>
                 </form>
             </div>
@@ -61,8 +61,6 @@ class Register extends Component {
     //Register button clicked
     handleRegister(event) {
         event.preventDefault();
-
-        console.log("register form submitted");
 
         // Get entered information from form
         const email = ReactDOM.findDOMNode(this.refs.emailInput).value.trim();
@@ -74,6 +72,7 @@ class Register extends Component {
 
         //If new user add to database
         Meteor.call('register', email, companyName, password, firstName, lastName, phoneNumber);
+
         // Clear form
         ReactDOM.findDOMNode(this.refs.emailInput).value = '';
         ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
@@ -82,8 +81,10 @@ class Register extends Component {
         ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
         ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
 
-      // Redirect
-      this.props.history.push('/home')
+        console.log("register form submitted");
+
+        // Redirect
+        this.props.history.push('/home')
     }
 }
 
