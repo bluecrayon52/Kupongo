@@ -61,6 +61,8 @@ class Customer {
     this.signUpDate       = values.signUpDate;
     this.lastSignInDate   = values.lastSignInDate;
     this.couponWallet     = []; // array of Collected Coupon objects, empty at first
+    this.lastLongitude    = values.lastLongitude || -100
+    this.lastLattitude    = values.lastLattitude || -100
   }
   toMongoDoc() {
     return {
