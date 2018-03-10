@@ -61,7 +61,7 @@ class EditTemplate extends Component {
 
           <label htmlFor="">
             Description <br/>
-              <textarea className="templateTextInputLong"
+              <textarea className="templateTextInputArea"
                 onChange={(change) => {
                   this.setState({description: change.target.value}, () => {
                     this.props.onValuesChange(this.state);
@@ -72,7 +72,7 @@ class EditTemplate extends Component {
           
           <label htmlFor="">
             Instructions<br/>
-              <textarea className="templateTextInputLong" 
+              <textarea className="templateTextInputArea" 
                 onChange={(change) => {
                   this.setState({instructions: change.target.value}, () => {
                     this.props.onValuesChange(this.state);
