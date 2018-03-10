@@ -32,18 +32,16 @@ class PinnedView extends Component {
                   horizontal={false}
               >
                 {this.props.pinned.map((pin, index) => {
-                  let selected = (this.props.selectedPin !== null && this.props.selectedPin._id === pin._id) ? 'selected' : '';
+                  let selected = (this.props.selectedPin && this.props.selectedPin._id === pin._id) ? 'selected' : '';
                   let classes = `${selected} couponpinContainer `;
                   return (
                       <div className="singlepin" key={pin._id}>
-
                         <div className={classes} onClick={() => this.props.onSelectPin(pin)}>
                           <div className="pinTitle">{pin.title}</div>
                           <p>{pin.description}</p>
                         </div>
 
                         <div className="pinTools">
-
                           <button className="tool"
                             onClick={() => {
                               Popup.plugins().editPin(pin, (values) => {
@@ -60,7 +58,6 @@ class PinnedView extends Component {
                             }}
                           >Delete
                           </button>
-
                         </div>
                       </div>
                   );

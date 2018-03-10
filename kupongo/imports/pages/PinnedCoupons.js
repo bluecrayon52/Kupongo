@@ -14,7 +14,8 @@ class PinnedCoupons extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pins: this.props.pins
+      pins: this.props.pins,
+      selectedPin: null
     };
 
   }
@@ -30,6 +31,7 @@ class PinnedCoupons extends Component {
             <PinnedView
               pinned={this.state.pins}
               selectedPin={this.state.selectedPin}
+              onSelectPin={this.onSelectPin.bind(this)}
               
             />
             <PinMap
@@ -43,6 +45,12 @@ class PinnedCoupons extends Component {
           </div>
         </div>
     );
+  }
+
+  onSelectPin(pin) {
+    this.setState({
+      selectedPin: pin
+    });
   }
 
   componentWillReceiveProps(newProps) {

@@ -111,7 +111,7 @@ class PinCoupon extends Component {
   // TODO(david): Send request to server to save this.state.pins to mongoDB as a Coupon collection.
   publishCoupons() {
     for (let coupon of this.state.pins) {
-      CouponDB.insert(coupon.toMongoDoc());
+      Meteor.call('insertCoupon', this.state.salesInfo._id, coupon.toMongoDoc());
     }
 
     this.setState({
@@ -176,8 +176,9 @@ class PinCoupon extends Component {
   addTemplate(template) {
     let templates = [...this.state.templates];
 
-    // TODO(david): Placeholder value, update to user company once login portion is done.
-    template._id = CouponTemplateDB.insert(template.toMongoDoc());
+    Meteor.call('insertCouponTemplate', this.state.salesInfo._id, template.toMongoDoc(), (err, result) => {
+      template._id = result;
+    });
     templates.push(template);
 
     this.setState({
@@ -212,7 +213,8 @@ class PinCoupon extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('CouponTemplate');
+  // TOOD(david): Change this to use logged in user's ID once that is ready.
+  Meteor.subscribe('CouponTemplate','safns');
   return {
     templates: CouponTemplateDB.find({
       // TODO(david): Change to look for current user's company name/id

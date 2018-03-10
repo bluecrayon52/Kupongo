@@ -93,22 +93,24 @@ Meteor.methods({
     },
 
     // Insert a new coupon template
-    'insertCouponTemplate'(userID,CouponTemplate){
-      validateSalesUser(userID, CouponTemplate, function(error,message){
+    'insertCouponTemplate'(userID,couponTemplate){
+      let id;
+      validateSalesUser(userID, couponTemplate, function(error,message){
         if(error){
           throw new Meteor.Error(error,message)
         }
         else{
-          CouponTemplateDB.insert(couponTemplate, function(err, result){
+          id = CouponTemplateDB.insert(couponTemplate, function(err, result){
             if(err){
               throw new Meteor.Error(error, result)
             }
             else{
               return true;
             }
-          })
+          });
         }
-      })
+      });
+      return id;
     },
 
     // Delete an existing coupon
