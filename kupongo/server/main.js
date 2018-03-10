@@ -5,7 +5,7 @@ import {CouponTemplateDB} from './../imports/api/CouponTemplate';
 import {CouponDB} from './../imports/api/Coupon';
 import {UserDB} from './../imports/api/UserDoc';
 import {CompanyDB} from './../imports/api/CompanyDoc';
-import {validate} from './../imports/srvr/ServerFunctions';
+import {validateSalesUser} from './../imports/srvr/ServerFunctions';
 
 Meteor.startup(function () {
   // Test coupon
@@ -75,19 +75,37 @@ Meteor.methods({
 
     // Insert a new coupon
     'insertCoupon'(userID, coupon){
-      validate(userID, coupon, function(error, message){
+      validateSalesUser(userID, coupon, function(error, message){
         if(error){
           throw new Meteor.Error(error, message);
         }
         else{
           CouponDB.insert(coupon, function(){
-            // TODO Publish the changes (KEVIN)
-
+            return true
           })
         }
       })
 
     },
+
+    // Insert a new coupon template
+    'insertCouponTemplate'(userID,CouponTemplate){
+      validateSalesUser(userID, CouponTemplate, function(error,message){
+        if(error){
+          throw new Meteor.Error(error,message)
+        }
+        else{
+          CouponTemplateDB.insert(couponTemplate, function(err, result){
+            if(err){
+              throw new Meteor.Error(error, result)
+            }
+            else{
+              return true;
+            }
+          })
+        }
+      })
+    }
 
     // Delete an existing coupon
     'removeCoupon'(userID, coupon){

@@ -7,13 +7,13 @@ import {Meteor} from 'meteor/meteor';
 export const CouponTemplateDB = new Mongo.Collection('CouponTemplate');
 
 if (Meteor.isServer) {
-  Meteor.publish('CouponTemplate', () =>{
-    return CouponTemplateDB.find();
+  Meteor.publish('CouponTemplate', (userID) =>{
+    return CouponTemplateDB.find({"salesID":userID});
   });
 }
 
 class CouponTemplate {
-  constructor(values) {         
+  constructor(values) {
     this._id              = values._id || ''; //  template ID (MongoDB ID to quickly query this information.)
     this.upcCode          = values.upcCode; // redacted until redemption is initiated
     this.qrImage          = values.qrImage; // redacted until redemption is initiated
@@ -44,7 +44,7 @@ class CouponTemplate {
       description:  this.description,
       title:        this.title,
       instructions: this.instructions,
-      productCtg:  this.productCtg,
+      productCtg:   this.productCtg,
       layout:       this.layout
     };
   }
