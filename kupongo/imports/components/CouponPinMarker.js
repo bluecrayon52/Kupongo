@@ -18,13 +18,20 @@ class CouponPinMarker extends Component {
     let icon;
     if (this.props.selectedTemplate === null || this.props.selectedTemplate === undefined) {
       icon = 'assets/coupon_icon.png';
+      // Check if this is being used on "view pinned" page.
+      if (this.props.selectedPin) {
+        icon = this.props.selectedPin._id === this.props.pin._id ? 'assets/highlighted_coupon.png' : 'assets/coupon_icon.png';
+      }
     } else {
       icon = (this.props.pin.templateId === this.props.selectedTemplate._id) ? 'assets/highlighted_coupon.png' : 'assets/coupon_icon.png';
     }
     return (
         <Marker
             onClick={() => {
-              this.setState({clicked: true})
+              this.setState({clicked: true});
+              if (this.props.onSelectPin) {
+                this.props.onSelectPin(this.props.index);
+              }
             }}
             draggable={this.props.markersDraggable}
             onDragEnd={this.updateLocation.bind(this)}

@@ -13,6 +13,15 @@ label {
     padding: 5px
 }
 
-.dateContainer {
-    margin-top: 170px;
+.templateTextInputArea {
+    width: 480px;
+    margin: 4px;
+    padding: 5px;
+    resize: vertical;
+    font-family: sans-serif;
+}
+
+.dateSeparator {
+    height: 280px;
+    font-weight: bold;
 }
