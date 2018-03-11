@@ -37,6 +37,27 @@ Meteor.startup(function () {
       console.log(CouponDB.find({"_id":result}).fetch())
     }
   )
+
+  var couponTemplate = {
+    "salesID":          "j128934h912",
+    "companyName":      "Something Inc.",
+    "upcCode":          "89181891871", // redacted until redemption is initiated
+    "title":            "The fake coupon",
+    "instructions":     "Something Inc.",
+    "productCtg":       "Something Inc.",
+    "layout":           "Something Inc.",
+  }
+  CouponTemplateDB.insert(couponTemplate, function(err, result){
+    if(err){
+      throw new Meteor.Error(error, result)
+    }
+    else{
+      console.log("result = " + result)
+      CouponTemplateDB.find({"_id":couponTemplate._id}, function(err, docs){
+        console.log(docs)
+      })
+    }
+  });
   //console.log(CouponDB.find().fetch())
 });
 
@@ -104,23 +125,21 @@ Meteor.methods({
 
     // Insert a new coupon template
     'insertCouponTemplate'(userID,couponTemplate){
-      let id;
       validateSalesUser(userID, couponTemplate, function(error,message){
         if(error){
           throw new Meteor.Error(error,message)
         }
         else{
-          id = CouponTemplateDB.insert(couponTemplate, function(err, result){
+          CouponTemplateDB.insert(couponTemplate, function(err, result){
             if(err){
               throw new Meteor.Error(error, result)
             }
             else{
-              return true;
+              return couponTemplate._id;
             }
           });
         }
       });
-      return id;
     },
 
     // Delete an existing coupon
