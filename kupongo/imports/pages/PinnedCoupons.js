@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {withTracker} from 'meteor/react-meteor-data';
-import {CouponDB} from '../api/Coupon';
+import Coupon, {CouponDB} from '../api/Coupon';
 import '../css/PinnedCoupons.css';
 import Popup from 'react-popup';
 import PinMap from '../components/PinMap';
@@ -15,6 +15,10 @@ class PinnedCoupons extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      salesInfo: this.props.salesInfo  || {
+        _id: 'safns',
+        companyName: 'Coke'
+      },
       pins: this.props.pins,
       selectedPin: null
     };
@@ -33,11 +37,15 @@ class PinnedCoupons extends Component {
             <PinnedView
               pinned={this.state.pins}
               selectedPin={this.state.selectedPin}
+              removePin={this.removePin.bind(this)}
               onSelectPin={this.onSelectPin.bind(this)}
               
             />
             <PinMap
                 pins={this.state.pins}
+                selectedPin={this.state.selectedPin}
+                onSelectPin={this.selectPinFromMap.bind(this)}
+                onRemovePin={this.removePin.bind(this)}
                 markersDraggable={false}
                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXRaZ7FEf_fTve2WERilxDy00V-JBmiYA"
                 containerElement={<div className="pinnedMapContainer"/>}
@@ -47,6 +55,17 @@ class PinnedCoupons extends Component {
           </div>
         </div>
     );
+  }
+
+  removePin(index) {
+    let pins = [...this.state.pins];
+    Meteor.call('removeCoupon', this.state.salesInfo._id, pins[index]);
+  }
+
+  selectPinFromMap(index) {
+    this.setState({
+      selectedPin: this.state.pins[index]
+    });
   }
 
   onSelectPin(pin) {

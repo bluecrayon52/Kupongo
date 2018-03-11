@@ -146,13 +146,13 @@ Meteor.methods({
 
     // Delete an existing coupon
     'removeCoupon'(userID, coupon){
-      validate(userID, coupon, function(error, message){
+      validateSalesUser(userID, coupon, function(error, message){
         if(error){
           throw new Meteor.Error(error, message);
         }
         else{
           CouponDB.remove(coupon, function(){
-            return true
+            return true;
           })
         }
       })
