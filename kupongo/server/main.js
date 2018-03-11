@@ -58,6 +58,22 @@ Meteor.startup(function () {
       })
     }
   });
+
+  // Add dummy user and company.
+  let companyName = 'Coke';
+  let userId = 'safns';
+  let token = 'token1';
+
+  if (CompanyDB.find({companyName: companyName}).count() === 0){
+    CompanyDB.insert({
+      companyName: companyName,
+      usedTokens: [token]
+    });
+  }
+
+  if (UserDB.find({_id: userId}).count() === 0) {
+    UserDB.insert({_id: userId, companyName: companyName, authenticationToken: token});
+  }
   //console.log(CouponDB.find().fetch())
 });
 
