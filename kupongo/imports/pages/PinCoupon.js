@@ -174,9 +174,11 @@ class PinCoupon extends Component {
   }
 
   addTemplate(template) {
+    console.log('[PinCoupon]: addTemplate, title: '+ template.title);
     let templates = [...this.state.templates];
 
     Meteor.call('insertCouponTemplate', this.state.salesInfo._id, template.toMongoDoc(), (err, result) => {
+      console.log('[PinCoupon]: insertCouponTemplate result: '+result+', err: '+err);
       template._id = result;
     });
     templates.push(template);

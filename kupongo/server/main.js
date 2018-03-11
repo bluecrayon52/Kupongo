@@ -125,8 +125,10 @@ Meteor.methods({
 
     // Insert a new coupon template
     'insertCouponTemplate'(userID,couponTemplate){
+      console.log('[server/main]: insertCouponTemplate, userID: '+userID+', templateTitle: '+couponTemplate.title);
       validateSalesUser(userID, couponTemplate, function(error,message){
         if(error){
+          console.log('[server/main]: insertCouponTemplate, validateSalesUser resulted in an error for userID: '+userID);
           throw new Meteor.Error(error,message)
         }
         else{
