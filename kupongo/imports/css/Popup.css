@@ -12,7 +12,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 1000;
+        z-index: 10000;
         overflow: auto;
         background: rgba(0, 0, 0, .1);
     }
@@ -96,7 +96,7 @@
         border-radius: 5px;
         border: 1px solid #B8C8CC;
         overflow: hidden;
-        z-index: 1001;
+        z-index: 10001;
     }
 
         .mm-popup__box__header {
