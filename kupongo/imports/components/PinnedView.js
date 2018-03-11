@@ -70,6 +70,7 @@ class PinnedView extends Component {
 
 Popup.registerPlugin('editPin', function (pin, callback) {
   let values = {};
+  // TODO(david): Try to change this so that only the values that were changed are updated and not copy the entire object.
   let onValuesChange = (newValues) => {
     values = newValues;
   };

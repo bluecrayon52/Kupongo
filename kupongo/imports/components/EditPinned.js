@@ -12,30 +12,7 @@ class EditPinned extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      _id: this.props._id,
-      salesID: this.props.salesID,
-      templateID: this.props.templateID,
-      companyName: this.companyName,
-      upcCode: this.props.upcCode || '',
-      qrImage: this.props.qrImage || '',
-      couponImage: this.props.couponImage || '',
-      description: this.props.description || '',      // editable
-      title: this.props.title || '',                  // editable
-      instructions: this.props.instructions || '',    // editable
-      productCtg: this.props.productCtg || '',
-      layout: this.props.layout || '',
-      upperLat: this.props.upperLat,
-      lowerLat: this.props.lowerLat,
-      eastLong: this.props.eastLong,
-      westLong: this.props.westLong,
-      quantity: this.props.quantity,                  // editable
-      preViewingDate: this.props.preViewingDate,      // editable
-      collectStartDate: this.props.collectStartDate,  // editable
-      collectEndDate: this.props.collectEndDate,      // editable
-      redeemStartDate: this.props.redeemStartDate,    // editable
-      redeemEndDate: this.props.redeemEndDate         // editable
-    };
+    this.state = {...this.props};
   }
 
   render() {
@@ -73,10 +50,9 @@ class EditPinned extends Component {
 
             <label htmlFor="">
               Instructions <br/>
-              <input type="text"
-                     className="templateTextInput"
+              <textarea className="templateTextInputArea"
                      onChange={(change) => {
-                       this.setState({description: change.target.value}, () => {
+                       this.setState({instructions: change.target.value}, () => {
                          this.props.onValuesChange(this.state);
                        });
                      }}
@@ -85,14 +61,14 @@ class EditPinned extends Component {
 
             <label htmlFor="">
               Quantity <br/>
-              <input type="text"
+              <input type="number"
                      className="templateTextInput"
                      onChange={(change) => {
-                       this.setState({description: change.target.value}, () => {
+                       this.setState({quantity: change.target.value}, () => {
                          this.props.onValuesChange(this.state);
                        });
                      }}
-                     value={this.state.instructions}/>
+                     value={this.state.quantity}/>
             </label>
 
             {/* Date picker needs a lot of room so this serves to create space for that component. */}
@@ -105,7 +81,7 @@ class EditPinned extends Component {
               <DatePicker
                   minDate={new Date()}
                   onChange={(date) => {
-                    this.setState({expirationDate: date}, () => {
+                    this.setState({preViewingDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
@@ -117,7 +93,7 @@ class EditPinned extends Component {
               <DatePicker
                   minDate={new Date()}
                   onChange={(date) => {
-                    this.setState({expirationDate: date}, () => {
+                    this.setState({collectStartDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
@@ -129,7 +105,7 @@ class EditPinned extends Component {
               <DatePicker
                   minDate={new Date()}
                   onChange={(date) => {
-                    this.setState({expirationDate: date}, () => {
+                    this.setState({collectEndDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
@@ -141,7 +117,7 @@ class EditPinned extends Component {
               <DatePicker
                   minDate={new Date()}
                   onChange={(date) => {
-                    this.setState({expirationDate: date}, () => {
+                    this.setState({redeemStartDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
@@ -153,7 +129,7 @@ class EditPinned extends Component {
               <DatePicker
                   minDate={new Date()}
                   onChange={(date) => {
-                    this.setState({expirationDate: date}, () => {
+                    this.setState({redeemEndDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
