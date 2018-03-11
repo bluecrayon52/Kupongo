@@ -19,7 +19,7 @@ class PinnedCoupons extends Component {
         _id: 'safns',
         companyName: 'Coke'
       },
-      pins: this.props.pins,
+      pins: this.props.pins || [],
       selectedPin: null
     };
 

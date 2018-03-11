@@ -26,6 +26,10 @@ Meteor.startup(function () {
       "lng":              -79.809468,
       "lat":              36.069827,
       "layout":           "DW91n2ne",
+      "location": {
+        "type": "Point",
+        "coordinates": [-79.809468, 36.069827]
+      },
       "upperLat":         -35.12380,
       "lowerLat":         -35.11111,
       "eastLong":         54.111232,
