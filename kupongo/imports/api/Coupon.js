@@ -16,16 +16,17 @@ class Coupon {
   constructor(values) {
     // attributes specific to a coupon instance
     this._id              = values._id || ''; // Coupon ID (MongoDB ID to quickly query this information).
+    //  [TODO]: calculate upper and lower lat and long in constructor in stead of passing them in. 
     this.upperLat         = values.upperLat;
     this.lowerLat         = values.lowerLat;
     this.eastLong         = values.eastLong;
     this.westLong         = values.westLong;
     this.quantity         = values.quantity; // default 1
-    this.preViewingDate   = values.preViewingDate || new Date();  // default date of pinning
-    this.collectStartDate = values.collectStartDate || new Date(); // default date of pinning
-    this.collectEndDate   = values.collectEndDate || new Date();  // default collectStartDate + 24 hrs
-    this.redeemStartDate  = values.redeemStartDate || new Date(); // default date of pinning
-    this.redeemEndDate    = values.redeemEndDate || new Date(); // default redeemStartDate + 30 days
+    this.preViewingDate   = values.preViewingDate || new Date();    // default date of pinning
+    this.collectStartDate = values.collectStartDate || new Date();  // default date of pinning
+    this.collectEndDate   = values.collectEndDate || new Date();    // default collectStartDate + 24 hrs
+    this.redeemStartDate  = values.redeemStartDate || new Date();   // default date of pinning
+    this.redeemEndDate    = values.redeemEndDate || new Date();     // default redeemStartDate + 30 days
 
     // UI attributes.
     // TODO(david): Change this so that we use upperLat and lowerLat instead.

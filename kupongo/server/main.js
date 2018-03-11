@@ -12,14 +12,19 @@ Meteor.startup(function () {
   // Test coupon
   CouponDB.insert(
     {
-      "salesID":          "j128934h912",
+      // "salesID":          "j128934h912",
+      "salesID":          "safns",
       "templateId":       "s90ajr897123h79eb1rn",
-      "companyName":      "Something Inc.",
+      // "companyName":      "Something Inc.",
+      "companyName":      "Coke",
       "upcCode":          "89181891871", // redacted until redemption is initiated
       "description":      "A fake coupon for nothing",
       "title":            "The fake coupon",
       //"instructions":     "Redeem me",
       //"productCtg":      {"Jewelery",},
+      // [TODO] pass just lat and long to Coupon constructor and calculate uppers and lowers internally. 
+      "lng":              -79.809468,
+      "lat":              36.069827,
       "layout":           "DW91n2ne",
       "upperLat":         -35.12380,
       "lowerLat":         -35.11111,
