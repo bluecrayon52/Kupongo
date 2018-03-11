@@ -18,6 +18,7 @@ import {CompanyDB} from './../api/CompanyDoc';
 								2) Error Description - A string detailing what went wrong
 */
 function validateSalesUser(userID, coupon, callback){
+	console.log('[ServerFunctions]: validateSalesUser, title: '+ coupon.title);
 	// Get the company document
 	const companyDoc = CompanyDB.findOne({'companyName': coupon.companyName});
 	if (companyDoc) {

@@ -98,6 +98,7 @@ Popup.registerPlugin('newTemplate', function (callback) {
         text: 'Save Template',
         className: 'saveTemplateButton',
         action: () => {
+          console.log('[TemplateView]: newTemplate saveTemplateButton, title: '+ values.title);
           callback(values);
           Popup.close();
         }

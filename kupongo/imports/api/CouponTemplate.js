@@ -14,6 +14,7 @@ if (Meteor.isServer) {
 
 class CouponTemplate {
   constructor(values) {
+    console.log('[CouponTemplate]: constructor values: '+values.title);
     this._id              = values._id || ''; //  template ID (MongoDB ID to quickly query this information.)
     this.upcCode          = values.upcCode; // redacted until redemption is initiated
     this.qrImage          = values.qrImage; // redacted until redemption is initiated
