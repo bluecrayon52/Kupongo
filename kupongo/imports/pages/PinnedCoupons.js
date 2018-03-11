@@ -6,6 +6,7 @@ import {Meteor} from 'meteor/meteor';
 import {withTracker} from 'meteor/react-meteor-data';
 import {CouponDB} from '../api/Coupon';
 import '../css/PinnedCoupons.css';
+import Popup from 'react-popup';
 import PinMap from '../components/PinMap';
 import Header from '../components/Header';
 import PinnedView from '../components/PinnedView';
@@ -24,6 +25,7 @@ class PinnedCoupons extends Component {
     return (
         <div>
           <Header/>
+          <Popup/>
           <h1>View pinned coupons</h1>
           <p>Below are your currently pinned coupons.</p>
 
