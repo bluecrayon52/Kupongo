@@ -38,7 +38,7 @@ class PinnedView extends Component {
                   <div className="singlepin" key={pin._id}>
                     <div className={classes} onClick={() => this.props.onSelectPin(pin)}>
                       <div className="pinTitle">{pin.title}</div>
-                      <p>{pin.description}</p>
+                      <p className="pinDescription">{pin.description}</p>
                     </div>
 
                     <div className="pinTools">

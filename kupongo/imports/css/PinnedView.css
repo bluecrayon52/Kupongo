@@ -40,7 +40,7 @@
 
 .tool {
     display: inline-block;
-    margin: 5px;
+    margin: 8px;
 }
 
 .instanceTitle {
@@ -65,12 +65,13 @@
 
 .couponpinContainer {
     font-family: 'Open Sans', sans-serif;
-    background-color: #f9f9f9;
     width: 150px;
     height: 150px;
     display: inline-block;
     border-radius: 4px;
-    border: 1px solid #bbbbbb;
+    background-color: #fcfcfc;
+    box-shadow: 0 2px 5px #d2d2d2;
+    border: 1px solid #d9d9d9;
 }
 
 .pinTitle {
@@ -83,5 +84,10 @@
     border-bottom: 4px solid #aee3b2;
 }
 
+.pinDescription {
+    color: #575757;
+}
 
-
+.couponpinContainer:hover {
+    background-color: #ecf5f2;
+}

@@ -39,7 +39,7 @@ class TemplatesView extends Component {
 
                   <div className={classes}  onClick={() => this.props.onSelectTemplate(template)}>
                     <div className="templateTitle">{template.title}</div>
-                    <p>{template.description}</p>
+                    <p className="templateDescription">{template.description}</p>
                   </div>
 
                   <div className="templateTools">
