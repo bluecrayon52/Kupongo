@@ -86,7 +86,6 @@ Meteor.startup(function () {
   //console.log(CouponDB.find().fetch())
 });
 
-//TODO(Preston) add new user information to MongoDB and verify information of returning users
 Meteor.methods({
 
     //Register new user
@@ -102,7 +101,6 @@ Meteor.methods({
       if(UserDB.find({'email': email}).count() > 0) {
         //Tell user email already has an account
         throw new Meteor.Error('Account taken','This email has already been assigned to an existing account.');
-        console.log("Error = " + error);
       } else {
         //User is new, so insert information into databse
         UserDB.insert({email: email, companyName: companyName, password: password, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber});
@@ -115,22 +113,30 @@ Meteor.methods({
         check(email, String);
         check(password, String);
 
-        if(UserDB.find({'email': email})) {
+        /*
+        //Bus has to do with this right here. Error: Match failed [400] 
+                                                    Exception in callback of async function: Error: Match error: Failed Match.OneOf, Match.Maybe or Match.Optional validation
+        var hashedPassword;
+        UserDB.find({'email': email}, function(error, result){
+          hashedPassword = result.password;
+        });
+
+        if(UserDB.find({'email': email}).count() > 0) {
           //Compare password to hashed password
-          bcrypt.compare(password, hash, function(err, res) {
+          bcrypt.compare(password, hashedPassword, function(err, res) {
             //If they match, login user otherwise show error
             if(res == true) {
               //Login user
               console.log("Login complete.");
             } else {
               //Give error
+              throw new Meteor.Error('Incorrect information','You have entered a wrong password.');
             }
           });
         } else {
           //Tell user entered information is incorrect
-          throw new Meteor.Error('Incorrect information','You have enetered a wrong email or password.');
-          console.log("Error = " + error);
-        }
+          throw new Meteor.Error('Incorrect information','You have entered a wrong email.');
+        }*/
     },
 
     // Insert a new coupon
