@@ -71,25 +71,72 @@ class Register extends Component {
         const phoneNumber = ReactDOM.findDOMNode(this.refs.phoneNumberInput).value.trim();
         const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
 
-        //Hash password
-        const saltRounds = 10;
-        bcrypt.hash(password, saltRounds, function(err, hash) {
-            //Add user information and hashed password to database
-            Meteor.call('register', email, companyName, hash, firstName, lastName, phoneNumber);
-          });
+        const concatCompanyName = companyName.replace(/\s/g, '');
 
-        // Clear form
-        ReactDOM.findDOMNode(this.refs.emailInput).value = '';
-        ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
-        ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
-        ReactDOM.findDOMNode(this.refs.firstNameInput).value = '';
-        ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
-        ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
+        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        const minLengthPassword = 12;
+        const lengthPhoneNumber = 10;
 
-        console.log("register form submitted");
+        //If any field is empty throw an error
+        if (email == '' || companyName == '' || firstName == '' || lastName == '' || phoneNumber == '' || password == '') {
+            //Throw error
+            console.log("One or more fields are blank.");
+            alert("Please fill in the blanks.");
+            // Clear form
+        } else {
+            //Check if password or phonenumber are minimum length
+            if (password.length < minLengthPassword || phoneNumber.length !== lengthPhoneNumber) {
+                //Throw error
+                console.log("Pasword or phonenumber are not minimum length.");
+                alert("Password must be AT LEAST 12 character long and phonenumber must be EXACTLY 10 characters long.");
+                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+                ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
+            } else {
+                //Check if password has at lest one special character and one special number
+                if (!regularExpression.test(password)) {
+                    //Throw error
+                    console.log("Password needs one special character and one upper case.");
+                    alert("Passwords MUST contain AT LEAST one special character and one upper case character.");
+                    ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+                } else {
+                    if (!(email.indexOf('@') >= 0)) {
+                        //Email is not email address
+                        console.log("Incorrect email entered.");
+                        alert("Incorrect email address entered.");
+                        ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                    } else {
+                        if (!(email.indexOf(concatCompanyName) >= 0)) {
+                            //Email and company name do not match
+                            console.log("Company name and company email do not match.");
+                            alert("Company email and company name do not match.");
+                            ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                            ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
+                        } else {
+                            //Everything passes so move forward
+                            //Hash password
+                            const saltRounds = 10;
+                            bcrypt.hash(password, saltRounds, function (err, hash) {
+                                //Add user information and hashed password to database
+                                Meteor.call('register', email, companyName, hash, firstName, lastName, phoneNumber);
+                            });
 
-        // Redirect
-        this.props.history.push('/home')
+                            // Clear form
+                            ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                            ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
+                            ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+                            ReactDOM.findDOMNode(this.refs.firstNameInput).value = '';
+                            ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
+                            ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
+
+                            console.log("register form submitted");
+
+                            // Redirect
+                            this.props.history.push('/home');
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
