@@ -6,6 +6,8 @@ import {CouponDB} from './../imports/api/Coupon';
 import {UserDB} from './../imports/api/UserDoc';
 import {CompanyDB} from './../imports/api/CompanyDoc';
 import {validateSalesUser} from './../imports/srvr/ServerFunctions';
+import {addNewUser} from './../imports/srvr/ServerFunctions';
+import {validateUser} from './../imports/srvr/ServerFunctions';
 import bcrypt from 'bcryptjs';
 
 Meteor.startup(function () {
@@ -91,53 +93,24 @@ Meteor.methods({
 
     //Register new user
     'register'(email, companyName, password, firstName, lastName, phoneNumber) {
-
-      check(email, String);
-      check(companyName, String);
-      check(password, String);
-      check(firstName, String);
-      check(lastName, String);
-      check(phoneNumber, String);
-
-      if(UserDB.find({'email': email}).count() > 0) {
-        //Tell user email already has an account
-        throw new Meteor.Error('Account taken','This email has already been assigned to an existing account.');
-      } else {
-        //User is new, so insert information into databse
-        UserDB.insert({email: email, companyName: companyName, password: password, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber});
-      }
+      addNewUser(email, companyName, password, firstName, lastName, phoneNumber, function(error, message){
+        if(error) {
+          throw new Meteor.Error(error, message);
+        } else {
+          return true;
+        }
+      });
   },
 
     //Login user
     'login'(email, password) {
-
-        check(email, String);
-        check(password, String);
-
-        /*
-        //Bus has to do with this right here. Error: Match failed [400] 
-                                                    Exception in callback of async function: Error: Match error: Failed Match.OneOf, Match.Maybe or Match.Optional validation
-        var hashedPassword;
-        UserDB.find({'email': email}, function(error, result){
-          hashedPassword = result.password;
-        });
-
-        if(UserDB.find({'email': email}).count() > 0) {
-          //Compare password to hashed password
-          bcrypt.compare(password, hashedPassword, function(err, res) {
-            //If they match, login user otherwise show error
-            if(res == true) {
-              //Login user
-              console.log("Login complete.");
-            } else {
-              //Give error
-              throw new Meteor.Error('Incorrect information','You have entered a wrong password.');
-            }
-          });
+      validateUser(email, password, function(error, message){
+        if(error) {
+          throw new Meteor.Error(error, message);
         } else {
-          //Tell user entered information is incorrect
-          throw new Meteor.Error('Incorrect information','You have entered a wrong email.');
-        }*/
+          return true;
+        }
+      });
     },
 
     // Insert a new coupon

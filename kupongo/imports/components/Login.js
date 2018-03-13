@@ -7,10 +7,6 @@ class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            email: '',
-            password: ''
-        }
     }
 
     render() {
@@ -49,32 +45,29 @@ class Login extends Component {
         const email = ReactDOM.findDOMNode(this.refs.emailInput).value.trim();
         const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
 
-        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{3,}$/;
         const minLengthPassword = 12;
 
         //Test if password and email conditions are met
-        /*if (!regularExpression.test(password) || !(email.indexOf('@') >= 0) || (password.length < minLengthPassword)) {
+        if (!regularExpression.test(password) || !(email.indexOf('@') >= 0) || (password.length < minLengthPassword)) {
             //Throw error
             console.log("incorrect password or email.");
             alert("Incorrect password or email entered.");
         } else {
-            //BUG STARTS HERE
             //Check if user is already registered or not
-            Meteor.call('login', email, password, function (error, result) {
-                if (error) {
-                    alert(error);
-                } else {
-                    // Clear form
-                    ReactDOM.findDOMNode(this.refs.emailInput).value = '';
-                    ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+            if(Meteor.call('login', email, password) == true) {
+                // Clear form
+                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
 
-                    console.log("login form submitted");
-                    this.props.history.push('/home')
-                }
-            });
-        }*/
-        //Route to home page until bug is fixed
-        this.props.history.push('/home');
+                console.log("login form submitted");
+                this.props.history.push('/home')
+            } else {
+                alert("Incorrect information entered.");
+                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+            }
+        }
     }
 
     //Register button clicked

@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import {CouponDB} from './../api/Coupon';
 import {UserDB} from './../api/UserDoc';
 import {CompanyDB} from './../api/CompanyDoc';
+import bcrypt from 'bcryptjs';
 
 /*
 	Title: 				validateSalesUser
@@ -132,3 +133,52 @@ function getRedactedCoupons(userID, longitude, latitude, callback){
 	}
 }
 export {getRedactedCoupons};
+
+/*
+	Title: 			addNewUser
+	Description: 	Checks to see if account is already active.
+	Arguments:		email - Email of the user
+					companyName - Name of company for user
+					password - Password for user
+					firstName - First name of user
+					lastName - Last name of user
+					phoneNumber - PhoneNumber of user
+	Returns:		Callback if account is already taken, otherwise insert new user
+					data into database
+*/
+function addNewUser(email, companyName, password, firstName, lastName, phoneNumber) {
+	if (UserDB.find({ 'email': email }).count() > 0) {
+		//Tell user email already has an account
+		callback('Account taken: This email has already been assigned to an existing account.');
+	} else {
+		//User is new, so insert information into databse
+		const saltRounds = 10;
+		bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
+			UserDB.insert({ email: email, companyName: companyName, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber });
+		}));
+		return true;
+	}
+}
+export {addNewUser};
+
+/*
+	Title: 			validateUser
+	Description: 	Checks to see if account is already active and entered information is correct.
+	Arguments:		email - Email of the user
+					password - Password for user
+	Returns:		Callback if information is entered incorrectly, otherwise continue with
+					login
+*/
+function validateUser(email, password){
+	var hashedPassword;
+	hashedPassword = UserDB.findOne({'email': email}).password;
+	
+	bcrypt.compare(password, hashedPassword, function(err, res) {
+		if(res == true){
+			return true;
+		} else {
+			callback("Incorrect informatiom: Wrong email or password entered.");
+		}
+	});
+}
+export {validateUser};

@@ -113,25 +113,29 @@ class Register extends Component {
                             ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
                         } else {
                             //Everything passes so move forward
-                            //Hash password
-                            const saltRounds = 10;
-                            bcrypt.hash(password, saltRounds, function (err, hash) {
-                                //Add user information and hashed password to database
-                                Meteor.call('register', email, companyName, hash, firstName, lastName, phoneNumber);
-                            });
+                            //Add user information and hashed password to database
+                            if(Meteor.call('register', email, companyName, password, firstName, lastName, phoneNumber) == true) {
+                                // Clear form
+                                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.firstNameInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
 
-                            // Clear form
-                            ReactDOM.findDOMNode(this.refs.emailInput).value = '';
-                            ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
-                            ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
-                            ReactDOM.findDOMNode(this.refs.firstNameInput).value = '';
-                            ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
-                            ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
+                                console.log("register form submitted");
 
-                            console.log("register form submitted");
-
-                            // Redirect
-                            this.props.history.push('/home');
+                                // Redirect
+                                this.props.history.push('/home');
+                            } else {
+                                alert("Account is already active.");
+                                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.firstNameInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
+                                ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
+                            }
                         }
                     }
                 }
