@@ -7,8 +7,15 @@ import { SimpleSchema } from 'simpl-schema';
 import {getRedactedCoupons} from '../srvr/ServerFunctions';
 
 if (Meteor.isServer) {
-  Meteor.publish('Coupon', () =>{
-    return CouponDB.find();
+  Meteor.publish('Coupon', (UserID) =>{
+    getRedactedCoupons(userID, null, null, function(err, result){
+      if(err){
+        throw new Meteor.Error(err, result)
+      }
+      else{
+        return result;
+      }
+    })
   });
 }
 
@@ -16,7 +23,7 @@ class Coupon {
   constructor(values) {
     // attributes specific to a coupon instance
     this._id              = values._id || ''; // Coupon ID (MongoDB ID to quickly query this information).
-    //  [TODO]: calculate upper and lower lat and long in constructor in stead of passing them in. 
+    //  [TODO]: calculate upper and lower lat and long in constructor in stead of passing them in.
     this.upperLat         = values.upperLat;
     this.lowerLat         = values.lowerLat;
     this.eastLong         = values.eastLong;

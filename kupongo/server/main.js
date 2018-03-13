@@ -24,7 +24,7 @@ Meteor.startup(function () {
       "title":            "The fake coupon",
       //"instructions":     "Redeem me",
       //"productCtg":      {"Jewelery",},
-      // [TODO] pass just lat and long to Coupon constructor and calculate uppers and lowers internally. 
+      // [TODO] pass just lat and long to Coupon constructor and calculate uppers and lowers internally.
       "lng":              -79.809468,
       "lat":              36.069827,
       "layout":           "DW91n2ne",
@@ -182,5 +182,30 @@ Meteor.methods({
         }
       })
     },
+
+    // Updates the user's current location so the subscription will give nearby items
+    'updateCurrentLocation'(userID, lat, lng){
+      // TODO Create a security system so a user cannot change someone else's location
+      UserDB.update({'_id': userID}, {$set: {'lastLattitude': lat, 'lastLongitude': lng}}, function(err, res){
+        if(err){
+          return err;
+        }
+        else{
+          return null;
+        }
+      })
+    },
+
+    // Gets coupons at a specific location for a forced refresh. Returns a JSON array of docs
+    'getCouponsAt'(userID, lat, lng){
+      getRedactedCoupons(userID, lat, lng, function(err, result){
+        if(err){
+          throw new Meteor.Error(err, result)
+        }
+        else{
+          return result;
+        }
+      })
+    }
 
 });
