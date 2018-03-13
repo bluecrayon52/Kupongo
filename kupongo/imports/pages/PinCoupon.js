@@ -67,8 +67,6 @@ class PinCoupon extends Component {
                   let unpublishedPins = this.state.pins;
                   console.log('[PinCoupon]: onClick Publish pins unpublishedPins[0]: '+unpublishedPins[0].title);
                   Popup.plugins().newCoupons(unpublishedPins, (pinsToPublish) => {
-                    // values.salesInfo = this.state.salesInfo;
-                    // console.log(values.salesInfo);
                     console.log('[PinCoupon]: onClick Publish pins newCoupon callback pinsToPublish[0].title: '+pinsToPublish[0].title);
                     this.state.pins = pinsToPublish;
                     console.log('[PinCoupon]: onClick Publish pins newCoupon callback this.state.pins[0].title: '+this.state.pins[0].title);
@@ -227,11 +225,12 @@ class PinCoupon extends Component {
     let onValuesChange = (newValues) => {
       unPublishedPins = newValues;
     };
-    
+
     this.create({
       title: 'Publish Coupons',
       content: <PublishPins
           onValuesChange={onValuesChange}
+          unPublishedPins={unPublishedPins}
       />,
       buttons: {
         left: ['cancel'],
