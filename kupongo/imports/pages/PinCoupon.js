@@ -12,6 +12,7 @@ import CouponTemplate, {CouponTemplateDB} from '../api/CouponTemplate';
 import {CouponDB} from '../api/Coupon';
 import Popup from 'react-popup';
 import Header from '../components/Header';
+import PublishPins from '../components/PublishPins';
 
 class PinCoupon extends Component {
 
@@ -61,7 +62,19 @@ class PinCoupon extends Component {
           </div>
           <div className="mapTools">
             <button
-                onClick={this.publishCoupons.bind(this)}
+                onClick={() => {
+                  console.log('[PinCoupon]: onClick Publish pin this.state.pins[0].title: '+this.state.pins[0].title);
+                  let unpublishedPins = this.state.pins;
+                  console.log('[PinCoupon]: onClick Publish pins unpublishedPins[0]: '+unpublishedPins[0].title);
+                  Popup.plugins().newCoupons(unpublishedPins, (pinsToPublish) => {
+                    // values.salesInfo = this.state.salesInfo;
+                    // console.log(values.salesInfo);
+                    console.log('[PinCoupon]: onClick Publish pins newCoupon callback pinsToPublish[0].title: '+pinsToPublish[0].title);
+                    this.state.pins = pinsToPublish;
+                    console.log('[PinCoupon]: onClick Publish pins newCoupon callback this.state.pins[0].title: '+this.state.pins[0].title);
+                    this.publishCoupons(); 
+                  });
+                }}
             >Publish pins
             </button>
           </div>
@@ -110,6 +123,7 @@ class PinCoupon extends Component {
 
   // TODO(david): Send request to server to save this.state.pins to mongoDB as a Coupon collection.
   publishCoupons() {
+    console.log('[PinCoupon]: publishCoupons');
     for (let coupon of this.state.pins) {
       console.log('[PinCoupon]: publishCoupons calling insertCoupon for coupon.title: ' +coupon.title);
       Meteor.call('insertCoupon', this.state.salesInfo._id, coupon.toMongoDoc());
@@ -204,8 +218,35 @@ class PinCoupon extends Component {
       pins: pins
     });
   }
-
 }
+
+  // === Popup prompts =====
+  Popup.registerPlugin('newCoupons', function (unPublishedPins, callback) {
+   console.log('[PinCoupon]: Popup newCoupons unPublishedPins[0].title: '+unPublishedPins[0].title);
+
+    let onValuesChange = (newValues) => {
+      unPublishedPins = newValues;
+    };
+    
+    this.create({
+      title: 'Publish Coupons',
+      content: <PublishPins
+          onValuesChange={onValuesChange}
+      />,
+      buttons: {
+        left: ['cancel'],
+        right: [{
+          text: 'Save Coupons',
+          className: 'saveCouponsButton',
+          action: () => {
+            console.log('[PinCoupon]: Popup newCoupons saveCouponsButton');
+            callback(unPublishedPins);
+            Popup.close();
+          }
+        }]
+      }
+    });
+  });
 
 export default withTracker(() => {
   // TOOD(david): Change this to use logged in user's ID once that is ready.

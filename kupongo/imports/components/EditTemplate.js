@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import "../css/EditTemplate.css";
-import DatePicker from 'react-date-picker';
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import ScrollArea from 'react-scrollbar';

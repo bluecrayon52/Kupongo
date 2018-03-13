@@ -4,7 +4,6 @@
 
 import React, {Component} from 'react';
 import "../css/EditPinned.css";
-import DatePicker from 'react-date-picker';
 import ScrollArea from 'react-scrollbar';
 import DateTimePicker from 'react-datetime-picker'
 
