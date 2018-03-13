@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import "../css/EditPinned.css";
 import DatePicker from 'react-date-picker';
 import ScrollArea from 'react-scrollbar';
-
+import DateTimePicker from 'react-datetime-picker'
 
 class EditPinned extends Component {
   constructor(props) {
@@ -33,19 +33,18 @@ class EditPinned extends Component {
                          this.props.onValuesChange(this.state);
                        });
                      }}
-                     value={this.state.title}/>
+              value={this.state.title}/>
             </label>
 
             <label htmlFor="">
               Description <br/>
-              <input type="text"
-                     className="templateTextInput"
+              <textarea className="templateTextInputArea"
                      onChange={(change) => {
                        this.setState({description: change.target.value}, () => {
                          this.props.onValuesChange(this.state);
                        });
                      }}
-                     value={this.state.description}/>
+              value={this.state.description}/>
             </label>
 
             <label htmlFor="">
@@ -56,7 +55,7 @@ class EditPinned extends Component {
                          this.props.onValuesChange(this.state);
                        });
                      }}
-                     value={this.state.instructions}/>
+              value={this.state.instructions}/>
             </label>
 
             <label htmlFor="">
@@ -68,75 +67,76 @@ class EditPinned extends Component {
                          this.props.onValuesChange(this.state);
                        });
                      }}
-                     value={this.state.quantity}/>
+              value={this.state.quantity}/>
             </label>
-
-            {/* Date picker needs a lot of room so this serves to create space for that component. */}
-            <div className="dateSeparator">
-              Select dates below:
-            </div>
-
+            
+            <br/>
             <div className="dateContainer">
-              <p>Preview Date:</p>
-              <DatePicker
+              Preview Date:<br/>
+              <DateTimePicker className="dateTimePicker5"
                   minDate={new Date()}
                   onChange={(date) => {
                     this.setState({preViewingDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
-                  value={this.state.preViewingDate}
-              />
+              value={this.state.preViewingDate}/>
             </div>
+
+            <br/>
             <div className="dateContainer">
-              <p>Collection Start Date:</p>
-              <DatePicker
+              Collection Start Date:<br/>
+              <DateTimePicker className="dateTimePicker4"
                   minDate={new Date()}
                   onChange={(date) => {
                     this.setState({collectStartDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
-                  value={this.state.collectStartDate}
-              />
+              value={this.state.collectStartDate}/>
             </div>
+
+            <br/>
             <div className="dateContainer">
-              <p>Collection End Date:</p>
-              <DatePicker
+              Collection End Date:<br/>
+              <DateTimePicker className="dateTimePicker3"
                   minDate={new Date()}
                   onChange={(date) => {
                     this.setState({collectEndDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
-                  value={this.state.collectEndDate}
-              />
+              value={this.state.collectEndDate}/>
             </div>
+
+            <br/>
             <div className="dateContainer">
-              <p>Redemption Start Date:</p>
-              <DatePicker
+              Redemption Start Date:<br/>
+              <DateTimePicker className="dateTimePicker2"
                   minDate={new Date()}
                   onChange={(date) => {
                     this.setState({redeemStartDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
-                  value={this.state.redeemStartDate}
-              />
+              value={this.state.redeemStartDate}/>
             </div>
+
+            <br/>
             <div className="dateContainer">
-              <p>Redemption End Date:</p>
-              <DatePicker
+              Redemption End Date:<br/>
+              <DateTimePicker className="dateTimePicker"
                   minDate={new Date()}
+                  dropUp
                   onChange={(date) => {
                     this.setState({redeemEndDate: date}, () => {
                       this.props.onValuesChange(this.state);
                     });
                   }}
-                  value={this.state.redeemEndDate}
-              />
+              value={this.state.redeemEndDate}/>
             </div>
-
+            
+            <div class='dateSeparator'></div> 
           </ScrollArea>
         </div>
     );

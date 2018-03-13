@@ -12,6 +12,7 @@
     "meteor-node-stubs": "^0.3.2",
     "react": "^16.2.0",
     "react-date-picker": "^6.9.0",
+    "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",
     "react-dropdown": "^1.4.0",
     "react-flip-move": "^3.0.1",
