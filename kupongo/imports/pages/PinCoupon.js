@@ -111,6 +111,7 @@ class PinCoupon extends Component {
   // TODO(david): Send request to server to save this.state.pins to mongoDB as a Coupon collection.
   publishCoupons() {
     for (let coupon of this.state.pins) {
+      console.log('[PinCoupon]: publishCoupons calling insertCoupon for coupon.title: ' +coupon.title);
       Meteor.call('insertCoupon', this.state.salesInfo._id, coupon.toMongoDoc());
     }
 
@@ -151,25 +152,17 @@ class PinCoupon extends Component {
     });
   }
 
+  // remove a coupon template independently from pinned coupons
   removeTemplate(index) {
     let templates = [...this.state.templates];
-    let pins = [...this.state.pins];
-    let isSelected = false;
-    if (this.state.selectedTemplate !== null)
-      isSelected = this.state.selectedTemplate._id === templates[index]._id;
-    pins = pins.filter((item) => item.templateId !== templates[index]._id);
+    console.log('[PinCoupon]: removeTemplate, templates[index].title: '+templates[index].title);
+    Meteor.call('removeCouponTemplate', this.state.salesInfo._id, templates[index]);
 
-    CouponTemplateDB.remove({
-      _id: templates[index]._id
-    });
-
+    // remove the template from the client side array
     templates.splice(index, 1);
-
 
     this.setState({
       templates: templates,
-      selectedTemplate: isSelected ? null : this.state.selectedTemplate,
-      pins: pins
     });
   }
 

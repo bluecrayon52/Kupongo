@@ -48,14 +48,15 @@ Meteor.startup(function () {
   )
 
   var couponTemplate = {
-    "salesID":          "j128934h912",
-    "companyName":      "Something Inc.",
+    "salesID":          "safns",
+    "companyName":      "Coke",
     "upcCode":          "89181891871", // redacted until redemption is initiated
     "title":            "The fake coupon",
-    "instructions":     "Something Inc.",
-    "productCtg":       "Something Inc.",
-    "layout":           "Something Inc.",
+    "instructions":     "These are the Instructions",
+    "productCtg":       "Electronics",
+    "layout":           "testLayout",
   }
+
   CouponTemplateDB.insert(couponTemplate, function(err, result){
     if(err){
       throw new Meteor.Error(error, result)
@@ -135,8 +136,10 @@ Meteor.methods({
 
     // Insert a new coupon
     'insertCoupon'(userID, coupon){
+      console.log('[server/main]: insertCoupon, userID: '+userID+', coupon.title: '+coupon.title);
       validateSalesUser(userID, coupon, function(error, message){
         if(error){
+          console.log('[server/main]: insertCoupon, validateSalesUser resulted in an error for userID: '+userID);
           throw new Meteor.Error(error, message);
         }
         else{
@@ -150,7 +153,7 @@ Meteor.methods({
 
     // Insert a new coupon template
     'insertCouponTemplate'(userID,couponTemplate){
-      console.log('[server/main]: insertCouponTemplate, userID: '+userID+', templateTitle: '+couponTemplate.title);
+      console.log('[server/main]: insertCouponTemplate, userID: '+userID+', couponTemplate.title: '+couponTemplate.title);
       validateSalesUser(userID, couponTemplate, function(error,message){
         if(error){
           console.log('[server/main]: insertCouponTemplate, validateSalesUser resulted in an error for userID: '+userID);
@@ -171,8 +174,10 @@ Meteor.methods({
 
     // Delete an existing coupon
     'removeCoupon'(userID, coupon){
+      console.log('[server/main]: removeCoupon, userID: '+userID+', coupon.title: ' + coupon.title);
       validateSalesUser(userID, coupon, function(error, message){
         if(error){
+          console.log('[server/main]: removeCoupon, validateSalesUser resulted in an error for userID: '+userID);
           throw new Meteor.Error(error, message);
         }
         else{
@@ -183,8 +188,20 @@ Meteor.methods({
       })
     },
 
-
-
-
+    // Delete an existing coupon template
+    'removeCouponTemplate'(userID, couponTemplate){
+      console.log('[server/main]: removeCouponTemplate, userID: '+userID+', couponTemplate.title: '+couponTemplate.tile);
+      validateSalesUser(userID, couponTemplate, function(error, message){
+        if(error){
+          console.log('[server/main]: removeCouponTemplate, validateSalesUser resulted in an error for userID: '+userID);
+          throw new Meteor.Error(error, message);
+        }
+        else{
+          CouponTemplateDB.remove(couponTemplate, function(){
+            return true;
+          })
+        }
+      })
+    },
 
 });

@@ -59,6 +59,7 @@ class PinnedCoupons extends Component {
 
   removePin(index) {
     let pins = [...this.state.pins];
+    console.log('[PinnedCoupons]: removePin, pins[index].title: '+pins[index].title);
     Meteor.call('removeCoupon', this.state.salesInfo._id, pins[index]);
   }
 
@@ -87,7 +88,7 @@ export default withTracker(() => {
   return {
     pins: CouponDB.find({
       // TODO(david): Change to look for current user's company name/id
-      companyName: 'Something Inc.'
+      companyName: 'Coke'
     }).fetch()
   };
 })(PinnedCoupons);
