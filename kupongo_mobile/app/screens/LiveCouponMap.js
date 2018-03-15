@@ -1,0 +1,231 @@
+/**
+ * Screen where user can see live map of the coupons.
+ */
+
+import React, {Component} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+import MapView from 'react-native-maps';
+
+import Meteor, {createContainer} from 'react-native-meteor';
+
+
+// TODO(david): Move to a utils file and import this instead.
+function distance(lat1, lon1, lat2, lon2) {
+  let p = 0.017453292519943295;
+  let c = Math.cos;
+  let a = 0.5 -
+      c((lat2 - lat1) * p) / 2 +
+      c(lat1 * p) * c(lat2 * p) *
+      (1 - c((lon2 - lon1) * p)) / 2;
+  return 12742 * Math.asin(Math.sqrt(a));
+}
+
+
+class LiveCouponMap extends Component {
+  constructor(props) {
+    super(props);
+
+    let latitudeDelta = 0.00052;
+    let longitudeDelta = 0.00007;
+    this.state = {
+      region: {
+        latitude: 36.0664528,
+        longitude: -79.8101501,
+        latitudeDelta: latitudeDelta,
+        longitudeDelta: longitudeDelta
+      },
+      latitudeDelta: latitudeDelta,
+      longitudeDelta: longitudeDelta,
+      userLocation: {
+        latitude: 36.0664528,
+        longitude: -79.8101501,
+      },
+      coupons: []
+    };
+  }
+
+  render() {
+    return (
+        <View style={styles.container}>
+          <MapView
+              ref="map"
+              showsUserLocation={true}
+              minZoomLevel={15}
+              showsMyLocationButton={true}
+              followUserLocation={true}
+              style={styles.map}
+              initialRegion={this.state.region}
+          >
+            {this.state.coupons.map((coupon) => {
+              const color = coupon.nearUser ? '#00FF00' : '#000000';
+              return (
+                  <MapView.Marker
+                      key={coupon._id}
+                      pinColor={color}
+                      coordinate={{latitude: coupon.location.coordinates[1], longitude: coupon.location.coordinates[0]}}
+                  >
+                    <MapView.Callout tooltip
+                                     onPress={() => {
+                                       // We can't have a button to collect in the callout since Android doesn't support
+                                       // that so we have to just detect if they tapped the window and check if
+                                       // they are nearby here.
+                                       console.log('Call meteor to collect coupon here if they are nearby.');
+                                     }}
+                                     style={styles.calloutStyle}>
+                      {/* TODO(david): Style this better, looks boring right now. */}
+                      <View>
+                        <Text style={styles.calloutTitle}>{coupon.title}</Text>
+                        <Text style={styles.calloutDescription}>{coupon.description}</Text>
+                        {coupon.nearUser &&
+                        <Text style={styles.collectMessage}>
+                          Tap window to collect!
+                        </Text>
+                        }
+                      </View>
+                    </MapView.Callout>
+                  </MapView.Marker>
+              );
+            })}
+
+            {/* Shows actual user location as our functions sees them, we can't get the coordinates of the blue
+             marker the maps shows natively.
+             TODO(david): Animate this so it smoothly moves to new location. */}
+            <MapView.Marker
+                pinColor={"#0000FF"}
+                coordinate={this.state.userLocation}
+            />
+          </MapView>
+        </View>
+    );
+  }
+
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      let newRegion = {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: this.state.latitudeDelta,
+        longitudeDelta: this.state.longitudeDelta
+      };
+      newRegion.latitude = position.coords.latitude;
+      newRegion.longitude = position.coords.longitude;
+      this.setState({
+        region: newRegion,
+        userLocation: {
+          latitude: newRegion.latitude,
+          longitude: newRegion.longitude
+        }
+      });
+    });
+    navigator.geolocation.watchPosition(this.checkIfNearCoupons.bind(this),
+        (error) => console.log(error), {
+          enableHighAccuracy: true,
+          distanceFilter: .5,
+        });
+  }
+
+  checkIfNearCoupons(position) {
+    const newLat = position.coords.latitude;
+    const newLng = position.coords.longitude;
+
+    let coupons = this.state.coupons;
+    coupons.forEach((coupon) => {
+      let dist = distance(coupon.location.coordinates[1], coupon.location.coordinates[0], newLat, newLng);
+      coupon.nearUser = dist < .0048;
+    });
+
+    this.setState({
+      region: {
+        ...this.state.region,
+        latitude: newLat,
+        longitude: newLng
+      },
+      coupons: coupons,
+      userLocation: {
+        latitude: newLat,
+        longitude: newLng
+      }
+    });
+  }
+
+  componentWillMount() {
+    // Make sure you run "npm run start" on the kupongo project so the server is up.
+    // This connects to that Meteor server. Once the AWS server is up, replace the ip address with the url of the server.
+    // If you are on Android, find your network IP address, the one which your WiFi is using.
+    //      It should look like: 192.168.XX.XX or 192.168.X.X
+    // If you are on iOS, use localhost instead of your IP address.
+    // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
+    //       user their own.
+    // OLD - 192.168.1.6
+    Meteor.connect('ws://192.168.1.6:3000/websocket')
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.coupons) {
+      let coupons = [...props.coupons];
+      coupons.forEach((coupon) => {
+        coupon.nearUser = false;
+      });
+
+      this.setState({
+        coupons: coupons
+      }, () => {
+        this.checkIfNearCoupons({
+          coords: this.state.userLocation
+        });
+      });
+    }
+  }
+
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  calloutStyle: {
+    padding: 5,
+    backgroundColor: '#fcfcfc',
+  },
+  calloutTitle: {
+    padding: 5,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  calloutDescription: {
+    padding: 5,
+    textAlign: 'center',
+    fontSize: 15,
+    color: '#646464',
+  },
+  collectMessage: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#29b55d',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  }
+});
+
+export default createContainer(() => {
+  // TODO(david): Won't work without dummy user, insert a universal one.
+  // For anyone wanting to see their pinned coupons in development, insert a user in your database and then add it
+  // as a parameter here
+  let userId = '';
+  Meteor.subscribe('Coupon', userId);
+  return {
+    // TODO(david): Replace with server code to get redacted coupons within a region.
+    coupons: Meteor.collection('Coupon').find({})
+  }
+}, LiveCouponMap);
