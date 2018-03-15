@@ -157,12 +157,11 @@ class LiveCouponMap extends Component {
     // Make sure you run "npm run start" on the kupongo project so the server is up.
     // This connects to that Meteor server. Once the AWS server is up, replace the ip address with the url of the server.
     // If you are on Android, find your network IP address, the one which your WiFi is using.
-    //      It should look like: 192.168.XX.XX or 192.168.X.X
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    // OLD - 192.168.1.6
-    Meteor.connect('ws://192.168.1.6:3000/websocket')
+    let ip = '';
+    Meteor.connect(`ws://${ip}:3000/websocket`)
   }
 
   componentWillReceiveProps(props) {
