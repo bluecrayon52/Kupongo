@@ -28,6 +28,8 @@ class Coupon {
     this.lowerLat         = values.lowerLat;
     this.eastLong         = values.eastLong;
     this.westLong         = values.westLong;
+    this.centerLat        = values.centerLat;
+    this.centerLong       = values.centerLong;
     this.quantity         = values.quantity; // default 1
     this.preViewingDate   = values.preViewingDate || new Date();    // default date of pinning
     this.collectStartDate = values.collectStartDate || new Date();  // default date of pinning
@@ -102,6 +104,8 @@ class Coupon {
       lowerLat:         this.lowerLat,
       eastLong:         this.eastLong,
       westLong:         this.westLong,
+      centerLat:        this.centerLat,
+      centerLong:       this.centerLong,
       quantity:         this.quantity,
       preViewingDate:   this.preViewingDate,  // default date of pinning
       collectStartDate: this.collectStartDate,  // default date of pinning
@@ -123,6 +127,7 @@ class CouponCollection extends Mongo.Collection{
   insert(couponDoc, callback, language = 'en'){
     const thisCoupon = couponDoc
     var today = new Date();
+
     /*
         Checks to ensure the coupon has all the necessary fields. The image
         fields are not mandatory since an image may not be included in every
@@ -162,6 +167,13 @@ class CouponCollection extends Mongo.Collection{
     }
     // Everything has been checked but the validity of the account
     else{
+      // If the document doesn't have a center latitude field, make it before inserting
+      if(!couponDoc.hasOwnProperty("centerLat") || !couponDoc.centerLat){
+        couponDoc.centerLat = ((upperLat + lowerLat) /2)
+      }
+      if(!couponDoc.hasOwnProperty("centerLong") || !couponDoc.centerLong){
+        couponDoc.centerLong = ((westLong + eastLong) /2)
+      }
       return super.insert(thisCoupon, callback)
     }
   }

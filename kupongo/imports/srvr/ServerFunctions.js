@@ -77,8 +77,8 @@ function getAllCreatedCoupons(salesID, callback){
 								1) Error Code - Null if no error, otherwise contains error name
 								2) Error Description or array of coupon documents depending on if an error occurs
 */
-function getRedactedCoupons(userID, longitude, latitude, callback){
-	if(longitude == null || latitude == null){
+function getRedactedCoupons(userID, thisViewWindow, callback){
+	if(viewWindow == null){
 		UserDB.findOne({"_id":userID}, function(err, userDoc){
 			if(err || userDoc == null){
 				callback("Problem finding the user described", err)
@@ -86,10 +86,10 @@ function getRedactedCoupons(userID, longitude, latitude, callback){
 			else{
 				CouponDB.find(
 					// The search parameters
-				{"upperLat": {$gt: userDoc.lastLattitude},
-				"lowerLat": {$lt: userDoc.lastLattitude},
-				"westLong": {$lt: userDoc.lastLongitude},
-				"eastLong": {$gt: userDoc.lastLongitude}},
+				{"upperLat": {$gt: userDoc.viewWindow.upperLat},
+				"lowerLat": {$lt: userDoc.viewWindow.lowerLat},
+				"westLong": {$lt: userDoc.viewWindow.westLong},
+				"eastLong": {$gt: userDoc.viewWindow.eastLong}},
 				// The fields to exclude
 				{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
 				// The function the complete upon execution
@@ -107,10 +107,10 @@ function getRedactedCoupons(userID, longitude, latitude, callback){
 	else{
 		CouponDB.find(
 			// The search parameters
-		{"upperLat": {$gt: latitude},
-		"lowerLat": {$lt: latitude},
-		"westLong": {$lt: longitude},
-		"eastLong": {$gt: longitude}},
+		{"upperLat": {$gt: thisViewWindow.upperLat},
+		"lowerLat": {$lt: thisViewWindow.lowerLat},
+		"westLong": {$lt: thisViewWindow.westLong},
+		"eastLong": {$gt: thisViewWindow.eastLong}},
 		// The fields to exclude
 		{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
 		// The function the complete upon execution
@@ -119,7 +119,7 @@ function getRedactedCoupons(userID, longitude, latitude, callback){
 				callback("Error finding coupons", err2)
 			}
 			else{
-				UserDB.updateOne({"_id":userID}, {$set:{lastLattitude:latitude, lastLongitude:longitude}},
+				UserDB.updateOne({"_id":userID}, {$set:{lastLattitude:latitude, lastLongitude:longitude, viewWindow:thisViewWindow}},
 				function(err3, res){
 					if(err3){
 						callback("Failed updating user location", err3)
@@ -172,7 +172,7 @@ export {addNewUser};
 function validateUser(email, password){
 	var hashedPassword;
 	hashedPassword = UserDB.findOne({'email': email}).password;
-	
+
 	bcrypt.compare(password, hashedPassword, function(err, res) {
 		if(res == true){
 			return true;

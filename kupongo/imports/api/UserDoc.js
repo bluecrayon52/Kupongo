@@ -63,6 +63,8 @@ class Customer {
     this.couponWallet     = []; // array of Collected Coupon objects, empty at first
     this.lastLongitude    = values.lastLongitude || -100
     this.lastLattitude    = values.lastLattitude || -100
+    // NOTE: viewWindow should be a JSON object with 4 fields similar to the coupons structure
+    this.viewWindow       = values.viewWindow;
   }
   toMongoDoc() {
     return {
@@ -74,7 +76,10 @@ class Customer {
       address:        this.address,
       signUpDate:     this.signUpDate,
       lastSignInDate: this.lastSignInDate,
-      couponWallet:   this.couponWallet
+      couponWallet:   this.couponWallet,
+      lastLongitude:  this.lastLongitude,
+      lastLattitude:  this.lastLattitude,
+      viewWindow:     this.viewWindow
     };
 
   }
