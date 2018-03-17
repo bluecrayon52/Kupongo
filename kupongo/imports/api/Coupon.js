@@ -8,7 +8,7 @@ import {getRedactedCoupons} from '../srvr/ServerFunctions';
 
 if (Meteor.isServer) {
   Meteor.publish('Coupon', (UserID) =>{
-    getRedactedCoupons(userID, null, null, function(err, result){
+    getRedactedCoupons(userID, null, function(err, result){
       if(err){
         throw new Meteor.Error(err, result)
       }
