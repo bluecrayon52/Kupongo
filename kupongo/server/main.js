@@ -8,6 +8,7 @@ import {CompanyDB} from './../imports/api/CompanyDoc';
 import {validateSalesUser} from './../imports/srvr/ServerFunctions';
 import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
+import {getCollectedCoupons} from './../imports/srvr/ServerFunctions';
 import bcrypt from 'bcryptjs';
 
 Meteor.startup(function () {
@@ -206,7 +207,19 @@ Meteor.methods({
           return result;
         }
       })
-    }
+    },
+
+    // Gets the list of coupons that have been collected by that user
+    'getCollectedCoupons'(userID){
+      getCollectedCoupons(userID, function(err, result){
+        if(err){
+          throw new Meteor.Error(err, result)
+        }
+        else{
+          return result;
+        }
+      })
+    },
 
     // Places the coupon in the user's collected list if they are within the coupon's area
     'collectCoupon'(userID, couponID){

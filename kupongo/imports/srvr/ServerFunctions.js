@@ -111,7 +111,7 @@ function couponIsCollectable(userID, couponID, callback){
 /*
 	Title: 				getCollectedCoupons
 	Description: 	Retrieves the list of coupons that the user has collected in
-								their redacted form.
+								their redacted form. Should only be called sparingly
 	Arguments:		userID - The _id field attached to this user's document.
 								callback - The function that will run after the search is complete
 	Returns:			Done via callback, it will return two arguments:
@@ -120,9 +120,27 @@ function couponIsCollectable(userID, couponID, callback){
 */
 function getCollectedCoupons(userID, callback){
 	// Get the user document
-	// TODO finish this function
+	UserDB.find({"_id":userID}, function(userErr, userRes){
+		if(userErr){
+			callback(userErr, userRes)
+		}
+		else{
+			// Get the coupons that are in their userDoc in redacted form
+			CouponDB.find({"_id": { "$in": userRes.couponList}},
+			{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
+			function(couponErr, couponRes){
+				if(couponErr){
+					callback(couponErr, couponRes)
+				}
+				else{
+					// Return the list of coupons
+					callback(null, couponRes)
+				}
+			})
+		}
+	})
 }
-
+export {getCollectedCoupons};
 
 /*
 	Title: 				getRedactedCoupons

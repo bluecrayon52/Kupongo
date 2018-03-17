@@ -169,10 +169,10 @@ class CouponCollection extends Mongo.Collection{
     else{
       // If the document doesn't have a center latitude field, make it before inserting
       if(!couponDoc.hasOwnProperty("centerLat") || !couponDoc.centerLat){
-        couponDoc.centerLat = ((upperLat + lowerLat) /2)
+        couponDoc.centerLat = ((couponDoc.upperLat + couponDoc.lowerLat) /2)
       }
       if(!couponDoc.hasOwnProperty("centerLong") || !couponDoc.centerLong){
-        couponDoc.centerLong = ((westLong + eastLong) /2)
+        couponDoc.centerLong = ((couponDoc.westLong + couponDoc.eastLong) /2)
       }
       return super.insert(thisCoupon, callback)
     }
