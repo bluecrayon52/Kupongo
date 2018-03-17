@@ -208,4 +208,21 @@ Meteor.methods({
       })
     }
 
+    // Places the coupon in the user's collected list if they are within the coupon's area
+    'collectCoupon'(userID, couponID){
+      couponIsCollectable(userID, couponID, function(error, isCollectable){
+        if(isCollectable){
+          // Collect the coupon
+          UserDB.update({"_id" : userID}, {$addToSet: {"couponList" : couponID}}, function(err, result){
+            if(err){
+              throw new Meteor.Error("Error adding to collected List. Collection Failed", err)
+            }
+            else{
+              return true;
+            }
+          })
+        }
+      })
+    }
+
 });

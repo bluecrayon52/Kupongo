@@ -65,6 +65,64 @@ function getAllCreatedCoupons(salesID, callback){
 }
 
 
+/*
+	Title: 				couponIsCollectable
+	Description: 	Checks whether the user is within the collectable range of the coupon
+								specified.
+	Arguments:		userID - The _id field attached to this user's document.
+								couponID - The _id field of the coupon attempting to be collected
+								callback - The function that will run after the search is complete
+	Returns:			Done via callback, it will return true if the coupon CAN be collected
+								using the current data. False if it cannot or if there is an error
+								1) Error Message - Null if no error, otherwise contains error message
+								2) Can Be Collected - A boolean that is true if the coupon is able to
+									 be collected. False for any other result.
+*/
+function couponIsCollectable(userID, couponID, callback){
+	// Gets the user's document
+	UserDB.find({"_id":userID}, function(userErr, userDoc){
+		if(err){
+			callback(userErr, false)
+		}
+		else{
+			// Get the coupon's information from the _id provided
+			CouponDB.find({"_id":couponID}, function(couponErr, couponDoc){
+				if(err){
+					callback(couponErr, false)
+				}
+				else{
+					// Compare the lat/longs to find if it is possible
+					if( (userDoc.lastLattitude <= couponDoc.upperLat && userDoc.lastLattitude >= couponDoc.lowerLat) &&
+							(userDoc.lastLongitude <= couponDoc.eastLong && userDoc.lastLongitude >= couponDoc.westLong) &&
+							(couponDoc.collectStartDate <= new Date() && couponDoc.collectEndDate >= new Date())
+						){
+						// The coupon is within the valid range of long and lat, and within the correct dates
+						callback(null, true)
+					}
+					else{
+						callback("Coupon not currently available for collection", false)
+					}
+				}
+			})
+		}
+	})
+}
+
+/*
+	Title: 				getCollectedCoupons
+	Description: 	Retrieves the list of coupons that the user has collected in
+								their redacted form.
+	Arguments:		userID - The _id field attached to this user's document.
+								callback - The function that will run after the search is complete
+	Returns:			Done via callback, it will return two arguments:
+								1) Error Code - Null if no error, otherwise contains error name
+								2) Error Description or the list of collected coupons
+*/
+function getCollectedCoupons(userID, callback){
+	// Get the user document
+	// TODO finish this function
+}
+
 
 /*
 	Title: 				getRedactedCoupons
