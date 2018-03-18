@@ -87,7 +87,10 @@ Meteor.startup(function () {
   if (UserDB.find({_id: userId}).count() === 0) {
     UserDB.insert({_id: userId, companyName: companyName, authenticationToken: token});
   }
-  //console.log(CouponDB.find().fetch())
+  //console.log(CouponDB.find().fetch());
+
+  // Added so that we can test Mongo's spatial queries.
+  CouponDB.rawCollection().createIndex({location: '2dsphere'});
 });
 
 Meteor.methods({
@@ -236,6 +239,21 @@ Meteor.methods({
           })
         }
       })
+    },
+
+    // For benchmarking purposes. Curious to see how slow can the geospatial queries really be.
+    'getCouponsIn'(region) {
+      return CouponDB.find({
+        location: {
+          $geoWithin: {
+            $geometry: {
+              type: "Polygon",
+              coordinates: [region]
+            }
+          }
+        }
+      }).fetch()
     }
+
 
 });

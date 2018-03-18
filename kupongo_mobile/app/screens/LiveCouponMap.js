@@ -24,6 +24,16 @@ function distance(lat1, lon1, lat2, lon2) {
   return 12742 * Math.asin(Math.sqrt(a));
 }
 
+function toBox(region) {
+  return [
+    [region.longitude - (0.7 * region.longitudeDelta), region.latitude + (0.7 * region.longitudeDelta)],
+    [region.longitude + (0.7 * region.longitudeDelta), region.latitude + (0.7 * region.longitudeDelta)],
+    [region.longitude + (0.7 * region.longitudeDelta), region.latitude - (0.7 * region.longitudeDelta)],
+    [region.longitude - (0.7 * region.longitudeDelta), region.latitude - (0.7 * region.longitudeDelta)],
+    [region.longitude - (0.7 * region.longitudeDelta), region.latitude + (0.7 * region.longitudeDelta)],
+  ];
+}
+
 
 class LiveCouponMap extends Component {
   constructor(props) {
@@ -55,10 +65,11 @@ class LiveCouponMap extends Component {
               ref="map"
               showsUserLocation={true}
               minZoomLevel={15}
+              onMapReady={this.mapReady.bind(this)}
               showsMyLocationButton={true}
               followUserLocation={true}
               style={styles.map}
-              initialRegion={this.state.region}
+              onRegionChangeComplete={this.regionChanged.bind(this)}
           >
             {this.state.coupons.map((coupon) => {
               const color = coupon.nearUser ? '#00FF00' : '#000000';
@@ -103,6 +114,38 @@ class LiveCouponMap extends Component {
     );
   }
 
+  mapReady() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.refs.map.animateToRegion({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: this.state.latitudeDelta,
+        longitudeDelta: this.state.longitudeDelta
+      }, 2);
+    });
+  }
+
+  regionChanged(region) {
+    if (distance(this.state.region.latitude, this.state.region.longitude, region.latitude, region.longitude) < .010) {
+      if (Math.abs(this.state.region.latitudeDelta - region.latitudeDelta) < 0.001 &&
+          Math.abs(this.state.region.longitudeDelta - region.longitudeDelta) < 0.001) {
+        return;  // Don't bother making server call if they only moved by a little bit.
+      }
+    }
+    console.log('region changed');
+    Meteor.call('getCouponsIn', toBox(region), (err, coupons) => {
+      console.log(coupons[0]);
+      console.log(coupons[0].preViewingDate.toString());
+      this.setState({
+        coupons: coupons,
+        region: region,
+      }, () => {
+        this.checkIfNearCoupons({
+          coords: this.state.userLocation
+        });
+      });
+    });
+  }
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -114,14 +157,28 @@ class LiveCouponMap extends Component {
       };
       newRegion.latitude = position.coords.latitude;
       newRegion.longitude = position.coords.longitude;
+
       this.setState({
         region: newRegion,
         userLocation: {
           latitude: newRegion.latitude,
           longitude: newRegion.longitude
         }
+      }, () => {
+        Meteor.call('getCouponsIn', toBox(newRegion), (err, coupons) => {
+          console.log(coupons[0]);
+          console.log(coupons[0].preViewingDate.toString());
+          this.setState({
+            coupons: coupons
+          }, () => {
+            this.checkIfNearCoupons({
+              coords: this.state.userLocation
+            });
+          });
+        });
       });
     });
+
     navigator.geolocation.watchPosition(this.checkIfNearCoupons.bind(this),
         (error) => console.log(error), {
           enableHighAccuracy: true,
@@ -140,11 +197,6 @@ class LiveCouponMap extends Component {
     });
 
     this.setState({
-      region: {
-        ...this.state.region,
-        latitude: newLat,
-        longitude: newLng
-      },
       coupons: coupons,
       userLocation: {
         latitude: newLat,
@@ -217,14 +269,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default createContainer(() => {
-  // TODO(david): Won't work without dummy user, insert a universal one.
-  // For anyone wanting to see their pinned coupons in development, insert a user in your database and then add it
-  // as a parameter here
-  let userId = '';
-  Meteor.subscribe('Coupon', userId);
-  return {
-    // TODO(david): Replace with server code to get redacted coupons within a region.
-    coupons: Meteor.collection('Coupon').find({})
-  }
-}, LiveCouponMap);
+ export default createContainer(() => {
+ // TODO(david): Won't work without dummy user, insert a universal one.
+ // For anyone wanting to see their pinned coupons in development, insert a user in your database and then add it
+ // as a parameter here
+ // let userId = '';
+ // Meteor.subscribe('Coupon', userId);
+ return {
+ // TODO(david): Replace with server code to get redacted coupons within a region.
+ // coupons: Meteor.collection('Coupon').find({})
+ }
+ }, LiveCouponMap);
