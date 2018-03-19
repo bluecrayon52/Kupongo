@@ -97,7 +97,7 @@ Meteor.methods({
 
     //Register new user
     'register'(email, companyName, password, firstName, lastName, phoneNumber) {
-      addNewUser(email, companyName, password, firstName, lastName, phoneNumber, function(error, message){
+      return addNewUser(email, companyName, password, firstName, lastName, phoneNumber, function(error, message){
         if(error) {
           throw new Meteor.Error(error, message);
         } else {
