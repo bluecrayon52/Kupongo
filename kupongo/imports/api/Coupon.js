@@ -7,15 +7,16 @@ import { SimpleSchema } from 'simpl-schema';
 import {getRedactedCoupons} from '../srvr/ServerFunctions';
 
 if (Meteor.isServer) {
-  Meteor.publish('Coupon', (UserID) =>{
-    getRedactedCoupons(userID, null, function(err, result){
-      if(err){
-        throw new Meteor.Error(err, result)
-      }
-      else{
-        return result;
-      }
-    })
+  Meteor.publish('Coupon', (UserID) => {
+    return CouponDB.find();
+    // getRedactedCoupons(UserID, null, function(err, result){
+    //   if(err){
+    //     throw new Meteor.Error(err, result)
+    //   }
+    //   else{
+    //     return result;
+    //   }
+    // })
   });
 }
 

@@ -154,7 +154,7 @@ export {getCollectedCoupons};
 								2) Error Description or array of coupon documents depending on if an error occurs
 */
 function getRedactedCoupons(userID, thisViewWindow, callback){
-	if(viewWindow == null){
+	if(thisViewWindow == null){
 		UserDB.findOne({"_id":userID}, function(err, userDoc){
 			if(err || userDoc == null){
 				callback("Problem finding the user described", err)

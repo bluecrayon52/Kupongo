@@ -84,7 +84,7 @@ class PinnedCoupons extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('Coupon');
+  Meteor.subscribe('Coupon', 'safns');
   return {
     pins: CouponDB.find({
       // TODO(david): Change to look for current user's company name/id
