@@ -73,7 +73,7 @@ class Register extends Component {
 
         const concatCompanyName = companyName.replace(/\s/g, '');
 
-        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{12,}$/;
         const minLengthPassword = 12;
         const lengthPhoneNumber = 10;
 

@@ -225,7 +225,7 @@ export {getRedactedCoupons};
 function addNewUser(email, companyName, password, firstName, lastName, phoneNumber) {
 	if (UserDB.find({ 'email': email }).count() > 0) {
 		//Tell user email already has an account
-		callback('Account taken: This email has already been assigned to an existing account.');
+		callback('Account Exist Error', 'Account taken: This email has already been assigned to an existing account.');
 	} else {
 		//User is new, so insert information into databse
 		const saltRounds = 10;
@@ -245,16 +245,16 @@ export {addNewUser};
 	Returns:		Callback if information is entered incorrectly, otherwise continue with
 					login
 */
-function validateUser(email, password){
+function validateUser(email, password, callback){
 	var hashedPassword;
 	hashedPassword = UserDB.findOne({'email': email}).password;
-
-	bcrypt.compare(password, hashedPassword, function(err, res) {
-		if(res == true){
-			return true;
-		} else {
-			callback("Incorrect informatiom: Wrong email or password entered.");
-		}
-	});
+	const res = bcrypt.compareSync(password, hashedPassword);
+  if(res === true){
+    console.log('[srvr/ServerFunctions]','returning true');
+    callback(null, null);
+    return true;
+  } else {
+    callback("Incorrect information', 'Wrong email or password entered.");
+  }
 }
 export {validateUser};

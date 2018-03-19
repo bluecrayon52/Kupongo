@@ -108,10 +108,11 @@ Meteor.methods({
 
     //Login user
     'login'(email, password) {
-      validateUser(email, password, function(error, message){
+      return validateUser(email, password, function(error, message){
         if(error) {
           throw new Meteor.Error(error, message);
         } else {
+          console.log('[server/main]', 'returning true');
           return true;
         }
       });

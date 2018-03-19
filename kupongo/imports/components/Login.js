@@ -45,7 +45,7 @@ class Login extends Component {
         const email = ReactDOM.findDOMNode(this.refs.emailInput).value.trim();
         const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
 
-        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{3,}$/;
+        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{12,}$/;
         const minLengthPassword = 12;
 
         //Test if password and email conditions are met
@@ -55,18 +55,20 @@ class Login extends Component {
             alert("Incorrect password or email entered.");
         } else {
             //Check if user is already registered or not
-            if(Meteor.call('login', email, password) == true) {
-                // Clear form
-                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
-                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+            Meteor.call('login', email, password, (err, result) => {
+              if(result === true) {
+                  // Clear form
+                  ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                  ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
 
-                console.log("login form submitted");
-                this.props.history.push('/home')
-            } else {
-                alert("Incorrect information entered.");
-                ReactDOM.findDOMNode(this.refs.emailInput).value = '';
-                ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
-            }
+                  console.log("login form submitted");
+                  this.props.history.push('/home')
+              } else {
+                  alert("Incorrect information entered.");
+                  ReactDOM.findDOMNode(this.refs.emailInput).value = '';
+                  ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
+              }
+            });
         }
     }
 
