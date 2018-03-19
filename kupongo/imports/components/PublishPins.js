@@ -15,14 +15,32 @@ class PublishPins extends Component {
     render() {
         console.log('[PublishPins]: render, this.state.unPublishedPins[0].title: '+this.state.unPublishedPins[0].title);
         // first dynamically render a Panel for each coupon pin location 
-        var pins = this.state.unPublishedPins.map(function(pin, i){    
+        var pins = this.state.unPublishedPins.map((pin, i)=>{    
             return (
                 <Panel eventKey={i}>
                     <Panel.Heading>
                         <Panel.Title toggle>{pin.title}</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body collapsible>
-                            {pin.description}
+                        <label htmlFor="">
+                            Title <br/>
+                            <input type="text"
+                                className="templateTextInput"
+                                onChange={(change) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    title: change.target.value
+                                                };
+                                            }
+                                        })
+                                    });
+                                this.props.onValuesChange(this.state.unPublishedPins);
+                                }}
+                            value={pin.title}/>
+                        </label>
                     </Panel.Body>
                 </Panel>
             );
