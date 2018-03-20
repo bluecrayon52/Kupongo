@@ -128,6 +128,7 @@ Meteor.methods({
         }
         else{
           CouponDB.insert(coupon, function(){
+            console.log('[server/main]: insertCoupon for coupon.title: '+coupon.title+' was successful!')
             return true
           })
         }

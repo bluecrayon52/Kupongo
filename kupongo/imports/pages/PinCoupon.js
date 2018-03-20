@@ -122,6 +122,7 @@ class PinCoupon extends Component {
   // TODO(david): Send request to server to save this.state.pins to mongoDB as a Coupon collection.
   publishCoupons() {
     for (let coupon of this.state.pins) {
+      coupon = new Coupon(coupon); // turn generic javascript object to Coupon object 
       console.log('[PinCoupon]: publishCoupons calling insertCoupon for coupon.title: ' +coupon.title);
       Meteor.call('insertCoupon', this.state.salesInfo._id, coupon.toMongoDoc());
     }
@@ -228,6 +229,7 @@ class PinCoupon extends Component {
     this.create({
       title: 'Publish Coupons',
       content: <PublishPins
+          // {...unPublishedPins}
           onValuesChange={onValuesChange}
           unPublishedPins={unPublishedPins}
       />,
