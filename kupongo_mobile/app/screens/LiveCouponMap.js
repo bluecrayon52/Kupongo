@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native';
 import MapView from 'react-native-maps';
+import {MAP_STYLE} from '../config/MapStyles';
 
 import Meteor, {createContainer} from 'react-native-meteor';
 
@@ -69,6 +70,7 @@ class LiveCouponMap extends Component {
               showsMyLocationButton={true}
               followUserLocation={true}
               style={styles.map}
+              customMapStyle={MAP_STYLE}
               onRegionChangeComplete={this.regionChanged.bind(this)}
           >
             {this.state.coupons.map((coupon) => {
@@ -134,8 +136,6 @@ class LiveCouponMap extends Component {
     }
     console.log('region changed');
     Meteor.call('getCouponsIn', toBox(region), (err, coupons) => {
-      console.log(coupons[0]);
-      console.log(coupons[0].preViewingDate.toString());
       this.setState({
         coupons: coupons,
         region: region,
@@ -212,7 +212,7 @@ class LiveCouponMap extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = '';
+    let ip = '192.168.1.6';
     Meteor.connect(`ws://${ip}:3000/websocket`)
   }
 

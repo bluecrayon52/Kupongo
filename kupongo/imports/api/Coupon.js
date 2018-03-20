@@ -42,7 +42,7 @@ class Coupon {
     // TODO(david): Change this so that we use upperLat and lowerLat instead.
     this.location = {
       type: 'Point',
-      coordinates: [values.lng, values.lat]
+      coordinates: [values.centerLong, values.centerLat]
     };
 
     // Inherited Template attributes. (values are checked in case we are retrieving them from Mongo).
