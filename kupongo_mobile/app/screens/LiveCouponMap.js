@@ -55,6 +55,7 @@ class LiveCouponMap extends Component {
         latitude: 36.0664528,
         longitude: -79.8101501,
       },
+      user: this.props.navigation.state.params.user,
       coupons: []
     };
   }
@@ -87,6 +88,8 @@ class LiveCouponMap extends Component {
                                        // that so we have to just detect if they tapped the window and check if
                                        // they are nearby here.
                                        console.log('Call meteor to collect coupon here if they are nearby.');
+                                       if (coupon.nearUser)
+                                         this.collectCoupon(coupon);
                                      }}
                                      style={styles.calloutStyle}>
                       {/* TODO(david): Style this better, looks boring right now. */}
@@ -116,6 +119,21 @@ class LiveCouponMap extends Component {
     );
   }
 
+  collectCoupon(coupon) {
+    Meteor.call('collectCoupon', this.state.user._id, coupon._id, (err, result) => {
+      if (err) {
+        // TODO(david): Send message to user saying coupon failed with a popup maybe.
+        console.log(err);
+      } else {
+        // Remove coupon from map.
+        let user = this.state.user;
+        user.couponList.add(coupon._id);
+        let coupons = this.state.coupons.filter((item) =>  coupon._id !== item._id);
+        this.setState({ user: user, coupons: coupons });
+      }
+    });
+  }
+
   mapReady() {
     navigator.geolocation.getCurrentPosition((position) => {
       this.refs.map.animateToRegion({
@@ -135,7 +153,12 @@ class LiveCouponMap extends Component {
       }
     }
     console.log('region changed');
+    Meteor.call('updateCurrentLocation', this.state.user._id, region.latitude, region.longitude, (err, result) => {
+      if (err)
+        console.log(err);
+    });
     Meteor.call('getCouponsIn', toBox(region), (err, coupons) => {
+      coupons = coupons.filter((coupon) => !this.state.user.couponList.has(coupon._id));
       this.setState({
         coupons: coupons,
         region: region,
@@ -166,8 +189,6 @@ class LiveCouponMap extends Component {
         }
       }, () => {
         Meteor.call('getCouponsIn', toBox(newRegion), (err, coupons) => {
-          console.log(coupons[0]);
-          console.log(coupons[0].preViewingDate.toString());
           this.setState({
             coupons: coupons
           }, () => {

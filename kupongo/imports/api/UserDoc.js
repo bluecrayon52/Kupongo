@@ -62,7 +62,7 @@ class Customer {
     this.lastSignInDate   = values.lastSignInDate;
     this.couponWallet     = []; // array of Collected Coupon objects, empty at first
     this.lastLongitude    = values.lastLongitude || -100
-    this.lastLattitude    = values.lastLattitude || -100
+    this.lastLatitude    = values.lastLatitude || -100
     // NOTE: viewWindow should be a JSON object with 4 fields similar to the coupons structure
     this.viewWindow       = values.viewWindow;
     // The array of coupon _id's that this user has collected.
@@ -80,7 +80,7 @@ class Customer {
       lastSignInDate: this.lastSignInDate,
       couponWallet:   this.couponWallet,
       lastLongitude:  this.lastLongitude,
-      lastLattitude:  this.lastLattitude,
+      lastLatitude:  this.lastLatitude,
       viewWindow:     this.viewWindow,
       couponList:     this.couponList
     };
