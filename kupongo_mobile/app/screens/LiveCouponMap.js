@@ -55,6 +55,8 @@ class LiveCouponMap extends Component {
         latitude: 36.0664528,
         longitude: -79.8101501,
       },
+      selectedIcon: require('../../assets/selected_coupon.png'),
+      couponIcon: require('../../assets/coupon.png'),
       user: this.props.navigation.state.params.user,
       coupons: []
     };
@@ -75,13 +77,14 @@ class LiveCouponMap extends Component {
               onRegionChangeComplete={this.regionChanged.bind(this)}
           >
             {this.state.coupons.map((coupon) => {
-              const color = coupon.nearUser ? '#00FF00' : '#000000';
+              const icon = coupon.nearUser ? this.state.selectedIcon : this.state.couponIcon;
               return (
                   <MapView.Marker
                       key={coupon._id}
-                      pinColor={color}
+                      image={icon}
                       coordinate={{latitude: coupon.location.coordinates[1], longitude: coupon.location.coordinates[0]}}
                   >
+
                     <MapView.Callout tooltip
                                      onPress={() => {
                                        // We can't have a button to collect in the callout since Android doesn't support
@@ -233,7 +236,7 @@ class LiveCouponMap extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = '';
+    let ip = '192.168.1.6';
     Meteor.connect(`ws://${ip}:3000/websocket`)
   }
 
@@ -284,6 +287,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
     color: '#29b55d',
+  },
+  couponIcon: {
+    height: 20,
+    width: 20,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
