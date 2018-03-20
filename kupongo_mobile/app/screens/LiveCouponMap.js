@@ -212,7 +212,7 @@ class LiveCouponMap extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = '192.168.1.6';
+    let ip = '';
     Meteor.connect(`ws://${ip}:3000/websocket`)
   }
 
