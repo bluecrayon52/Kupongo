@@ -87,6 +87,7 @@ class Coupon {
    * @returns {{}} JSON object with appropriate fields to insert in MongoDB.
    */
   toMongoDoc() {
+    console.log('[Coupon]: toMongoDoc this.title: '+this.title);
     // TODO(david): Maybe there is a better way of doing this?
     return {
       salesID:          this.salesID,

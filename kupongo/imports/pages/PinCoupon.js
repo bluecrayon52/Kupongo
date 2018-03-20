@@ -9,7 +9,7 @@ import "../css/Popup.css"
 import PinCouponMap from '../components/PinCouponMap';
 import TemplatesView from '../components/TemplatesView';
 import CouponTemplate, {CouponTemplateDB} from '../api/CouponTemplate';
-import {CouponDB} from '../api/Coupon';
+import Coupon, {CouponDB} from '../api/Coupon';
 import Popup from 'react-popup';
 import Header from '../components/Header';
 import PublishPins from '../components/PublishPins';
@@ -121,7 +121,6 @@ class PinCoupon extends Component {
 
   // TODO(david): Send request to server to save this.state.pins to mongoDB as a Coupon collection.
   publishCoupons() {
-    console.log('[PinCoupon]: publishCoupons');
     for (let coupon of this.state.pins) {
       console.log('[PinCoupon]: publishCoupons calling insertCoupon for coupon.title: ' +coupon.title);
       Meteor.call('insertCoupon', this.state.salesInfo._id, coupon.toMongoDoc());
