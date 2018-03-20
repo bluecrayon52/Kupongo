@@ -80,33 +80,33 @@ function getAllCreatedCoupons(salesID, callback){
 */
 function couponIsCollectable(userID, couponID, callback){
 	// Gets the user's document
-	UserDB.find({"_id":userID}, function(userErr, userDoc){
-		if(err){
-			callback(userErr, false)
-		}
-		else{
-			// Get the coupon's information from the _id provided
-			CouponDB.find({"_id":couponID}, function(couponErr, couponDoc){
-				if(err){
-					callback(couponErr, false)
-				}
-				else{
-					// Compare the lat/longs to find if it is possible
-					if( (userDoc.lastLattitude <= couponDoc.upperLat && userDoc.lastLattitude >= couponDoc.lowerLat) &&
-							(userDoc.lastLongitude <= couponDoc.eastLong && userDoc.lastLongitude >= couponDoc.westLong) &&
-							(couponDoc.collectStartDate <= new Date() && couponDoc.collectEndDate >= new Date())
-						){
-						// The coupon is within the valid range of long and lat, and within the correct dates
-						callback(null, true)
-					}
-					else{
-						callback("Coupon not currently available for collection", false)
-					}
-				}
-			})
-		}
-	})
+	let userDoc = UserDB.find({"_id":userID}).fetch();
+  if(userDoc){
+    // Get the coupon's information from the _id provided
+    let couponDoc = CouponDB.find({"_id":couponID});
+    if(couponDoc){
+      // Compare the lat/longs to find if it is possible
+      if( (userDoc.lastLatitude <= couponDoc.upperLat && userDoc.lastLatitude >= couponDoc.lowerLat) &&
+          (userDoc.lastLongitude <= couponDoc.eastLong && userDoc.lastLongitude >= couponDoc.westLong) &&
+          (couponDoc.collectStartDate <= new Date() && couponDoc.collectEndDate >= new Date())
+        ){
+        // The coupon is within the valid range of long and lat, and within the correct dates
+        callback(null, true)
+      }
+      else{
+        callback("Coupon not currently available for collection", false)
+      }
+    }
+    else{
+      callback('Coupon not found', false)
+    }
+  }
+  else{
+    callback('User not found', false)
+  }
 }
+
+export {couponIsCollectable};
 
 /*
 	Title: 				getCollectedCoupons

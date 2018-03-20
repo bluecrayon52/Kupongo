@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native';
 import MapView from 'react-native-maps';
+import {MAP_STYLE} from '../config/MapStyles';
 
 import Meteor, {createContainer} from 'react-native-meteor';
 
@@ -54,6 +55,9 @@ class LiveCouponMap extends Component {
         latitude: 36.0664528,
         longitude: -79.8101501,
       },
+      selectedIcon: require('../../assets/selected_coupon.png'),
+      couponIcon: require('../../assets/coupon.png'),
+      user: this.props.navigation.state.params.user,
       coupons: []
     };
   }
@@ -69,22 +73,26 @@ class LiveCouponMap extends Component {
               showsMyLocationButton={true}
               followUserLocation={true}
               style={styles.map}
+              customMapStyle={MAP_STYLE}
               onRegionChangeComplete={this.regionChanged.bind(this)}
           >
             {this.state.coupons.map((coupon) => {
-              const color = coupon.nearUser ? '#00FF00' : '#000000';
+              const icon = coupon.nearUser ? this.state.selectedIcon : this.state.couponIcon;
               return (
                   <MapView.Marker
                       key={coupon._id}
-                      pinColor={color}
+                      image={icon}
                       coordinate={{latitude: coupon.location.coordinates[1], longitude: coupon.location.coordinates[0]}}
                   >
+
                     <MapView.Callout tooltip
                                      onPress={() => {
                                        // We can't have a button to collect in the callout since Android doesn't support
                                        // that so we have to just detect if they tapped the window and check if
                                        // they are nearby here.
                                        console.log('Call meteor to collect coupon here if they are nearby.');
+                                       if (coupon.nearUser)
+                                         this.collectCoupon(coupon);
                                      }}
                                      style={styles.calloutStyle}>
                       {/* TODO(david): Style this better, looks boring right now. */}
@@ -114,6 +122,21 @@ class LiveCouponMap extends Component {
     );
   }
 
+  collectCoupon(coupon) {
+    Meteor.call('collectCoupon', this.state.user._id, coupon._id, (err, result) => {
+      if (err) {
+        // TODO(david): Send message to user saying coupon failed with a popup maybe.
+        console.log(err);
+      } else {
+        // Remove coupon from map.
+        let user = this.state.user;
+        user.couponList.add(coupon._id);
+        let coupons = this.state.coupons.filter((item) =>  coupon._id !== item._id);
+        this.setState({ user: user, coupons: coupons });
+      }
+    });
+  }
+
   mapReady() {
     navigator.geolocation.getCurrentPosition((position) => {
       this.refs.map.animateToRegion({
@@ -133,9 +156,12 @@ class LiveCouponMap extends Component {
       }
     }
     console.log('region changed');
+    Meteor.call('updateCurrentLocation', this.state.user._id, region.latitude, region.longitude, (err, result) => {
+      if (err)
+        console.log(err);
+    });
     Meteor.call('getCouponsIn', toBox(region), (err, coupons) => {
-      console.log(coupons[0]);
-      console.log(coupons[0].preViewingDate.toString());
+      coupons = coupons.filter((coupon) => !this.state.user.couponList.has(coupon._id));
       this.setState({
         coupons: coupons,
         region: region,
@@ -166,8 +192,6 @@ class LiveCouponMap extends Component {
         }
       }, () => {
         Meteor.call('getCouponsIn', toBox(newRegion), (err, coupons) => {
-          console.log(coupons[0]);
-          console.log(coupons[0].preViewingDate.toString());
           this.setState({
             coupons: coupons
           }, () => {
@@ -212,7 +236,7 @@ class LiveCouponMap extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = '';
+    let ip = '192.168.1.6';
     Meteor.connect(`ws://${ip}:3000/websocket`)
   }
 
@@ -263,6 +287,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
     color: '#29b55d',
+  },
+  couponIcon: {
+    height: 20,
+    width: 20,
   },
   map: {
     ...StyleSheet.absoluteFillObject,

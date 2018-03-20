@@ -37,8 +37,8 @@ class PinCouponMap extends Component {
         new Coupon({
           template: this.props.selectedTemplate,
           clicked: false,
-          lat: event.latLng.lat(),
-          lng: event.latLng.lng()
+          centerLat: event.latLng.lat(),
+          centerLong: event.latLng.lng()
         }));
   }
 

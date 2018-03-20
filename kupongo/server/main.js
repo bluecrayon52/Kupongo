@@ -3,12 +3,12 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import {CouponTemplateDB} from './../imports/api/CouponTemplate';
 import {CouponDB} from './../imports/api/Coupon';
-import {UserDB} from './../imports/api/UserDoc';
+import Customer, {UserDB} from './../imports/api/UserDoc';
 import {CompanyDB} from './../imports/api/CompanyDoc';
 import {validateSalesUser} from './../imports/srvr/ServerFunctions';
 import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
-import {getCollectedCoupons} from './../imports/srvr/ServerFunctions';
+import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';
 import bcrypt from 'bcryptjs';
 
 Meteor.startup(function () {
@@ -87,7 +87,12 @@ Meteor.startup(function () {
   if (UserDB.find({_id: userId}).count() === 0) {
     UserDB.insert({_id: userId, companyName: companyName, authenticationToken: token});
   }
-  //console.log(CouponDB.find().fetch());
+
+  // Test user account, may need to add more fields but this will do for now.
+  let customerId = 'asdf';
+  if (UserDB.find({_id: customerId}).count() === 0) {
+    UserDB.insert(new Customer({_id: customerId, couponList: []}).toMongoDoc());
+  }
 
   // Added so that we can test Mongo's spatial queries.
   CouponDB.rawCollection().createIndex({location: '2dsphere'});
@@ -192,7 +197,7 @@ Meteor.methods({
     // Updates the user's current location so the subscription will give nearby items
     'updateCurrentLocation'(userID, lat, lng){
       // TODO Create a security system so a user cannot change someone else's location
-      UserDB.update({'_id': userID}, {$set: {'lastLattitude': lat, 'lastLongitude': lng}}, function(err, res){
+      UserDB.update({'_id': userID}, {$set: {'lastLatitude': lat, 'lastLongitude': lng}}, function(err, res){
         if(err){
           return err;
         }
@@ -229,6 +234,7 @@ Meteor.methods({
     // Places the coupon in the user's collected list if they are within the coupon's area
     'collectCoupon'(userID, couponID){
       couponIsCollectable(userID, couponID, function(error, isCollectable){
+        console.log(error);
         if(isCollectable){
           // Collect the coupon
           UserDB.update({"_id" : userID}, {$addToSet: {"couponList" : couponID}}, function(err, result){

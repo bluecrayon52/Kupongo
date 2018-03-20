@@ -28,7 +28,13 @@ export default class Login extends Component {
             To get started, login. {this.state.pressed}
           </Text>
           <Button
-              onPress={() => {this.props.navigation.navigate('LiveMap')}}
+              onPress={() => {this.props.navigation.navigate('LiveMap', {
+                // TODO(anyone): Replace this with actual user info upon login.
+                user: {
+                  _id: 'asdf',
+                  couponList: new Set()
+                }}
+              )}}
               title="Login"
           />
         </View>
