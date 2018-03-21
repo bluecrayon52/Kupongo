@@ -22,10 +22,11 @@ class PublishPins extends Component {
                         <Panel.Title toggle>{pin.title}</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body collapsible>
+
                         <label htmlFor="">
                             Title <br/>
                             <input type="text"
-                                className="templateTextInput"
+                                className="publishTextInput"
                                 onChange={(change) => {
                                     this.setState({
                                         unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
@@ -36,11 +37,195 @@ class PublishPins extends Component {
                                                 };
                                             }
                                         })
-                                    });
-                                this.props.onValuesChange(this.state.unPublishedPins);
+                                    },  ()=>  {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                        });
                                 }}
                             value={pin.title}/>
                         </label>
+
+                        <br/>
+
+                        <label htmlFor="">
+                            Description <br/>
+                            <textarea className="publishTextInputArea"
+                                onChange={(change) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    description: change.target.value
+                                                };
+                                            }
+                                        })
+                                    },  ()=>  {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                        });
+                                }}
+                            value={pin.description}/>
+                        </label>
+
+                        <br/>
+
+                        <label htmlFor="">
+                            Instructions <br/>
+                            <textarea className="publishTextInputArea"
+                                onChange={(change) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    instructions: change.target.value
+                                                };
+                                            }
+                                        })
+                                    },  ()=>  {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                        });
+                                }}
+                            value={pin.instructions}/>
+                        </label>
+
+                        <br/>
+
+                        <label htmlFor="">
+                            Quantity <br/>
+                            <input type="number"
+                                className="publishTextInput"
+                                onChange={(change) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    quantity: change.target.value
+                                                };
+                                            }
+                                        })
+                                    },  ()=>  {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                        });
+                                }}
+                            value={pin.quantity}/>
+                        </label>
+
+                        <br/>
+
+                        <div className="dateContainer">
+                            Preview Date:<br/>
+                            <DateTimePicker className="dateTimePicker5"
+                                minDate={new Date()}
+                                onChange={(date) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    preViewingDate: date
+                                                };
+                                            }
+                                        })
+                                    }, () => {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                    });
+                                 }}
+                            value={pin.preViewingDate}/>
+                        </div>
+
+                        <br/>
+
+                        <div className="dateContainer">
+                            Collection Start Date:<br/>
+                            <DateTimePicker className="dateTimePicker4"
+                                minDate={new Date()}
+                                onChange={(date) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    collectStartDate: date
+                                                };
+                                            }
+                                        })
+                                    }, () => {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                    });
+                                 }}
+                            value={pin.collectStartDate}/>
+                        </div>
+
+                        <br/>
+
+                        <div className="dateContainer">
+                            Collection End Date:<br/>
+                            <DateTimePicker className="dateTimePicker3"
+                                minDate={new Date()}
+                                onChange={(date) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    collectEndDate: date
+                                                };
+                                            }
+                                        })
+                                    }, () => {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                    });
+                                 }}
+                            value={pin.collectEndDate}/>
+                        </div>
+
+                        <br/>
+
+                        <div className="dateContainer">
+                            Redemption Start Date:<br/>
+                            <DateTimePicker className="dateTimePicker2"
+                                minDate={new Date()}
+                                onChange={(date) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    redeemStartDate: date
+                                                };
+                                            }
+                                        })
+                                    }, () => {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                    });
+                                 }}
+                            value={pin.redeemStartDate}/>
+                        </div>
+
+                         <br/>
+
+                        <div className="dateContainer">
+                            Redemption End Date:<br/>
+                            <DateTimePicker className="dateTimePicker"
+                                minDate={new Date()}
+                                onChange={(date) => {
+                                    this.setState({
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                            if (index === i) {
+                                                return {
+                                                    ...pin, 
+                                                    redeemEndDate: date
+                                                };
+                                            }
+                                        })
+                                    }, () => {
+                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                    });
+                                 }}
+                            value={pin.redeemEndDate}/>
+                        </div>
+                        <div class='dateSeparator'></div> 
                     </Panel.Body>
                 </Panel>
             );

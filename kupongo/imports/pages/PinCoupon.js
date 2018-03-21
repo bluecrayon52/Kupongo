@@ -239,7 +239,7 @@ class PinCoupon extends Component {
           text: 'Save Coupons',
           className: 'saveCouponsButton',
           action: () => {
-            console.log('[PinCoupon]: Popup newCoupons saveCouponsButton');
+            console.log('[PinCoupon]: Popup newCoupons saveCouponsButton unPublishedPins[0].title: '+unPublishedPins[0].title);
             callback(unPublishedPins);
             Popup.close();
           }

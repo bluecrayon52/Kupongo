@@ -2,6 +2,18 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.publishTextInputArea {
+    width: 450px;
+    margin: 4px;
+    padding: 5px;
+    resize: vertical;
+}
+
+.publishTextInput {
+    margin: 4px;
+    padding: 5px
+}
+
 .scrollArea {
     
 }
@@ -9,3 +21,33 @@
 #accordion-example {
 
 }
+
+.dateSeparator {
+    height: 500px;
+    font-weight: bold;
+}
+
+.dateContainer {
+
+}
+
+.dateTimePicker {
+    z-index: 1;
+}
+
+.dateTimePicker2 {
+    z-index: 2;
+}
+
+.dateTimePicker3 {
+    z-index: 3;
+}
+
+.dateTimePicker4 {
+    z-index: 4;
+}
+
+.dateTimePicker5 {
+    z-index: 5;
+}
+

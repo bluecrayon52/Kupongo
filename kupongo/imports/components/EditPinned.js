@@ -26,7 +26,7 @@ class EditPinned extends Component {
             <label htmlFor="">
               Title <br/>
               <input type="text"
-                     className="templateTextInput"
+                     className="pinTextInput"
                      onChange={(change) => {
                        this.setState({title: change.target.value}, () => {
                          this.props.onValuesChange(this.state);
@@ -37,7 +37,7 @@ class EditPinned extends Component {
 
             <label htmlFor="">
               Description <br/>
-              <textarea className="templateTextInputArea"
+              <textarea className="pinTextInputArea"
                      onChange={(change) => {
                        this.setState({description: change.target.value}, () => {
                          this.props.onValuesChange(this.state);
@@ -48,7 +48,7 @@ class EditPinned extends Component {
 
             <label htmlFor="">
               Instructions <br/>
-              <textarea className="templateTextInputArea"
+              <textarea className="pinTextInputArea"
                      onChange={(change) => {
                        this.setState({instructions: change.target.value}, () => {
                          this.props.onValuesChange(this.state);
@@ -60,7 +60,7 @@ class EditPinned extends Component {
             <label htmlFor="">
               Quantity <br/>
               <input type="number"
-                     className="templateTextInput"
+                     className="pinTextInput"
                      onChange={(change) => {
                        this.setState({quantity: change.target.value}, () => {
                          this.props.onValuesChange(this.state);
