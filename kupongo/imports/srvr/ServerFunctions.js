@@ -19,25 +19,25 @@ import bcrypt from 'bcryptjs';
 								2) Error Description - A string detailing what went wrong
 */
 function validateSalesUser(userID, coupon, callback){
-	console.log('[ServerFunctions]: validateSalesUser, title: '+ coupon.title);
-	// Get the company document
-	const companyDoc = CompanyDB.findOne({'companyName': coupon.companyName});
-	if (companyDoc) {
+    console.log('[ServerFunctions]: validateSalesUser, title: '+ coupon.title);
+    // Get the company document
+    const companyDoc = CompanyDB.findOne({'companyName': coupon.companyName});
+    if (companyDoc) {
     const userDoc = UserDB.findOne({'_id': userID});
     if (userDoc) {
       if(companyDoc.usedTokens.indexOf(userDoc.authenticationToken) > -1){
         // Add the coupon with the provided information to the database
         callback(null, null)
       }
-		} else {
+        } else {
       callback("Create-Coupon-Failure", "The user trying to insert a coupon "+
           "does not exist. Please sign up with a store account and try again")
-		}
-	} else {
+        }
+    } else {
     callback("Create-Coupon-Failure", "The user trying to insert a coupon "+
         "claims to be working with a company missing from our system. Please contact "+
         "us in order to figure out why your company is not listed.")
-	}
+    }
 }
 export {validateSalesUser};
 
@@ -54,14 +54,14 @@ export {validateSalesUser};
 								2) Error Description or array of coupon documents depending on if an error occurs
 */
 function getAllCreatedCoupons(salesID, callback){
-	CouponDB.find({"salesID" : salesID}, function(err, couponDocs){
-		if(err){
-			callback("Problem finding coupons for this user", err)
-		}
-		else{
-			callback(null, couponDocs)
-		}
-	})
+    CouponDB.find({"salesID" : salesID}, function(err, couponDocs){
+        if(err){
+            callback("Problem finding coupons for this user", err)
+        }
+        else{
+            callback(null, couponDocs)
+        }
+    })
 }
 
 
@@ -79,8 +79,8 @@ function getAllCreatedCoupons(salesID, callback){
 									 be collected. False for any other result.
 */
 function couponIsCollectable(userID, couponID, callback){
-	// Gets the user's document
-	let userDoc = UserDB.find({"_id":userID}).fetch();
+    // Gets the user's document
+    let userDoc = UserDB.find({"_id":userID}).fetch();
   if(userDoc){
     // Get the coupon's information from the _id provided
     let couponDoc = CouponDB.find({"_id":couponID});
@@ -119,26 +119,26 @@ export {couponIsCollectable};
 								2) Error Description or the list of collected coupons
 */
 function getCollectedCoupons(userID, callback){
-	// Get the user document
-	UserDB.find({"_id":userID}, function(userErr, userRes){
-		if(userErr){
-			callback(userErr, userRes)
-		}
-		else{
-			// Get the coupons that are in their userDoc in redacted form
-			CouponDB.find({"_id": { "$in": userRes.couponList}},
-			{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
-			function(couponErr, couponRes){
-				if(couponErr){
-					callback(couponErr, couponRes)
-				}
-				else{
-					// Return the list of coupons
-					callback(null, couponRes)
-				}
-			})
-		}
-	})
+    // Get the user document
+    UserDB.find({"_id":userID}, function(userErr, userRes){
+        if(userErr){
+            callback(userErr, userRes)
+        }
+        else{
+            // Get the coupons that are in their userDoc in redacted form
+            CouponDB.find({"_id": { "$in": userRes.couponList}},
+            { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
+            function(couponErr, couponRes){
+                if(couponErr){
+                    callback(couponErr, couponRes)
+                }
+                else{
+                    // Return the list of coupons
+                    callback(null, couponRes)
+                }
+            })
+        }
+    })
 }
 export {getCollectedCoupons};
 
@@ -154,59 +154,59 @@ export {getCollectedCoupons};
 								2) Error Description or array of coupon documents depending on if an error occurs
 */
 function getRedactedCoupons(userID, thisViewWindow, callback){
-	if(thisViewWindow == null){
-		UserDB.findOne({"_id":userID}, function(err, userDoc){
-			if(err || userDoc == null){
-				callback("Problem finding the user described", err)
-			}
-			else{
-				CouponDB.find(
-					// The search parameters
-				{"upperLat": {$gt: userDoc.viewWindow.upperLat},
-				"lowerLat": {$lt: userDoc.viewWindow.lowerLat},
-				"westLong": {$lt: userDoc.viewWindow.westLong},
-				"eastLong": {$gt: userDoc.viewWindow.eastLong}},
-				// The fields to exclude
-				{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
-				// The function the complete upon execution
-				function(err2, couponDocs){
-					if(err2){
-						callback("Error finding coupons", err2)
-					}
-					else{
-						callback(null, couponDocs)
-					}
-				})
-			}
-		})
-	}
-	else{
-		CouponDB.find(
-			// The search parameters
-		{"upperLat": {$gt: thisViewWindow.upperLat},
-		"lowerLat": {$lt: thisViewWindow.lowerLat},
-		"westLong": {$lt: thisViewWindow.westLong},
-		"eastLong": {$gt: thisViewWindow.eastLong}},
-		// The fields to exclude
-		{ "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
-		// The function the complete upon execution
-		function(err2, couponDocs){
-			if(err2){
-				callback("Error finding coupons", err2)
-			}
-			else{
-				UserDB.updateOne({"_id":userID}, {$set:{lastLattitude:latitude, lastLongitude:longitude, viewWindow:thisViewWindow}},
-				function(err3, res){
-					if(err3){
-						callback("Failed updating user location", err3)
-					}
-					else{
-						callback(null, couponDocs)
-					}
-				})
-			}
-		})
-	}
+    if(thisViewWindow == null){
+        UserDB.findOne({"_id":userID}, function(err, userDoc){
+            if(err || userDoc == null){
+                callback("Problem finding the user described", err)
+            }
+            else{
+                CouponDB.find(
+                    // The search parameters
+                {"upperLat": {$gt: userDoc.viewWindow.upperLat},
+                "lowerLat": {$lt: userDoc.viewWindow.lowerLat},
+                "westLong": {$lt: userDoc.viewWindow.westLong},
+                "eastLong": {$gt: userDoc.viewWindow.eastLong}},
+                // The fields to exclude
+                { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
+                // The function the complete upon execution
+                function(err2, couponDocs){
+                    if(err2){
+                        callback("Error finding coupons", err2)
+                    }
+                    else{
+                        callback(null, couponDocs)
+                    }
+                })
+            }
+        })
+    }
+    else{
+        CouponDB.find(
+            // The search parameters
+        {"upperLat": {$gt: thisViewWindow.upperLat},
+        "lowerLat": {$lt: thisViewWindow.lowerLat},
+        "westLong": {$lt: thisViewWindow.westLong},
+        "eastLong": {$gt: thisViewWindow.eastLong}},
+        // The fields to exclude
+        { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
+        // The function the complete upon execution
+        function(err2, couponDocs){
+            if(err2){
+                callback("Error finding coupons", err2)
+            }
+            else{
+                UserDB.updateOne({"_id":userID}, {$set:{lastLattitude:latitude, lastLongitude:longitude, viewWindow:thisViewWindow}},
+                function(err3, res){
+                    if(err3){
+                        callback("Failed updating user location", err3)
+                    }
+                    else{
+                        callback(null, couponDocs)
+                    }
+                })
+            }
+        })
+    }
 }
 export {getRedactedCoupons};
 
@@ -223,17 +223,17 @@ export {getRedactedCoupons};
 					data into database
 */
 function addNewUser(email, companyName, password, firstName, lastName, phoneNumber) {
-	if (UserDB.find({ 'email': email }).count() > 0) {
-		//Tell user email already has an account
-		callback('Account Exist Error', 'Account taken: This email has already been assigned to an existing account.');
-	} else {
-		//User is new, so insert information into databse
-		const saltRounds = 10;
-		bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
-			UserDB.insert({ email: email, companyName: companyName, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber });
-		}));
-		return true;
-	}
+    if (UserDB.find({ 'email': email }).count() > 0) {
+        //Tell user email already has an account
+        callback('Account Exist Error', 'Account taken: This email has already been assigned to an existing account.');
+    } else {
+        //User is new, so insert information into databse
+        const saltRounds = 10;
+        bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
+            UserDB.insert({ email: email, companyName: companyName, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber });
+        }));
+        return true;
+    }
 }
 export {addNewUser};
 
@@ -246,9 +246,9 @@ export {addNewUser};
 					login
 */
 function validateUser(email, password, callback){
-	var hashedPassword;
-	hashedPassword = UserDB.findOne({'email': email}).password;
-	const res = bcrypt.compareSync(password, hashedPassword);
+    var hashedPassword;
+    hashedPassword = UserDB.findOne({'email': email}).password;
+    const res = bcrypt.compareSync(password, hashedPassword);
   if(res === true){
     console.log('[srvr/ServerFunctions]','returning true');
     callback(null, null);
@@ -258,3 +258,29 @@ function validateUser(email, password, callback){
   }
 }
 export {validateUser};
+
+/*
+    Title:          addNewMobileUser
+    Description:    Checks to see if account is already active and entered information is correct.
+    Arguments:      email - Email of the user
+                    password - Password for user
+                    firstName - First name of user
+                    lastName - Last name of user
+                    phoneNumber - Phonenumber of user
+                    address - Address of iser
+    Returns:        Callback if account is already taken, otherwise insert new user
+                    data into database
+*/
+function addNewMobileUser(email, password, firstName, lastName, phoneNumber, address){
+    if(UserDB.find({'email':email}).count() > 0) {
+        //Account is already taken
+        callback('Account Exist Error', 'Account taken: This email has already been assigned to an existing account.');
+    } else {
+        //Account not taken
+        const saltRounds = 10;
+        bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
+            UserDB.insert({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, phoneNumber: phoneNumber});
+        }));
+        return true;
+    }
+}

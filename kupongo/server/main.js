@@ -8,6 +8,7 @@ import {CompanyDB} from './../imports/api/CompanyDoc';
 import {validateSalesUser} from './../imports/srvr/ServerFunctions';
 import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
+import {addNewMobileUser} from './../imports/srvr/ServerFunctions';
 import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';
 import bcrypt from 'bcryptjs';
 
@@ -118,6 +119,18 @@ Meteor.methods({
           throw new Meteor.Error(error, message);
         } else {
           console.log('[server/main]', 'returning true');
+          return true;
+        }
+      });
+    },
+
+    //Login mobile user
+    'registerMobileUser'(email, password, firstName, lastName, phoneNumber, address) {
+      return addNewMobileUser(email, password, firstName, lastName, phoneNumber, address, function(error, message){
+        if(error) {
+          throw new Meteor.Error(error, message);
+        } else {
+          consle.log('[server/main]', 'returning true');
           return true;
         }
       });
@@ -263,5 +276,5 @@ Meteor.methods({
       }).fetch()
     }
 
-
+    
 });
