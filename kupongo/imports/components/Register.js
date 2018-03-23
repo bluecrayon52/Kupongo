@@ -124,6 +124,8 @@ class Register extends Component {
                                   ReactDOM.findDOMNode(this.refs.lastNameInput).value = '';
                                   ReactDOM.findDOMNode(this.refs.phoneNumberInput).value = '';
 
+                                  Meteor.call('sendEmail', email);
+
                                   console.log("register form submitted");
 
                                   // Redirect

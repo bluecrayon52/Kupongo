@@ -11,8 +11,13 @@ import {validateUser} from './../imports/srvr/ServerFunctions';
 import {addNewMobileUser} from './../imports/srvr/ServerFunctions';
 import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';
 import bcrypt from 'bcryptjs';
+import {Email} from 'meteor/email';
 
 Meteor.startup(function () {
+
+  //Setting up sending emails to users
+  process.env.MAIL_URL = "smtps://postmaster%40sandbox3d6f88d2622745958ead25b71d9b550a.mailgun.org:7a0f7e08c7801f36350d8ebcac04cc1d-db1f97ba-0cf37926@smtp.mailgun.org:465";
+
   // Test coupon
   CouponDB.insert(
     {
@@ -100,6 +105,16 @@ Meteor.startup(function () {
 });
 
 Meteor.methods({
+
+  //Send email to user
+  'sendEmail'(email){
+    Email.send({
+      to: email,
+      from: "kupongoteam@kupongo.com",
+      subject: "Welcome to Kupongo!",
+      text: "Thanks for registering!",
+    });
+  },
 
     //Register new user
     'register'(email, companyName, password, firstName, lastName, phoneNumber) {
