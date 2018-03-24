@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Text,
   Button,
-  View
+  View,
+  TextInput
 } from 'react-native';
 
 
@@ -25,8 +26,20 @@ export default class Login extends Component {
             Welcome to Kupongo!
           </Text>
           <Text style={styles.instructions}>
-            To get started, login. {this.state.pressed}
+            To get started, login.
           </Text>
+	<TextInput
+   	 style={styles.input}
+	 placeholder="Email"
+   	 ref="email" 
+  	/>
+	<TextInput 
+		 ref="Password"  
+                 style={styles.input} 
+		  placeholder="Password" 
+                 secureTextEntry  
+               /> 
+	  
           <Button
               onPress={() => {this.props.navigation.navigate('LiveMap', {
                 // TODO(anyone): Replace this with actual user info upon login.
@@ -37,6 +50,12 @@ export default class Login extends Component {
               )}}
               title="Login"
           />
+
+	<Text style={{color: 'green'}}
+      onPress={() => this.props.navigation.navigate('Register')}>
+  	Don't have an Account? Sign up !
+	</Text>
+	
         </View>
     );
   }
@@ -54,6 +73,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
+  input: {  
+     paddingHorizontal: 10, 
+  }, 
   instructions: {
     textAlign: 'center',
     color: '#333333',
