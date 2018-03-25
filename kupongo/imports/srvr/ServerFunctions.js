@@ -284,3 +284,30 @@ function addNewMobileUser(email, password, firstName, lastName, phoneNumber, add
         return true;
     }
 }
+export {addNewMobileUser};
+
+/*
+    Title:          updateUserPassword
+    Description:    Updates user password to new password entered.
+    Arguments:      email - Email of the user
+                    oldPassword - Old password for user
+                    newPassword - New password for user
+    Returns:        Callback if information does not match up.
+*/
+function updateUserPassword(email, oldPassword, newPassword) {
+    var oldHashedPassword;
+    oldHashedPassword = UserDB.findOne({'email': email}).password;
+    const res = bcrypt.compareSync(oldPassword, oldHashedPassword);
+    if (res === true) {
+        console.log('[srvr/ServerFunctions]', 'returning true');
+        const saltRounds = 10;
+        bcrypt.hash(newPassword, saltRounds, Meteor.bindEnvironment(function (err, hash) {
+            UserDB.updateOne({'email': email}, {$set: {password: hash}});
+        }));
+        callback(null, null);
+        return true;
+    } else {
+        callback("Incorrect information', 'Wrong email or password entered.");
+    }
+}
+export {updateUserPassword};
