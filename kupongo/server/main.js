@@ -12,11 +12,16 @@ import {addNewMobileUser} from './../imports/srvr/ServerFunctions';
 import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';
 import bcrypt from 'bcryptjs';
 import {Email} from 'meteor/email';
+import {canRedeemCoupon} from './../imports/srvr/ServerFunctions';
 
 Meteor.startup(function () {
 
   //Setting up sending emails to users
   process.env.MAIL_URL = "smtps://postmaster%40sandbox3d6f88d2622745958ead25b71d9b550a.mailgun.org:7a0f7e08c7801f36350d8ebcac04cc1d-db1f97ba-0cf37926@smtp.mailgun.org:465";
+  // Add dummy user and company.
+  let companyName = 'Coke';
+  let userId = 'safns';
+  let token = 'token1';
 
   // Test coupon
   CouponDB.insert(
@@ -46,13 +51,38 @@ Meteor.startup(function () {
       "quantity":         12,
       "preViewingDate":   new Date(),  // default date of pinning
       "collectStartDate": new Date(),  // default date of pinning
-      "collectEndDate":   new Date(),  // default collectStartDate + 24 hrs
+      "collectEndDate":   new Date(new Date().getTime() + (60*60*24)),  // default collectStartDate + 24 hrs
       "redeemStartDate":  new Date(), // default date of pinning
-      "redeemEndDate":    new Date(), // default redeemStartDate + 30 days
+      "redeemEndDate":    new Date(new Date().getTime() + (60*60*24*30)), // default redeemStartDate + 30 days
     }, function(error, result){
       console.log("Error = " + error)
       console.log("Resulting id = " + result)
+      //let coupon =
       console.log(CouponDB.find({"_id":result}).fetch())
+      UserDB.find({}).forEach(function(doc){
+        if(doc._id != "safns"){
+          console.log("USER = " + doc._id)
+          Meteor.call("collectCoupon", doc._id, result, function(err, res){
+            if(err){
+              console.log(err)
+              console.log(res)
+            }
+            else{
+              console.log("COUPON COLLECTED")
+              console.log("Coupon ID = " + doc.couponList[0])
+              // Try to redeem it
+              Meteor.call("redeemCoupon", doc._id, result, function(err2, res2){
+                console.log("Err = " + err2)
+                console.log("Res = " + res2)
+              })
+            }
+
+          })
+        }
+      })
+
+      //console.log(coupon)
+
     }
   )
 
@@ -72,16 +102,13 @@ Meteor.startup(function () {
     }
     else{
       console.log("result = " + result)
-      CouponTemplateDB.find({"_id":couponTemplate._id}, function(err, docs){
-        console.log(docs)
-      })
+      let couponTemp = CouponTemplateDB.find({"_id":result}).fetch()
+      console.log("Template = ")
+      console.log(couponTemp)
     }
   });
 
-  // Add dummy user and company.
-  let companyName = 'Coke';
-  let userId = 'safns';
-  let token = 'token1';
+
 
   if (CompanyDB.find({companyName: companyName}).count() === 0){
     CompanyDB.insert({
@@ -95,10 +122,12 @@ Meteor.startup(function () {
   }
 
   // Test user account, may need to add more fields but this will do for now.
-  let customerId = 'asdf';
+  let customerId = 'asda';
   if (UserDB.find({_id: customerId}).count() === 0) {
-    UserDB.insert(new Customer({_id: customerId, couponList: []}).toMongoDoc());
+    UserDB.insert(new Customer({"_id": customerId, "couponList": []}, "lastLatitude":35.113, "lastLongitude": 54.12).toMongoDoc());
   }
+
+
 
   // Added so that we can test Mongo's spatial queries.
   CouponDB.rawCollection().createIndex({location: '2dsphere'});
@@ -262,7 +291,7 @@ Meteor.methods({
     // Places the coupon in the user's collected list if they are within the coupon's area
     'collectCoupon'(userID, couponID){
       couponIsCollectable(userID, couponID, function(error, isCollectable){
-        console.log(error);
+        console.log("Collecting coupon = " + couponID);
         if(isCollectable){
           // Collect the coupon
           UserDB.update({"_id" : userID}, {$addToSet: {"couponList" : couponID}}, function(err, result){
@@ -273,6 +302,33 @@ Meteor.methods({
               return true;
             }
           })
+        }
+        else{
+          throw new Meteor.Error("Collection Unsuccessful", error)
+        }
+      })
+    },
+
+    // Redeems the coupon by passing back an almost-full coupon doc and removing it from their collection
+    'redeemCoupon'(userID, couponID){
+      console.log("Checking redeemability with " + userID)
+      // Get the user's document to make sure they have the coupon that is being redeemed
+      canRedeemCoupon(userID, couponID, function(errObj, userDoc, couponDoc){
+        if(errObj){
+          throw new Meteor.Error(errObj.code, errObj.message)
+        }
+        else{
+          // // Remove the coupon from the user's document and return the full coupon
+          // UserDB.update({"_id": userID}, {"$pull": {"couponList" : couponID}}, function(err, docsAffected){
+          //   console.log("Got into UserDB in meteor function")
+          //   if(err){
+          //     throw new Meteor.Error("Database Error", "Unable to remove the coupon from the user's"
+          //     + " collected list")
+          //   }
+          //   else{
+          //     return couponDoc
+          //   }
+          // })
         }
       })
     },
@@ -291,5 +347,5 @@ Meteor.methods({
       }).fetch()
     }
 
-    
+
 });
