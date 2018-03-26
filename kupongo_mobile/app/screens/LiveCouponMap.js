@@ -57,6 +57,7 @@ class LiveCouponMap extends Component {
       },
       selectedIcon: require('../../assets/selected_coupon.png'),
       couponIcon: require('../../assets/coupon.png'),
+      userIcon: require('../../assets/user.png'),
       user: this.props.navigation.state.params.user,
       coupons: []
     };
@@ -67,7 +68,6 @@ class LiveCouponMap extends Component {
         <View style={styles.container}>
           <MapView
               ref="map"
-              showsUserLocation={true}
               minZoomLevel={15}
               onMapReady={this.mapReady.bind(this)}
               showsMyLocationButton={true}
@@ -114,7 +114,7 @@ class LiveCouponMap extends Component {
              marker the maps shows natively.
              TODO(david): Animate this so it smoothly moves to new location. */}
             <MapView.Marker
-                pinColor={"#0000FF"}
+                image={this.state.userIcon}
                 coordinate={this.state.userLocation}
             />
           </MapView>
@@ -236,7 +236,7 @@ class LiveCouponMap extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = '152.13.87.203';
+    let ip = '';
     Meteor.connect(`ws://${ip}:3000/websocket`)
   }
 
