@@ -16,7 +16,7 @@ class PinMap extends Component {
         >
           {pins.map((marker, index) => {
             return (
-                <CouponPinMarker
+                <CouponPinMarker key={index}
                     {...this.props}
                     pin={marker}
                     index={index}

@@ -13,11 +13,11 @@ class PublishPins extends Component {
         this.state = {...this.props};
     }
     render() {
-        console.log('[PublishPins]: render, this.state.unPublishedPins[0].title: '+this.state.unPublishedPins[0].title);
+        // console.log('[PublishPins]: render, this.state.unPublishedPins[0].title: '+this.state.unPublishedPins[0]._id);
         // first dynamically render a Panel for each coupon pin location 
-        var pins = this.state.unPublishedPins.map((pin, i)=>{    
+        var pins = this.state.unPublishedPins.map((pin, i) => {    
             return (
-                <Panel eventKey={i}>
+                <Panel eventKey={i} key={i}>
                     <Panel.Heading>
                         <Panel.Title toggle>{pin.title}</Panel.Title>
                     </Panel.Heading>
@@ -29,7 +29,7 @@ class PublishPins extends Component {
                                 className="publishTextInput"
                                 onChange={(change) => {
                                     this.setState({
-                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
+                                        unPublishedPins: this.state.unPublishedPins.map((pin, index) => {
                                             if (index === i) {
                                                 return {
                                                     ...pin, 
@@ -37,7 +37,7 @@ class PublishPins extends Component {
                                                 };
                                             }
                                         })
-                                    },  ()=>  {
+                                    },  () => {
                                             this.props.onValuesChange(this.state.unPublishedPins);
                                         });
                                 }}
@@ -225,7 +225,7 @@ class PublishPins extends Component {
                                  }}
                             value={pin.redeemEndDate}/>
                         </div>
-                        <div class='dateSeparator'></div> 
+                        <div className='dateSeparator'></div> 
                     </Panel.Body>
                 </Panel>
             );
