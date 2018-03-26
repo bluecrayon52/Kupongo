@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
+import ReactDOM from 'react-dom';
 
 import {
   StyleSheet,
@@ -91,14 +92,67 @@ export default class Register extends Component {
   }
 
   process() {
-    this.props.navigation.navigate('Home', {
-          user: {
-            _id: 'asdf',
-            couponList: new Set()
-          }
-        }
-    );
+        const email = this.state.email;
+        const firstName = this.state.firstName;
+        const lastName = this.state.lastName;
+        const phoneNumber = this.state.phoneNumber;
+        const password = this.state.password;
+        const address = this.state.address;
+        const minLengthPassword=12;
+        const lengthPhoneNumber=10;
+        const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{12,}$/;
+
+        if (email == '' || firstName == '' || lastName == '' || phoneNumber == '' || password == '' || address == '')
+{alert("Please fill in the blanks.");}
+else {
+            //Check if password or phonenumber are minimum length
+            if (password.length < minLengthPassword || phoneNumber.length !== lengthPhoneNumber) {
+                //Throw error
+                console.log("Pasword or phonenumber are not minimum length.");
+                alert("Password must be AT LEAST 12 character long and phonenumber must be EXACTLY 10 characters long.");
+              }
+              else{
+                if (!(email.indexOf('@') >= 0)){
+                  console.log("Email not formated correctly.");
+                  alert("Email not formated correctly");
+                }else
+                if(!regularExpression.test(password)){
+                  console.log("Password must have at least one special character and one number.");
+                  alert("Password must have at least one special character and one number.");
+                }
+                /* Re-route this to meteor register server when it works  */
+                else{this.props.navigation.navigate('Home', {
+                      user: {
+                        _id: 'asdf',
+                        couponList: new Set()
+                      }
+                    }
+                );
+              /*
+                Meteor.call('registerMobileUser', email, password, firstName, lastName, phoneNumber, address, (err, result) =>{
+                  if (result===true){
+                    console.log("register was successful");
+                    Meteor.call('sendEmail', email); //send email
+                    this.props.navigation.navigate('Home', {
+                          user: {
+                            _id: 'asdf',
+                            couponList: new Set()
+                          }
+                        }
+                    );
+                  }
+                  else{
+                    alert("Account is already active.");
+                    this.props.navigation.navigate('Register');
+                  }
+
+                });
+
+  }*/
   }
+}
+}
+}
 
   componentWillMount() {
     // Make sure you run "npm run start" on the kupongo project so the server is up.
@@ -107,7 +161,7 @@ export default class Register extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = '192.168.0.10';
+    let ip = '';
     Meteor.connect(`ws://${ip}:3000/websocket`)
   }
 }
