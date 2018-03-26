@@ -9,7 +9,9 @@ import {validateSalesUser} from './../imports/srvr/ServerFunctions';
 import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
 import {addNewMobileUser} from './../imports/srvr/ServerFunctions';
-import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';//
+import {updateUserPassword} from './../imports/srvr/ServerFunctions';
+import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';
+
 import bcrypt from 'bcryptjs';
 import {Email} from 'meteor/email';
 import {canRedeemCoupon} from './../imports/srvr/ServerFunctions';
@@ -171,6 +173,17 @@ Meteor.startup(function () {
 });
 
 Meteor.methods({
+
+  //Update user password
+  'updatePassword'(email, oldPassword, newPassword){
+    return updateUserPassword(email, oldPassword, newPassword, function(error, message){
+      if(error) {
+        throw new Meteor.Error(error, message);
+      } else {
+        return true;
+      }
+    });
+  },
 
   //Send email to user
   'sendEmail'(email){
