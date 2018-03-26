@@ -1,5 +1,5 @@
 /**
- * Initial screen to login users.
+ * Update Password
  */
 
 import React, {Component} from 'react';
@@ -19,7 +19,8 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pressed: 'Not pressed'
+      pressed: 'Not pressed',
+      newPassword: ''
     }
   }
   render() {
@@ -29,7 +30,7 @@ export default class Login extends Component {
             Welcome to Kupongo!
           </Text>
           <Text style={styles.instructions}>
-            To get started, login.
+            Update your Password
           </Text>
           <TextInput
               style={styles.input}
@@ -40,35 +41,33 @@ export default class Login extends Component {
           />
           <TextInput
               style={styles.input}
-              placeholder="Password"
+              placeholder="Enter Current Password"
               ref="passwordinput"
               name="password"
               onChangeText={(text) => this.setState({password: text})}
               secureTextEntry={true}
           />
-
-          <Button
-              onPress={() =>
-                {
-                  this.processLogin();
-                }
-              }
-              title="Login"
+          <TextInput
+              style={styles.input}
+              placeholder="Enter New Password"
+              ref="newPasswordinput"
+              name="newPassword"
+              onChangeText={(text) => this.setState({newPassword: text})}
+              secureTextEntry={true}
           />
-
-	<Text style={{color: 'green'}}
-      onPress={() => this.props.navigation.navigate('Register')}>
-  	Don't have an Account? Sign up !
-	</Text>
-
+          <Button
+              onPress={() => {
+                this.update();
+              }}
+              title="Submit"
+          />
         </View>
     );
   }
-
-  processLogin(){
+  update() {
     const email = this.state.email;
     const password = this.state.password;
-    /* Re-route this to meteor register server when it works  */
+    const newPassword = this.state.newPassword;
     this.props.navigation.navigate('Home', {
           user: {
             _id: 'asdf',
@@ -76,24 +75,23 @@ export default class Login extends Component {
           }
         }
     );
-
-/*
-    Meteor.call('login', email, password, (err, result) =>{
-      if(result === true){
-        this.props.navigation.navigate('Home', {
-              user: {
-                _id: 'asdf',
-                couponList: new Set()
-              }
+    /*
+  Meteor.call('updatePassword', email, password, newPassword, (err, result) =>{
+    if(result===true){
+      this.props.navigation.navigate('Home', {
+            user: {
+              _id: 'asdf',
+              couponList: new Set()
             }
-        );
-    }
-    else{
-      alert("Incorrect information entered.");
+          }
+      );
+    } else{
       this.setState({email: ''});
       this.setState({password: ''});
-      //figure out how to clear fields
-      this.props.navigation.navigate('Main', {
+      this.setState({newPassword: ''});
+      //Figure out how to clear the TextInput
+      alert("Email or current password incorrect");
+      this.props.navigation.navigate('UpdatePassword', {
             user: {
               _id: 'asdf',
               couponList: new Set()
@@ -101,9 +99,8 @@ export default class Login extends Component {
           }
       );
     }
-
-    });
-    */
+  });
+  */
 
   }
   componentWillMount() {
@@ -130,12 +127,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  input: {
-     paddingHorizontal: 10,
-  },
   instructions: {
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
   },
+  input: {
+    paddingHorizontal: 10,
+  }
 });

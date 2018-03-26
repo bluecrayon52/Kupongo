@@ -9,6 +9,8 @@ import Login from './screens/Login';
 import LiveCouponMap from './screens/LiveCouponMap'
 import Register from './screens/Register';
 import Home from './screens/Home';
+import Updatepassword from './screens/Updatepassword';
+
 
 import { StackNavigator } from 'react-navigation';
 
@@ -36,6 +38,12 @@ Home: {
     screen: Home,
     navigationOptions: {
       title: "Home"
+    }
+  },
+Updatepassword: {
+    screen: Updatepassword,
+    navigationOptions: {
+      title: "Updatepassword"
     }
   }
   // Other screens go here too in the same format

@@ -15,8 +15,6 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      Password: ''
     }
   }
   render() {
@@ -25,8 +23,11 @@ export default class Login extends Component {
           <Text style={styles.welcome}>
             Welcome to Kupongo!
           </Text>
-          <Text style={styles.instructions}>
-          </Text>
+
+          <Text style={{color: 'green'}}
+              onPress={() => this.props.navigation.navigate('Updatepassword')}>
+              Update Password
+        	</Text>
 
           <Button
               onPress={() => {this.props.navigation.navigate('LiveMap', {
