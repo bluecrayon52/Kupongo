@@ -9,7 +9,7 @@ import {validateSalesUser} from './../imports/srvr/ServerFunctions';
 import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
 import {addNewMobileUser} from './../imports/srvr/ServerFunctions';
-import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';
+import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';//
 import bcrypt from 'bcryptjs';
 import {Email} from 'meteor/email';
 import {canRedeemCoupon} from './../imports/srvr/ServerFunctions';
@@ -22,6 +22,43 @@ Meteor.startup(function () {
   let companyName = 'Coke';
   let userId = 'safns';
   let token = 'token1';
+
+  // let user = UserDB.findOne({"_id":'qXWfYLk87k2pxtXWd'})
+  // let coupon = CouponDB.findOne({"_id":'H8kp39dfGyi8kvN3r'})
+  // console.log(user)
+  // console.log(coupon)
+  // //
+  // Meteor.call("redeemCoupon", user._id, coupon._id, function(err, res){
+  //   if(err){
+  //     console.log(err)
+  //     console.log(res)
+  //   }
+  //   else{
+  //     console.log("COUPON REDEEMED")
+  //
+  //   }
+  // })
+
+  // Meteor.call("collectCoupon", user._id, coupon._id, function(err, res){
+  //   if(err){
+  //     console.log(err)
+  //     console.log(res)
+  //   }
+  //   else{
+  //     console.log("Coupon Collected")//
+  //   }
+  // })
+
+
+
+  // Meteor.call("updateCurrentLocation", user._id, -35.113, 54.1134, function(err, res){
+  //   if(err){
+  //     console.log(err)
+  //     console.log(res)
+  //   }
+  // })
+
+
 
   // Test coupon
   CouponDB.insert(
@@ -51,9 +88,9 @@ Meteor.startup(function () {
       "quantity":         12,
       "preViewingDate":   new Date(),  // default date of pinning
       "collectStartDate": new Date(),  // default date of pinning
-      "collectEndDate":   new Date(new Date().getTime() + (60*60*24)),  // default collectStartDate + 24 hrs
+      "collectEndDate":   new Date(new Date().getTime() + (60*60*24* 1000)),  // default collectStartDate + 24 hrs
       "redeemStartDate":  new Date(), // default date of pinning
-      "redeemEndDate":    new Date(new Date().getTime() + (60*60*24*30)), // default redeemStartDate + 30 days
+      "redeemEndDate":    new Date(new Date().getTime() + (60*60*24*30 * 1000)), // default redeemStartDate + 30 days
     }, function(error, result){
       console.log("Error = " + error)
       console.log("Resulting id = " + result)
@@ -253,6 +290,8 @@ Meteor.methods({
 
     // Updates the user's current location so the subscription will give nearby items
     'updateCurrentLocation'(userID, lat, lng){
+      console.log("Lat = " + lat)
+      console.log("Long = " + lng)
       // TODO Create a security system so a user cannot change someone else's location
       UserDB.update({'_id': userID}, {$set: {'lastLatitude': lat, 'lastLongitude': lng}}, function(err, res){
         if(err){
@@ -294,7 +333,7 @@ Meteor.methods({
         console.log("Collecting coupon = " + couponID);
         if(isCollectable){
           // Collect the coupon
-          UserDB.update({"_id" : userID}, {$addToSet: {"couponList" : couponID}}, function(err, result){
+          UserDB.update({"_id" : userID}, {$addToSet: {"couponWallet" : couponID}}, function(err, result){
             if(err){
               throw new Meteor.Error("Error adding to collected List. Collection Failed", err)
             }
@@ -318,17 +357,19 @@ Meteor.methods({
           throw new Meteor.Error(errObj.code, errObj.message)
         }
         else{
-          // // Remove the coupon from the user's document and return the full coupon
-          // UserDB.update({"_id": userID}, {"$pull": {"couponList" : couponID}}, function(err, docsAffected){
-          //   console.log("Got into UserDB in meteor function")
-          //   if(err){
-          //     throw new Meteor.Error("Database Error", "Unable to remove the coupon from the user's"
-          //     + " collected list")
-          //   }
-          //   else{
-          //     return couponDoc
-          //   }
-          // })
+          // Remove the coupon from the user's document and return the full coupon
+          console.log("Coupon being removed = ")
+          console.log(couponDoc)
+          UserDB.update({"_id": userID}, {"$pull": {"couponWallet" : couponID}}, function(err, docsAffected){
+            console.log("Got into UserDB in meteor function")
+            if(err){
+              throw new Meteor.Error("Database Error", err)
+            }
+            else{
+              console.log("Should be returning the doc")
+              return couponDoc
+            }
+          })
         }
       })
     },

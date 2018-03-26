@@ -83,14 +83,14 @@ function canRedeemCoupon(userID, couponID, callback){
   console.log("Beginning redeemable check")
   let userDoc = null
   let couponDoc = null
-  UserDB.find({"_id":userID}, function(userErr, userRes){
+  UserDB.find({"_id":userID}).map(function(userRes){
     console.log("Got something from UserDB")
-    if(userErr){
-      callback({"code": "Error finding the user", "message": userErr}, null, null)
+    if(!userRes){
+      callback({"code": "Error finding the user", "message": "A user matching that ID was unable to be retrieved"}, null, null)
     }
     else{
       // Check if the coupon is in their collection.
-      if(userRes.collection == null || userRes.collection.indexOf(couponID) == -1){
+      if(userRes.couponWallet == null || userRes.couponWallet.indexOf(couponID) == -1){
         callback({"code": "Coupon not collected", "message":"The coupon you are attempting to "
         +"redeem has not been collected yet. Please collect the coupon before trying to redeem it."}, null, null)
       }
@@ -106,29 +106,29 @@ function canRedeemCoupon(userID, couponID, callback){
       }
     }
   })
-  // CouponDB.find({"_id":couponID}, { "salesID":0, "templateID":0 }, function(couponErr, couponRes){
-  //   console.log("Got something from CouponDB")
-  //   if(couponErr){
-  //     callback({"code":"Coupon not found", "message":"The coupon by that ID does not exist"}, null, null)
-  //   }
-  //   // Check if it it within the redemption window
-  //   else{
-  //     if(couponRes.redeemStartDate > new Date() || couponRes.redeemEndDate < new Date()){
-  //       callback({"code":"Coupon outside of redemption window", "message":"The coupon you are "
-  //       + "trying to collect is not available to be redeemed at this time. Please "
-  //       + "check the date listed by the coupon."}, null, null)
-  //     }
-  //     else{
-  //       // The coupon can be collected
-  //       if(userDoc != null){
-  //         callback(null,userDoc, couponRes)
-  //       }
-  //       else{
-  //         couponDoc = couponRes
-  //       }
-  //     }
-  //   }
-  // })
+  CouponDB.find({"_id":couponID}, { "salesID":0, "templateID":0 }).map(function(couponRes){
+    console.log("Got something from CouponDB")
+    if(!couponRes){
+      callback({"code":"Coupon not found", "message":"The coupon by that ID does not exist"}, null, null)
+    }
+    // Check if it it within the redemption window
+    else{
+      if(couponRes.redeemStartDate > new Date() || couponRes.redeemEndDate < new Date()){
+        callback({"code":"Coupon outside of redemption window", "message":"The coupon you are "
+        + "trying to collect is not available to be redeemed at this time. Please "
+        + "check the date listed by the coupon."}, null, null)
+      }
+      else{
+        // The coupon can be collected
+        if(userDoc != null){
+          callback(null,userDoc, couponRes)
+        }
+        else{
+          couponDoc = couponRes
+        }
+      }
+    }
+  })
 }
 export {canRedeemCoupon}
 
@@ -194,7 +194,7 @@ function getCollectedCoupons(userID, callback){
         }
         else{
             // Get the coupons that are in their userDoc in redacted form
-            CouponDB.find({"_id": { "$in": userRes.couponList}},
+            CouponDB.find({"_id": { "$in": userRes.couponWallet}},
             { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
             function(couponErr, couponRes){
                 if(couponErr){
