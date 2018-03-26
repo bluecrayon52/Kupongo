@@ -64,6 +64,73 @@ function getAllCreatedCoupons(salesID, callback){
     })
 }
 
+/*
+	Title: 				canRedeemCoupon
+	Description: 	Checks if the user has permission to redeem this coupon. This means
+                that it must be within the redemption date and must exist in the user's collection.
+	Arguments:		userID - The _id field attached to this user's document.
+								couponID - The _id field of the coupon attempting to be redeemed
+								callback - The function that will run after the search is complete
+	Returns:			Done via callback:
+								1) Error Message -  A JSON object with code and message components that
+                  specify what should go in the meteor.error
+								2) userDoc - The user's document that was being checked to avoid
+                  having multiple calls to the same database
+                3) couponDoc - The slightly redacted user doc that can be passed
+                  back upon redemption
+*/
+function canRedeemCoupon(userID, couponID, callback){
+  console.log("Beginning redeemable check")
+  let userDoc = null
+  let couponDoc = null
+  UserDB.find({"_id":userID}).map(function(userRes){
+    console.log("Got something from UserDB")
+    if(!userRes){
+      callback({"code": "Error finding the user", "message": "A user matching that ID was unable to be retrieved"}, null, null)
+    }
+    else{
+      // Check if the coupon is in their collection.
+      if(userRes.couponWallet == null || userRes.couponWallet.indexOf(couponID) == -1){
+        callback({"code": "Coupon not collected", "message":"The coupon you are attempting to "
+        +"redeem has not been collected yet. Please collect the coupon before trying to redeem it."}, null, null)
+      }
+      // The user has the coupon
+      else{
+        // Can be collected on the user end. Signal so.
+        if(couponDoc != null){
+          callback(null, userRes, couponDoc)
+        }
+        else{
+          userDoc = userRes
+        }
+      }
+    }
+  })
+  CouponDB.find({"_id":couponID}, { "salesID":0, "templateID":0 }).map(function(couponRes){
+    console.log("Got something from CouponDB")
+    if(!couponRes){
+      callback({"code":"Coupon not found", "message":"The coupon by that ID does not exist"}, null, null)
+    }
+    // Check if it it within the redemption window
+    else{
+      if(couponRes.redeemStartDate > new Date() || couponRes.redeemEndDate < new Date()){
+        callback({"code":"Coupon outside of redemption window", "message":"The coupon you are "
+        + "trying to collect is not available to be redeemed at this time. Please "
+        + "check the date listed by the coupon."}, null, null)
+      }
+      else{
+        // The coupon can be collected
+        if(userDoc != null){
+          callback(null,userDoc, couponRes)
+        }
+        else{
+          couponDoc = couponRes
+        }
+      }
+    }
+  })
+}
+export {canRedeemCoupon}
 
 /*
 	Title: 				couponIsCollectable
@@ -86,15 +153,17 @@ function couponIsCollectable(userID, couponID, callback){
     let couponDoc = CouponDB.find({"_id":couponID});
     if(couponDoc){
       // Compare the lat/longs to find if it is possible
-      if( (userDoc.lastLatitude <= couponDoc.upperLat && userDoc.lastLatitude >= couponDoc.lowerLat) &&
-          (userDoc.lastLongitude <= couponDoc.eastLong && userDoc.lastLongitude >= couponDoc.westLong) &&
-          (couponDoc.collectStartDate <= new Date() && couponDoc.collectEndDate >= new Date())
-        ){
-        // The coupon is within the valid range of long and lat, and within the correct dates
-        callback(null, true)
+      if(!isBetween(userDoc.lastLatitude, couponDoc.upperLat, couponDoc.lowerLat) ){
+        callback("User not within the latitude boundaries for collection", false)
+      }
+      else if(!isBetween(userDoc.lastLongitude, couponDoc.eastLong, couponDoc.westLong)){
+        callback("User not within the longitude boundaries for collection", false)
+      }
+      else if(couponDoc.collectStartDate <= new Date() && couponDoc.collectEndDate >= new Date()){
+        callback("This coupon is not elligible for collection at this time", false)
       }
       else{
-        callback("Coupon not currently available for collection", false)
+        callback(null, true)
       }
     }
     else{
@@ -105,7 +174,6 @@ function couponIsCollectable(userID, couponID, callback){
     callback('User not found', false)
   }
 }
-
 export {couponIsCollectable};
 
 /*
@@ -126,7 +194,7 @@ function getCollectedCoupons(userID, callback){
         }
         else{
             // Get the coupons that are in their userDoc in redacted form
-            CouponDB.find({"_id": { "$in": userRes.couponList}},
+            CouponDB.find({"_id": { "$in": userRes.couponWallet}},
             { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
             function(couponErr, couponRes){
                 if(couponErr){
@@ -211,16 +279,16 @@ function getRedactedCoupons(userID, thisViewWindow, callback){
 export {getRedactedCoupons};
 
 /*
-	Title: 			addNewUser
+	Title: 			  addNewUser
 	Description: 	Checks to see if account is already active.
 	Arguments:		email - Email of the user
-					companyName - Name of company for user
-					password - Password for user
-					firstName - First name of user
-					lastName - Last name of user
-					phoneNumber - PhoneNumber of user
-	Returns:		Callback if account is already taken, otherwise insert new user
-					data into database
+					      companyName - Name of company for user
+					      password - Password for user
+					      firstName - First name of user
+					      lastName - Last name of user
+					      phoneNumber - PhoneNumber of user
+	Returns:		  Callback if account is already taken, otherwise insert new user
+					      data into database
 */
 function addNewUser(email, companyName, password, firstName, lastName, phoneNumber) {
     if (UserDB.find({ 'email': email }).count() > 0) {
@@ -238,12 +306,12 @@ function addNewUser(email, companyName, password, firstName, lastName, phoneNumb
 export {addNewUser};
 
 /*
-	Title: 			validateUser
+	Title: 			  validateUser
 	Description: 	Checks to see if account is already active and entered information is correct.
 	Arguments:		email - Email of the user
-					password - Password for user
-	Returns:		Callback if information is entered incorrectly, otherwise continue with
-					login
+					      password - Password for user
+	Returns:		  Callback if information is entered incorrectly, otherwise continue with
+					      login
 */
 function validateUser(email, password, callback){
     var hashedPassword;
@@ -267,7 +335,7 @@ export {validateUser};
                     firstName - First name of user
                     lastName - Last name of user
                     phoneNumber - Phonenumber of user
-                    address - Address of iser
+                    address - Address of user
     Returns:        Callback if account is already taken, otherwise insert new user
                     data into database
 */
@@ -285,6 +353,29 @@ function addNewMobileUser(email, password, firstName, lastName, phoneNumber, add
     }
 }
 export {addNewMobileUser};
+
+
+/*
+    Title:          isBetween
+    Description:    Checks to see if a number is between two other numbers. Order doesn't matter
+    Arguments:      num - The number to check
+                    bound1 - A boundary number
+                    bound2 - The second boundary number
+    Returns:        True if num is between bound1 and bound2, false otherwise
+*/
+function isBetween(num, bound1, bound2){
+  if(num > bound1 && num > bound2){
+    return false
+  }
+  else if(num < bound1 && num < bound2){
+    return false
+  }
+  else{
+    return true
+  }
+}
+
+
 
 /*
     Title:          updateUserPassword
