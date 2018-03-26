@@ -363,7 +363,6 @@ Meteor.methods({
 
     // Redeems the coupon by passing back an almost-full coupon doc and removing it from their collection
     'redeemCoupon'(userID, couponID){
-      console.log("Checking redeemability with " + userID)
       // Get the user's document to make sure they have the coupon that is being redeemed
       canRedeemCoupon(userID, couponID, function(errObj, userDoc, couponDoc){
         if(errObj){
@@ -371,15 +370,13 @@ Meteor.methods({
         }
         else{
           // Remove the coupon from the user's document and return the full coupon
-          console.log("Coupon being removed = ")
-          console.log(couponDoc)
+          // console.log("Coupon being removed = ")
+          // console.log(couponDoc)
           UserDB.update({"_id": userID}, {"$pull": {"couponWallet" : couponID}}, function(err, docsAffected){
-            console.log("Got into UserDB in meteor function")
             if(err){
               throw new Meteor.Error("Database Error", err)
             }
             else{
-              console.log("Should be returning the doc")
               return couponDoc
             }
           })

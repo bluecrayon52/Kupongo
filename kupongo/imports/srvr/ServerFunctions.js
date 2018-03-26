@@ -80,11 +80,9 @@ function getAllCreatedCoupons(salesID, callback){
                   back upon redemption
 */
 function canRedeemCoupon(userID, couponID, callback){
-  console.log("Beginning redeemable check")
   let userDoc = null
   let couponDoc = null
   UserDB.find({"_id":userID}).map(function(userRes){
-    console.log("Got something from UserDB")
     if(!userRes){
       callback({"code": "Error finding the user", "message": "A user matching that ID was unable to be retrieved"}, null, null)
     }
@@ -107,7 +105,6 @@ function canRedeemCoupon(userID, couponID, callback){
     }
   })
   CouponDB.find({"_id":couponID}, { "salesID":0, "templateID":0 }).map(function(couponRes){
-    console.log("Got something from CouponDB")
     if(!couponRes){
       callback({"code":"Coupon not found", "message":"The coupon by that ID does not exist"}, null, null)
     }
