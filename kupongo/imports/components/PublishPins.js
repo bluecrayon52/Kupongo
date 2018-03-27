@@ -35,7 +35,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     title: change.target.value
                                                 };
-                                            }
+                                            } else return pin; 
                                         })
                                     },  () => {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -57,7 +57,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     description: change.target.value
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     },  ()=>  {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -79,7 +79,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     instructions: change.target.value
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     },  ()=>  {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -102,7 +102,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     quantity: change.target.value
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     },  ()=>  {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -125,7 +125,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     preViewingDate: date
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     }, () => {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -148,7 +148,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     collectStartDate: date
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     }, () => {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -171,7 +171,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     collectEndDate: date
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     }, () => {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -194,7 +194,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     redeemStartDate: date
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     }, () => {
                                             this.props.onValuesChange(this.state.unPublishedPins);
@@ -217,7 +217,7 @@ class PublishPins extends Component {
                                                     ...pin, 
                                                     redeemEndDate: date
                                                 };
-                                            }
+                                            } else return pin;
                                         })
                                     }, () => {
                                             this.props.onValuesChange(this.state.unPublishedPins);
