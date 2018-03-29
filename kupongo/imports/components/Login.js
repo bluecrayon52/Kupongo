@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+import { Session } from 'meteor/session';
 
 class Login extends Component {
 
@@ -62,6 +63,9 @@ class Login extends Component {
                   ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
 
                   console.log("login form submitted");
+
+                  Session.set('isAuthorized', true);
+
                   this.props.history.push('/home')
               } else {
                   alert("Incorrect information entered.");

@@ -32,3 +32,11 @@ a {
     text-decoration: none;
     color: white;
 }
+
+.logout {
+    background:none!important;
+    color:inherit;
+    border:none; 
+    padding:0!important;
+    font: inherit;
+}

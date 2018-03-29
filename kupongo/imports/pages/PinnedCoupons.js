@@ -10,6 +10,7 @@ import Popup from 'react-popup';
 import PinMap from '../components/PinMap';
 import Header from '../components/Header';
 import PinnedView from '../components/PinnedView';
+import { Session } from 'meteor/session';
 
 class PinnedCoupons extends Component {
   constructor(props) {
@@ -23,6 +24,15 @@ class PinnedCoupons extends Component {
       selectedPin: null
     };
 
+  }
+
+  componentWillMount() {
+    if (Session.equals('isAuthorized', true)) {
+      console.log("User is authorized.")
+    } else {
+      console.log("User is not authorized.")
+      this.props.history.push('/');
+    }
   }
 
   render() {

@@ -13,6 +13,7 @@ import Coupon, {CouponDB} from '../api/Coupon';
 import Popup from 'react-popup';
 import Header from '../components/Header';
 import PublishPins from '../components/PublishPins';
+import { Session } from 'meteor/session';
 
 class PinCoupon extends Component {
 
@@ -30,6 +31,15 @@ class PinCoupon extends Component {
     this.state.selectedTemplate = null;
     this.state.pins = [];
     this.render = this.render.bind(this);
+  }
+
+  componentWillMount() {
+    if (Session.equals('isAuthorized', true)) {
+      console.log("User is authorized.")
+    } else {
+      console.log("User is not authorized.")
+      this.props.history.push('/');
+    }
   }
 
   render() {

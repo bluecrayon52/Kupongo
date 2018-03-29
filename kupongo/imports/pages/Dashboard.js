@@ -7,6 +7,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import '../css/HomePage.css';
 import HomePage from '../components/HomePage'
 import Header from '../components/Header';
+import { Session } from 'meteor/session';
 
 class Dashboard extends Component {
 
@@ -14,10 +15,19 @@ class Dashboard extends Component {
         super(props);
     }
 
+    componentWillMount() {
+        if(Session.equals('isAuthorized', true)) {
+            console.log("User is authorized.")
+        } else {
+            console.log("User is not authorized.")
+            this.props.history.push('/');
+        }
+    }
+
     render() {
         return (
             <div>
-                <Header/>
+                <Header history={this.props.history}/>
                 <HomePage/>
             </div>
         );

@@ -163,7 +163,7 @@ Meteor.startup(function () {
   // Test user account, may need to add more fields but this will do for now.
   let customerId = 'asda';
   if (UserDB.find({_id: customerId}).count() === 0) {
-    UserDB.insert(new Customer({"_id": customerId, "couponList": []}, "lastLatitude":35.113, "lastLongitude": 54.12).toMongoDoc());
+    UserDB.insert(new Customer({"_id": customerId, "couponList": [], "lastLatitude":35.113, "lastLongitude": 54.12}).toMongoDoc());
   }
 
 
