@@ -10,6 +10,8 @@ import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
 import {addNewMobileUser} from './../imports/srvr/ServerFunctions';
 import {updateUserPassword} from './../imports/srvr/ServerFunctions';
+import {getForgottenPassword} from './../imports/srvr/ServerFunctions';
+import {setNewPassword} from './../imports/srvr/ServerFunctions';
 import {getCollectedCoupons, couponIsCollectable} from './../imports/srvr/ServerFunctions';
 
 import bcrypt from 'bcryptjs';
@@ -192,6 +194,27 @@ Meteor.methods({
       from: "kupongoteam@kupongo.com",
       subject: "Welcome to Kupongo!",
       text: "Thanks for registering!",
+    });
+  },
+
+  //Recover password email
+  'recoverPasswordEmail'(email) {
+    Email.send({
+      to: email,
+      from: "kupongoteam@kupongo.com",
+      subject: "Password recovery",
+      html: "<a href='http://localhost:3000/reset'> link </a>",
+    });
+  },
+
+  //Set new password if lost
+  'resetLostPassword'(email, password) {
+    return setNewPassword(email, password, function(error, result){
+      if(error) {
+        throw new Meteor.Error(error, message);
+      } else {
+        return true;
+      }
     });
   },
 

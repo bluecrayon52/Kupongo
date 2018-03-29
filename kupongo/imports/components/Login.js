@@ -31,11 +31,19 @@ class Login extends Component {
                         </button><br />
                         <button className="loginButton" onClick={this.handleRegisterButton.bind(this)}>
                             Register
+                        </button><br />
+
+                        <button className="forgotPasswordBtn" onClick={this.handleForgotPassword.bind(this)}>
+                            Forgot password?
                         </button>
                     </div>
                 </form>
             </div>
         );
+    }
+
+    handleForgotPassword(event) {
+        this.props.history.push('/recover');
     }
 
     //Login button clicked

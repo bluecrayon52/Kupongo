@@ -7,6 +7,8 @@ import PinnedCoupons from '../pages/PinnedCoupons';
 import LandingPage from '../pages/LandingPage';
 import RegisterPage from '../pages/RegisterPage';
 import Dashboard from '../pages/Dashboard';
+import Recover from '../pages/RecoverPassword';
+import SetPassword from '../pages/SetPassword';
 import {BrowserRouter, Route} from 'react-router-dom';
 
 
@@ -18,6 +20,8 @@ export const routes = (
         <Route path="/view" component={PinnedCoupons}/>
         <Route path="/register" component={RegisterPage}/>
         <Route path="/pin" component={PinCoupon}/>
+        <Route path="/recover" component={Recover}/>
+        <Route path="/reset" component={SetPassword}/>
       </div>
     </BrowserRouter>
 );

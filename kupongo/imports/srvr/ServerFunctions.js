@@ -399,3 +399,20 @@ function updateUserPassword(email, oldPassword, newPassword) {
     }
 }
 export {updateUserPassword};
+
+/*
+    Title:          setNewPassword
+    Description:    Sets fogotten password of user to new password
+    Arguments:      email - Email of the user
+                    newPassword - New password for user
+    Returns:        True when complete.
+*/
+function setNewPassword(email, newPassword) {
+    var userId = UserDB.findOne({'email': email})._id;
+    const saltRounds = 10;
+    bcrypt.hash(newPassword, saltRounds, Meteor.bindEnvironment(function (err, hash) {
+        UserDB.update({'_id': userId}, {$set: {password: hash}});
+    }));
+    return true;
+}
+export {setNewPassword};

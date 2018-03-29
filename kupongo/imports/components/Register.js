@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
+import { Session } from 'meteor/session';
 
 class Register extends Component {
 
@@ -127,6 +128,8 @@ class Register extends Component {
                                   Meteor.call('sendEmail', email);
 
                                   console.log("register form submitted");
+
+                                  Session.set('isAuthorized', true);
 
                                   // Redirect
                                   this.props.history.push('/home');
