@@ -21,6 +21,7 @@ export default class Login extends Component {
       pressed: 'Not pressed'
     }
   }
+
   render() {
     return (
         <View style={styles.container}>
@@ -47,38 +48,36 @@ export default class Login extends Component {
           />
 
           <Button
-              onPress={() =>
-                {
-                  this.processLogin();
-                }
+              onPress={() => {
+                this.processLogin();
+              }
               }
               title="Login"
           />
 
-	<Text style={{color: 'green'}}
-      onPress={() => this.props.navigation.navigate('Register')}>
-  	Don't have an Account? Sign up !
-	</Text>
+          <Text style={{color: 'green'}}
+                onPress={() => this.props.navigation.navigate('Register')}>
+            Don't have an Account? Sign up !
+          </Text>
 
         </View>
     );
   }
 
-  processLogin(){
+  processLogin() {
     const email = this.state.email;
     const password = this.state.password;
-    /* Re-route this to meteor register server when it works  */
-    this.props.navigation.navigate('Home', {
-          user: {
-            _id: 'asdf',
-            couponList: new Set()
-          }
-        }
-    );
+    /* Re-route this to meteor register server when it works */
+    this.props.screenProps.onLogin({
+      user: {
+        _id: 'asdf',
+        couponList: new Set()
+      }
+    });
 
-/*
-    Meteor.call('login', email, password, (err, result) =>{
-      if(result === true){
+    /*
+    Meteor.call('login', email, password, (err, result) => {
+      if (result === true) {
         this.props.navigation.navigate('Home', {
               user: {
                 _id: 'asdf',
@@ -86,25 +85,24 @@ export default class Login extends Component {
               }
             }
         );
-    }
-    else{
-      alert("Incorrect information entered.");
-      this.setState({email: ''});
-      this.setState({password: ''});
-      //figure out how to clear fields
-      this.props.navigation.navigate('Main', {
-            user: {
-              _id: 'asdf',
-              couponList: new Set()
+      }
+      else {
+        alert("Incorrect information entered.");
+        this.setState({email: ''});
+        this.setState({password: ''});
+        //figure out how to clear fields
+        this.props.navigation.navigate('Main', {
+              user: {
+                _id: 'asdf',
+                couponList: new Set()
+              }
             }
-          }
-      );
-    }
-
+        );
+      }
     });
     */
-
   }
+
   componentWillMount() {
     // Make sure you run "npm run start" on the kupongo project so the server is up.
     // This connects to that Meteor server. Once the AWS server is up, replace the ip address with the url of the server.
@@ -130,7 +128,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   input: {
-     paddingHorizontal: 10,
+    paddingHorizontal: 10,
   },
   instructions: {
     textAlign: 'center',

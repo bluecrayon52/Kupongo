@@ -59,7 +59,7 @@ class LiveCouponMap extends Component {
       selectedIcon: require('../../assets/selected_coupon.png'),
       couponIcon: require('../../assets/coupon.png'),
       userIcon: require('../../assets/user.png'),
-      user: this.props.navigation.state.params.user,
+      user: this.props.screenProps.userInfo, // this.props.navigation.state.params.user,
       coupons: []
     };
   }
