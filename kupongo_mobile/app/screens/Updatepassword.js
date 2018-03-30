@@ -4,7 +4,6 @@
 
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
-import ReactDOM from 'react-dom';
 
 import {
   StyleSheet,

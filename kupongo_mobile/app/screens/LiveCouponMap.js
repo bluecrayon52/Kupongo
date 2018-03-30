@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import {MAP_STYLE} from '../config/MapStyles';
+import CouponCallout from '../components/CouponCallout';
 
 import Meteor, {createContainer} from 'react-native-meteor';
 
@@ -76,37 +77,14 @@ class LiveCouponMap extends Component {
               customMapStyle={MAP_STYLE}
               onRegionChangeComplete={this.regionChanged.bind(this)}
           >
-            {this.state.coupons.map((coupon) => {
+            {this.state.coupons.map((coupon, index) => {
               const icon = coupon.nearUser ? this.state.selectedIcon : this.state.couponIcon;
               return (
-                  <MapView.Marker
-                      key={coupon._id}
-                      image={icon}
-                      coordinate={{latitude: coupon.location.coordinates[1], longitude: coupon.location.coordinates[0]}}
-                  >
-
-                    <MapView.Callout tooltip
-                                     onPress={() => {
-                                       // We can't have a button to collect in the callout since Android doesn't support
-                                       // that so we have to just detect if they tapped the window and check if
-                                       // they are nearby here.
-                                       console.log('Call meteor to collect coupon here if they are nearby.');
-                                       if (coupon.nearUser)
-                                         this.collectCoupon(coupon);
-                                     }}
-                                     style={styles.calloutStyle}>
-                      {/* TODO(david): Style this better, looks boring right now. */}
-                      <View>
-                        <Text style={styles.calloutTitle}>{coupon.title}</Text>
-                        <Text style={styles.calloutDescription}>{coupon.description}</Text>
-                        {coupon.nearUser &&
-                        <Text style={styles.collectMessage}>
-                          Tap window to collect!
-                        </Text>
-                        }
-                      </View>
-                    </MapView.Callout>
-                  </MapView.Marker>
+                  <CouponCallout
+                      key={index}
+                      coupon={coupon}
+                      icon={icon}
+                  />
               );
             })}
 
