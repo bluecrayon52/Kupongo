@@ -27,8 +27,12 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <Header history={this.props.history}/>
-                <HomePage/>
+                <Header history={this.props.history}
+                        userInfo={this.props.location.state.userInfo}
+                />
+                <HomePage
+                    userInfo={this.props.location.state.userInfo}
+                />
             </div>
         );
     }

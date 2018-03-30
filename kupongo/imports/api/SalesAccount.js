@@ -16,7 +16,7 @@ if (Meteor.isServer) {
 class SalesAccount {
 
     constructor(values) {
-
+        this._id = values._id;
         this.companyID = values.companyID;
         this.authToken = values.authToken;
         this.salesID = values.salesID;

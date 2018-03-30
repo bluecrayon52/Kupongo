@@ -45,7 +45,9 @@ class PinCoupon extends Component {
   render() {
     return (
         <div>
-          <Header/>
+          <Header
+              userInfo={this.props.location.state.userInfo}
+          />
           <Popup/>
           <h1>Pin your coupons</h1>
 

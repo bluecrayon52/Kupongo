@@ -65,7 +65,7 @@ class Login extends Component {
         } else {
             //Check if user is already registered or not
             Meteor.call('login', email, password, (err, result) => {
-              if(result === true) {
+              if(result) {
                   // Clear form
                   ReactDOM.findDOMNode(this.refs.emailInput).value = '';
                   ReactDOM.findDOMNode(this.refs.passwordInput).value = '';
@@ -74,7 +74,12 @@ class Login extends Component {
 
                   Session.set('isAuthorized', true);
 
-                  this.props.history.push('/home')
+                  this.props.history.push({
+                    pathname: '/home',
+                    state: {
+                        userInfo: result,
+                    }
+                  })
               } else {
                   alert("Incorrect information entered.");
                   ReactDOM.findDOMNode(this.refs.emailInput).value = '';

@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import {CouponDB} from './../api/Coupon';
 import {UserDB} from './../api/UserDoc';
 import {CompanyDB} from './../api/CompanyDoc';
+import SalesAccount from './../api/SalesAccount';
 import bcrypt from 'bcryptjs';
 
 /*
@@ -311,16 +312,18 @@ export {addNewUser};
 					      login
 */
 function validateUser(email, password, callback){
-    var hashedPassword;
-    hashedPassword = UserDB.findOne({'email': email}).password;
+    let user = UserDB.findOne({'email': email});
+    const hashedPassword = user.password;
     const res = bcrypt.compareSync(password, hashedPassword);
-  if(res === true){
-    console.log('[srvr/ServerFunctions]','returning true');
-    callback(null, null);
-    return true;
-  } else {
-    callback("Incorrect information', 'Wrong email or password entered.");
-  }
+    if(res === true){
+      console.log('[srvr/ServerFunctions]','returning true');
+      callback(null, null);
+      // Hide password as we pass it to front-end.
+      delete user.password;
+      return new SalesAccount(user);
+    } else {
+      callback("Incorrect information', 'Wrong email or password entered.");
+    }
 }
 export {validateUser};
 

@@ -38,7 +38,9 @@ class PinnedCoupons extends Component {
   render() {
     return (
         <div>
-          <Header/>
+          <Header
+              userInfo={this.props.location.state.userInfo}
+          />
           <Popup/>
           <h1>View pinned coupons</h1>
           <p>Below are your currently pinned coupons.</p>

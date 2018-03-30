@@ -11,20 +11,39 @@ class Header extends Component {
     return (
         <div className="header">
           <div className="title">
-            <Link to="/home">
+            <Link to={{
+                    pathname: "/home",
+                    state: {
+                      userInfo: this.props.userInfo
+                    }
+                  }}
+              >
               Kupongo
             </Link>
           </div>
 
           <div className="nav-links">
             <div className="link">
-              <Link to="/pin">
+              <Link to={{
+                    pathname: "/pin",
+                    state: {
+                      userInfo: this.props.userInfo
+                    }
+                  }}
+              >
                 Pin Coupons
               </Link>
             </div>
 
             <div className="link">
-              <Link to="/view">
+              <Link
+                  to={{
+                    pathname: "/view",
+                    state: {
+                      userInfo: this.props.userInfo
+                    }
+                  }}
+              >
                 View Pinned Coupons
               </Link>
             </div>
