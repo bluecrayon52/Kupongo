@@ -18,7 +18,8 @@ class SalesAccount {
     constructor(values) {
         this._id = values._id;
         this.companyID = values.companyID;
-        this.authToken = values.authToken;
+        this.companyName = values.companyName;
+        this.authenticationToken = values.authenticationToken;
         this.salesID = values.salesID;
         this.email = values.email;
         this.password = values.password;
