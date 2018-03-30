@@ -5,9 +5,11 @@ import {UserDB} from './../api/UserDoc';
 import {CompanyDB} from './../api/CompanyDoc';
 import SalesAccount from './../api/SalesAccount';
 import bcrypt from 'bcryptjs';
+import { SalesExec } from '../api/UserDoc';
+import Customer from './../api/UserDoc';
 
 /*
-	Title: 				validateSalesUser
+    Title: 				validateSalesUser
 	Description: 	Checks if the user provided is authorized to make the changes that
 								they are requesting. Authorized means that the user in question
 								has a valid and claimed token from the company they are claiming
@@ -16,8 +18,8 @@ import bcrypt from 'bcryptjs';
 								coupon - The coupon document that can be searched for data
 								callback - The function that will run after the search is complete
 	Returns:			Done via callback, it will return two arguments:
-								1) Error Code - Null if no error, otherwise contains error name
-								2) Error Description - A string detailing what went wrong
+                                1) Error Code - Null if no error, otherwise contains error name
+                                2) Error Description - A string detailing what went wrong
 */
 function validateSalesUser(userID, coupon, callback){
     console.log('[ServerFunctions]: validateSalesUser, title: '+ coupon.title);
@@ -46,13 +48,13 @@ export {validateSalesUser};
 
 
 /*
-	Title: 				getAllCreatedCoupons
+    Title: 				getAllCreatedCoupons
 	Description: 	Gets all coupons that the user specified has created. First checked to ensure
 	Arguments:		salesID - The _id field attached to this sales exec's document.
 								callback - The function that will run after the search is complete
 	Returns:			Done via callback, it will return two arguments:
-								1) Error Code - Null if no error, otherwise contains error name
-								2) Error Description or array of coupon documents depending on if an error occurs
+                                1) Error Code - Null if no error, otherwise contains error name
+                                2) Error Description or array of coupon documents depending on if an error occurs
 */
 function getAllCreatedCoupons(salesID, callback){
     CouponDB.find({"salesID" : salesID}, function(err, couponDocs){
@@ -66,16 +68,16 @@ function getAllCreatedCoupons(salesID, callback){
 }
 
 /*
-	Title: 				canRedeemCoupon
+    Title: 				canRedeemCoupon
 	Description: 	Checks if the user has permission to redeem this coupon. This means
                 that it must be within the redemption date and must exist in the user's collection.
 	Arguments:		userID - The _id field attached to this user's document.
 								couponID - The _id field of the coupon attempting to be redeemed
 								callback - The function that will run after the search is complete
 	Returns:			Done via callback:
-								1) Error Message -  A JSON object with code and message components that
+                                1) Error Message -  A JSON object with code and message components that
                   specify what should go in the meteor.error
-								2) userDoc - The user's document that was being checked to avoid
+                                2) userDoc - The user's document that was being checked to avoid
                   having multiple calls to the same database
                 3) couponDoc - The slightly redacted user doc that can be passed
                   back upon redemption
@@ -131,17 +133,17 @@ function canRedeemCoupon(userID, couponID, callback){
 export {canRedeemCoupon}
 
 /*
-	Title: 				couponIsCollectable
+    Title: 				couponIsCollectable
 	Description: 	Checks whether the user is within the collectable range of the coupon
 								specified.
 	Arguments:		userID - The _id field attached to this user's document.
 								couponID - The _id field of the coupon attempting to be collected
 								callback - The function that will run after the search is complete
 	Returns:			Done via callback, it will return true if the coupon CAN be collected
-								using the current data. False if it cannot or if there is an error
-								1) Error Message - Null if no error, otherwise contains error message
-								2) Can Be Collected - A boolean that is true if the coupon is able to
-									 be collected. False for any other result.
+                                using the current data. False if it cannot or if there is an error
+                                1) Error Message - Null if no error, otherwise contains error message
+                                2) Can Be Collected - A boolean that is true if the coupon is able to
+                                     be collected. False for any other result.
 */
 function couponIsCollectable(userID, couponID, callback){
     // Gets the user's document
@@ -175,14 +177,14 @@ function couponIsCollectable(userID, couponID, callback){
 export {couponIsCollectable};
 
 /*
-	Title: 				getCollectedCoupons
+    Title: 				getCollectedCoupons
 	Description: 	Retrieves the list of coupons that the user has collected in
 								their redacted form. Should only be called sparingly
 	Arguments:		userID - The _id field attached to this user's document.
 								callback - The function that will run after the search is complete
 	Returns:			Done via callback, it will return two arguments:
-								1) Error Code - Null if no error, otherwise contains error name
-								2) Error Description or the list of collected coupons
+                                1) Error Code - Null if no error, otherwise contains error name
+                                2) Error Description or the list of collected coupons
 */
 function getCollectedCoupons(userID, callback){
     // Get the user document
@@ -209,15 +211,15 @@ function getCollectedCoupons(userID, callback){
 export {getCollectedCoupons};
 
 /*
-	Title: 				getRedactedCoupons
+    Title: 				getRedactedCoupons
 	Description: 	Gets all coupons near the user but only gives the fields necessary for the
 								basic display function. The info contained here is not enough to redeem the
 								coupon but is enough to show it on a map and give basic info.
 	Arguments:		userID - The _id field attached to this user's document.
 								callback - The function that will run after the search is complete
 	Returns:			Done via callback, it will return two arguments:
-								1) Error Code - Null if no error, otherwise contains error name
-								2) Error Description or array of coupon documents depending on if an error occurs
+                                1) Error Code - Null if no error, otherwise contains error name
+                                2) Error Description or array of coupon documents depending on if an error occurs
 */
 function getRedactedCoupons(userID, thisViewWindow, callback){
     if(thisViewWindow == null){
@@ -277,7 +279,7 @@ function getRedactedCoupons(userID, thisViewWindow, callback){
 export {getRedactedCoupons};
 
 /*
-	Title: 			  addNewUser
+    Title: 			  addNewUser
 	Description: 	Checks to see if account is already active.
 	Arguments:		email - Email of the user
 					      companyName - Name of company for user
@@ -286,7 +288,7 @@ export {getRedactedCoupons};
 					      lastName - Last name of user
 					      phoneNumber - PhoneNumber of user
 	Returns:		  Callback if account is already taken, otherwise insert new user
-					      data into database
+                          data into database
 */
 function addNewUser(email, companyName, password, firstName, lastName, phoneNumber) {
     if (UserDB.find({ 'email': email }).count() > 0) {
@@ -296,7 +298,7 @@ function addNewUser(email, companyName, password, firstName, lastName, phoneNumb
         //User is new, so insert information into databse
         const saltRounds = 10;
         bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
-            UserDB.insert({ email: email, companyName: companyName, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber });
+            UserDB.insert(new SalesExec({ email: email, companyName: companyName, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber }).toMongoDoc());
         }));
         return true;
     }
@@ -304,12 +306,12 @@ function addNewUser(email, companyName, password, firstName, lastName, phoneNumb
 export {addNewUser};
 
 /*
-	Title: 			  validateUser
+    Title: 			  validateUser
 	Description: 	Checks to see if account is already active and entered information is correct.
 	Arguments:		email - Email of the user
 					      password - Password for user
 	Returns:		  Callback if information is entered incorrectly, otherwise continue with
-					      login
+                          login
 */
 function validateUser(email, password, callback){
     let user = UserDB.findOne({'email': email});
@@ -347,7 +349,7 @@ function addNewMobileUser(email, password, firstName, lastName, phoneNumber, add
         //Account not taken
         const saltRounds = 10;
         bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
-            UserDB.insert({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, phoneNumber: phoneNumber});
+            UserDB.insert(new Customer({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, address: address}).toMongoDoc());
         }));
         return true;
     }
@@ -386,14 +388,14 @@ function isBetween(num, bound1, bound2){
     Returns:        Callback if information does not match up.
 */
 function updateUserPassword(email, oldPassword, newPassword) {
-    var oldHashedPassword;
-    oldHashedPassword = UserDB.findOne({'email': email}).password;
+    var userId = UserDB.findOne({'email': email})._id;
+    var oldHashedPassword = UserDB.findOne({'email': email}).password;
     const res = bcrypt.compareSync(oldPassword, oldHashedPassword);
     if (res === true) {
         console.log('[srvr/ServerFunctions]', 'returning true');
         const saltRounds = 10;
         bcrypt.hash(newPassword, saltRounds, Meteor.bindEnvironment(function (err, hash) {
-            UserDB.updateOne({'email': email}, {$set: {password: hash}});
+            UserDB.update({'_id': userId}, {$set: {password: hash}});
         }));
         callback(null, null);
         return true;

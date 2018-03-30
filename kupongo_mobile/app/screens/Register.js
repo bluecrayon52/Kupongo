@@ -121,33 +121,23 @@ export default class Register extends Component {
         }
         /* Re-route this to meteor register server when it works  */
         else {
-          this.props.screenProps.onLogin({
-            user: {
-              _id: 'asdf',
-              couponList: new Set()
+          Meteor.call('registerMobileUser', email, password, firstName, lastName, phoneNumber, address, (err, result) => {
+            if (result === true) {
+              console.log("register was successful");
+              Meteor.call('sendEmail', email); //send email
+              this.props.screenProps.onLogin({
+                user: {
+                  _id: 'asdf',
+                  couponList: new Set()
+                }
+              });
             }
+            else {
+              alert("Account is already active.");
+              this.props.navigation.navigate('Register');
+            }
+
           });
-          /*
-           Meteor.call('registerMobileUser', email, password, firstName, lastName, phoneNumber, address, (err, result) =>{
-           if (result===true){
-           console.log("register was successful");
-           Meteor.call('sendEmail', email); //send email
-           this.props.navigation.navigate('Home', {
-           user: {
-           _id: 'asdf',
-           couponList: new Set()
-           }
-           }
-           );
-           }
-           else{
-           alert("Account is already active.");
-           this.props.navigation.navigate('Register');
-           }
-
-           });
-
-           }*/
         }
       }
     }
@@ -179,6 +169,7 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: 10,
+    width: 115,
   },
   instructions: {
     textAlign: 'center',

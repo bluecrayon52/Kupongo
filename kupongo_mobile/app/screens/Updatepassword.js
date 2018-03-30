@@ -74,7 +74,7 @@ export default class Login extends Component {
           }
         }
     );
-    /*
+
   Meteor.call('updatePassword', email, password, newPassword, (err, result) =>{
     if(result===true){
       this.props.navigation.navigate('Home', {
@@ -99,7 +99,6 @@ export default class Login extends Component {
       );
     }
   });
-  */
 
   }
   componentWillMount() {
@@ -133,5 +132,6 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: 10,
+    width: 115,
   }
 });

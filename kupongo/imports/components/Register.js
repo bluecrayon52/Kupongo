@@ -132,7 +132,12 @@ class Register extends Component {
                                   Session.set('isAuthorized', true);
 
                                   // Redirect
-                                  this.props.history.push('/home');
+                                  this.props.history.push({
+                                    pathname: '/home',
+                                    state: {
+                                        userInfo: result,
+                                    }
+                                  })
                               } else {
                                   alert("Account is already active.");
                                   ReactDOM.findDOMNode(this.refs.emailInput).value = '';

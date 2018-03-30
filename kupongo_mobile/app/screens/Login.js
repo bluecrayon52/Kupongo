@@ -67,40 +67,33 @@ export default class Login extends Component {
   processLogin() {
     const email = this.state.email;
     const password = this.state.password;
-    /* Re-route this to meteor register server when it works */
-    this.props.screenProps.onLogin({
-      user: {
-        _id: 'asdf',
-        couponList: new Set()
-      }
-    });
 
-    /*
+    
+    //const params = {email: this.state.email, password: this.state.password};
     Meteor.call('login', email, password, (err, result) => {
       if (result === true) {
-        this.props.navigation.navigate('Home', {
-              user: {
-                _id: 'asdf',
-                couponList: new Set()
-              }
-            }
-        );
+        this.props.screenProps.onLogin({
+          user: {
+            _id: 'asdf',
+            couponList: new Set()
+          }
+        });
       }
       else {
         alert("Incorrect information entered.");
         this.setState({email: ''});
         this.setState({password: ''});
         //figure out how to clear fields
-        this.props.navigation.navigate('Main', {
+        /*this.props.navigation.navigate('Main', {
               user: {
                 _id: 'asdf',
                 couponList: new Set()
               }
             }
-        );
+        );*/
       }
     });
-    */
+    
   }
 
   componentWillMount() {
@@ -129,6 +122,7 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: 10,
+    width: 115,
   },
   instructions: {
     textAlign: 'center',
