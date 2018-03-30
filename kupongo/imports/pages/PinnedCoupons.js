@@ -21,6 +21,8 @@ class PinnedCoupons extends Component {
         companyName: 'Coke'
       },
       pins: this.props.pins || [],
+      centerLng: null,
+      centerLat: null,
       selectedPin: null
     };
 
@@ -55,6 +57,8 @@ class PinnedCoupons extends Component {
             />
             <PinMap
                 pins={this.state.pins}
+                centerLat={this.state.centerLat}
+                centerLng={this.state.centerLng}
                 selectedPin={this.state.selectedPin}
                 onSelectPin={this.selectPinFromMap.bind(this)}
                 onRemovePin={this.removePin.bind(this)}
@@ -83,7 +87,10 @@ class PinnedCoupons extends Component {
 
   onSelectPin(pin) {
     this.setState({
-      selectedPin: pin
+      selectedPin: pin,
+      pins: this.state.pins,
+      centerLat: pin.location.coordinates[1],
+      centerLng: pin.location.coordinates[0],
     });
   }
 
