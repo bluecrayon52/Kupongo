@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
+import {onSignIn} from './../config/auth';
 
 import {
   StyleSheet,
@@ -72,8 +73,7 @@ export default class Login extends Component {
     /* Re-route this to meteor register server when it works */
     Meteor.call('loginUser', email, password, (err, result) => {
       if (result) {
-        this.props.screenProps.onLogin(result);
-
+        onSignIn(result).then(() => this.props.screenProps.onLogin(result));
       }
       else {
         alert("Incorrect information entered.");

@@ -5,6 +5,7 @@
 import React, {Component} from 'react';
 import Kupongo from './app/router';
 import {KupongoMain} from './app/router';
+import {isSignedIn, onSignOut} from './app/config/auth';
 
 export default class App extends Component {
   constructor(props) {
@@ -22,12 +23,26 @@ export default class App extends Component {
     });
   }
 
+  logoutUser() {
+    onSignOut().then(() => this.setState({
+      isLoggedIn: false,
+    }));
+  }
+
+  componentDidMount() {
+    isSignedIn().then(res => this.setState({
+      isLoggedIn: res !== false,
+      userInfo: res,
+    }));
+  }
+
  render() {
     if (this.state.isLoggedIn) {
       return (
           <KupongoMain
               screenProps={{
-                userInfo: this.state.userInfo
+                userInfo: this.state.userInfo,
+                onLogout: this.logoutUser.bind(this)
               }}
           />
       );

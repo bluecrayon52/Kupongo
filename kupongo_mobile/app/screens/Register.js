@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
+import {onSignIn} from './../config/auth';
 
 import {
   StyleSheet,
@@ -126,9 +127,7 @@ export default class Register extends Component {
             if (result) {
               console.log("register was successful");
               // Meteor.call('sendEmail', email); //send email
-              this.props.screenProps.onLogin({
-                user: result
-              });
+              onSignIn(result).then(() => this.props.screenProps.onLogin(result));
             }
             else {
               alert("Account is already active.");
