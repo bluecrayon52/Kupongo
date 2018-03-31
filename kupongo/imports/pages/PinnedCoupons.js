@@ -50,6 +50,7 @@ class PinnedCoupons extends Component {
           <div className="mapViewContainer">
             <PinnedView
               pinned={this.state.pins}
+              updatePin={this.updatePin.bind(this)}
               selectedPin={this.state.selectedPin}
               removePin={this.removePin.bind(this)}
               onSelectPin={this.onSelectPin.bind(this)}
@@ -77,6 +78,14 @@ class PinnedCoupons extends Component {
     let pins = [...this.state.pins];
     console.log('[PinnedCoupons]: removePin, pins[index].title: '+pins[index].title);
     Meteor.call('removeCoupon', this.state.salesInfo._id, pins[index]);
+  }
+
+  updatePin(index, pin) {
+    Meteor.call('updateCoupon', this.state.salesInfo._id, pin, (err, result) => {
+      if (err) {
+        console.log('Update failed');
+      }
+    });
   }
 
   selectPinFromMap(index) {
