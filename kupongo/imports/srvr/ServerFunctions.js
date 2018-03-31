@@ -297,10 +297,9 @@ function addNewUser(email, companyName, password, firstName, lastName, phoneNumb
     } else {
         //User is new, so insert information into databse
         const saltRounds = 10;
-        bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
-            UserDB.insert(new SalesExec({ email: email, companyName: companyName, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber }).toMongoDoc());
-        }));
-        return true;
+        const hash = bcrypt.hashSync(password, saltRounds);
+        const id = UserDB.insert({ email: email, companyName: companyName, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber });
+        return UserDB.findOne({_id: id});
     }
 }
 export {addNewUser};
@@ -314,7 +313,7 @@ export {addNewUser};
                           login
 */
 function validateUser(email, password, callback){
-    let user = UserDB.findOne({'email': email});
+    let user = UserDB.findOne({email: email});
     const hashedPassword = user.password;
     const res = bcrypt.compareSync(password, hashedPassword);
     if(res === true){
@@ -328,6 +327,33 @@ function validateUser(email, password, callback){
     }
 }
 export {validateUser};
+
+/*
+	Title: 			  validateUser
+	Description: 	Checks to see if account is already active and entered information is correct.
+	Arguments:		email - Email of the user
+					      password - Password for user
+	Returns:		  Callback if information is entered incorrectly, otherwise continue with
+					      login
+*/
+function validateMobileUser(email, password, callback){
+    console.log(email, password);
+    let user = UserDB.findOne({email: email});
+    console.log(user);
+    const hashedPassword = user.password;
+    const res = bcrypt.compareSync(password, hashedPassword);
+    if(res === true){
+      console.log('[srvr/ServerFunctions]','returning true');
+      callback(null, null);
+      // Hide password as we pass it to front-end.
+      delete user.password;
+      return user;
+    } else {
+      callback("Incorrect information', 'Wrong email or password entered.");
+    }
+}
+export {validateMobileUser};
+
 
 /*
     Title:          addNewMobileUser
@@ -352,6 +378,9 @@ function addNewMobileUser(email, password, firstName, lastName, phoneNumber, add
             UserDB.insert(new Customer({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, address: address}).toMongoDoc());
         }));
         return true;
+        const hash = bcrypt.hashSync(password, saltRounds);
+        const id = UserDB.insert({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, phoneNumber: phoneNumber});
+        return UserDB.findOne({_id: id});
     }
 }
 export {addNewMobileUser};

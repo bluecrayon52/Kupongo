@@ -8,6 +8,7 @@ import {CompanyDB} from './../imports/api/CompanyDoc';
 import {validateSalesUser} from './../imports/srvr/ServerFunctions';
 import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
+import {validateMobileUser} from './../imports/srvr/ServerFunctions';
 import {addNewMobileUser} from './../imports/srvr/ServerFunctions';
 import {updateUserPassword} from './../imports/srvr/ServerFunctions';
 import {getForgottenPassword} from './../imports/srvr/ServerFunctions';
@@ -163,9 +164,11 @@ Meteor.startup(function () {
   }
 
   // Test user account, may need to add more fields but this will do for now.
-  let customerId = 'asda';
+  let customerId = 'asdaf';
   if (UserDB.find({_id: customerId}).count() === 0) {
-    UserDB.insert(new Customer({"_id": customerId, "couponList": [], "lastLatitude":35.113, "lastLongitude": 54.12}).toMongoDoc());
+    UserDB.insert({"_id": customerId,
+      "email": "user@gmail.com", "password": "password",
+      "couponList": [], "lastLatitude":35.113, "lastLongitude": 54.12});
   }
 
 
@@ -240,6 +243,18 @@ Meteor.methods({
         }
       });
     },
+      //Login user
+    'loginUser'(email, password) {
+      return validateMobileUser(email, password, function(error, message){
+        if(error) {
+          throw new Meteor.Error(error, message);
+        } else {
+          console.log('[server/main]', 'returning true');
+          return true;
+        }
+      });
+    },
+
 
     //Login mobile user
     'registerMobileUser'(email, password, firstName, lastName, phoneNumber, address) {
@@ -269,6 +284,20 @@ Meteor.methods({
         }
       })
 
+    },
+
+    'updateCoupon'(userID, coupon) {
+      validateSalesUser(userID, coupon, function(error, message){
+        if (error) {
+          console.log('[server/main]: updateCoupon, validateSalesUser resulted in an error for userID: '+userID);
+          throw new Meteor.Error(error, message);
+        } else {
+         CouponDB.update({_id: coupon._id}, {$set: coupon}, function(){
+            console.log('[server/main]: updateCoupon for coupon.title: '+coupon.title+' was successful!');
+            return true
+          });
+        }
+      });
     },
 
     // Insert a new coupon template
@@ -418,7 +447,34 @@ Meteor.methods({
             }
           }
         }
-      }).fetch()
+      },
+      { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
+      ).fetch()
+    },
+
+    'collectCouponBeta'(userId, couponId) {
+      const coupon = CouponDB.findOne({_id: couponId});
+      if (coupon) {
+        const today = new Date();
+        const startDate = new Date(coupon.collectStartDate);
+        const endDate = new Date(coupon.collectEndDate);
+        console.log(startDate);
+        console.log(endDate);
+        if (today < startDate || today > endDate) {
+          return false;
+        }
+        UserDB.update({"_id" : userId}, {$addToSet: {"couponList" : couponId}}, function(err, result){
+          console.log(err, result);
+          if(err){
+            throw new Meteor.Error("Error adding to collected List. Collection Failed", err)
+          }
+          else{
+            return true;
+          }
+        });
+      } else {
+        throw new Meteor.Error("Collection Unsuccessful", error)
+      }
     }
 
 

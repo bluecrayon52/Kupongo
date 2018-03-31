@@ -62,6 +62,7 @@ class LiveCouponMap extends Component {
       user: this.props.screenProps.userInfo, // this.props.navigation.state.params.user,
       coupons: []
     };
+    this.state.user.couponList = new Set(this.state.user.couponList);
   }
 
   render() {
@@ -83,6 +84,7 @@ class LiveCouponMap extends Component {
                   <CouponCallout
                       key={index}
                       coupon={coupon}
+                      collectCoupon={this.collectCoupon.bind(this)}
                       icon={icon}
                   />
               );
@@ -101,9 +103,10 @@ class LiveCouponMap extends Component {
   }
 
   collectCoupon(coupon) {
-    Meteor.call('collectCoupon', this.state.user._id, coupon._id, (err, result) => {
+    Meteor.call('collectCouponBeta', this.state.user._id, coupon._id, (err, result) => {
       if (err) {
         // TODO(david): Send message to user saying coupon failed with a popup maybe.
+        alert('Unable to collect coupon, sorry!');
         console.log(err);
       } else {
         // Remove coupon from map.

@@ -121,27 +121,26 @@ export default class Register extends Component {
         }
         /* Re-route this to meteor register server when it works  */
         else {
+
           Meteor.call('registerMobileUser', email, password, firstName, lastName, phoneNumber, address, (err, result) => {
-            if (result === true) {
+            if (result) {
               console.log("register was successful");
-              Meteor.call('sendEmail', email); //send email
+              // Meteor.call('sendEmail', email); //send email
               this.props.screenProps.onLogin({
-                user: {
-                  _id: 'asdf',
-                  couponList: new Set()
-                }
+                user: result
               });
             }
             else {
               alert("Account is already active.");
               this.props.navigation.navigate('Register');
             }
-
           });
+
         }
       }
     }
   }
+
 
   componentWillMount() {
     // Make sure you run "npm run start" on the kupongo project so the server is up.
@@ -151,7 +150,7 @@ export default class Register extends Component {
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
     let ip = '';
-    Meteor.connect(`ws://${ip}:3000/websocket`)
+    Meteor.connect(`ws://${ip}:3000/websocket`);
   }
 }
 

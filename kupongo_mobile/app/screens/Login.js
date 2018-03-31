@@ -36,6 +36,7 @@ export default class Login extends Component {
               placeholder="Email"
               ref="emailInput"
               name="email"
+              value={this.state.email}
               onChangeText={(text) => this.setState({email: text})}
           />
           <TextInput
@@ -43,6 +44,7 @@ export default class Login extends Component {
               placeholder="Password"
               ref="passwordinput"
               name="password"
+              value={this.state.password}
               onChangeText={(text) => this.setState({password: text})}
               secureTextEntry={true}
           />
@@ -67,33 +69,18 @@ export default class Login extends Component {
   processLogin() {
     const email = this.state.email;
     const password = this.state.password;
+    /* Re-route this to meteor register server when it works */
+    Meteor.call('loginUser', email, password, (err, result) => {
+      if (result) {
+        this.props.screenProps.onLogin(result);
 
-    
-    //const params = {email: this.state.email, password: this.state.password};
-    Meteor.call('login', email, password, (err, result) => {
-      if (result === true) {
-        this.props.screenProps.onLogin({
-          user: {
-            _id: 'asdf',
-            couponList: new Set()
-          }
-        });
       }
       else {
         alert("Incorrect information entered.");
         this.setState({email: ''});
         this.setState({password: ''});
-        //figure out how to clear fields
-        /*this.props.navigation.navigate('Main', {
-              user: {
-                _id: 'asdf',
-                couponList: new Set()
-              }
-            }
-        );*/
       }
     });
-    
   }
 
   componentWillMount() {

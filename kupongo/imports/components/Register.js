@@ -116,7 +116,7 @@ class Register extends Component {
                             //Everything passes so move forward
                             //Add user information and hashed password to database
                             Meteor.call('register', email, companyName, password, firstName, lastName, phoneNumber, (err, result) => {
-                              if(result === true) {
+                              if(result) {
                                   // Clear form
                                   ReactDOM.findDOMNode(this.refs.emailInput).value = '';
                                   ReactDOM.findDOMNode(this.refs.companyNameInput).value = '';
