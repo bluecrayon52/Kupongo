@@ -438,6 +438,7 @@ Meteor.methods({
 
     // For benchmarking purposes. Curious to see how slow can the geospatial queries really be.
     'getCouponsIn'(region) {
+      const today = new Date();
       return CouponDB.find({
         location: {
           $geoWithin: {
@@ -446,6 +447,12 @@ Meteor.methods({
               coordinates: [region]
             }
           }
+        },
+        collectStartDate: {
+          $lt: today
+        },
+        collectEndDate: {
+          $gt: today
         }
       },
       { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
@@ -458,8 +465,6 @@ Meteor.methods({
         const today = new Date();
         const startDate = new Date(coupon.collectStartDate);
         const endDate = new Date(coupon.collectEndDate);
-        console.log(startDate);
-        console.log(endDate);
         if (today < startDate || today > endDate) {
           return false;
         }
