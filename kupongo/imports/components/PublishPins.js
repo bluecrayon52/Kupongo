@@ -23,7 +23,7 @@ class PublishPins extends Component {
                     </Panel.Heading>
                     <Panel.Body collapsible>
 
-                        <label htmlFor="">
+                        {/* <label htmlFor="">
                             Title <br/>
                             <input type="text"
                                 className="publishTextInput"
@@ -42,11 +42,9 @@ class PublishPins extends Component {
                                         });
                                 }}
                             value={pin.title}/>
-                        </label>
-
-                        <br/>
-
-                        <label htmlFor="">
+                        </label> */}
+                       
+                        {/* <label htmlFor="">
                             Description <br/>
                             <textarea className="publishTextInputArea"
                                 onChange={(change) => {
@@ -64,11 +62,14 @@ class PublishPins extends Component {
                                         });
                                 }}
                             value={pin.description}/>
-                        </label>
+                        </label> */}
 
-                        <br/>
+                        <span htmlFor="">
+                        {pin.description}
+                        </span> 
 
-                        <label htmlFor="">
+                        <hr/>
+                        {/* <label htmlFor="">
                             Instructions <br/>
                             <textarea className="publishTextInputArea"
                                 onChange={(change) => {
@@ -86,13 +87,18 @@ class PublishPins extends Component {
                                         });
                                 }}
                             value={pin.instructions}/>
-                        </label>
+                        </label> */}
 
-                        <br/>
+                        <span htmlFor="">
+                        {pin.instructions}
+                        </span> 
+
+                        <hr/>
 
                         <label htmlFor="">
                             Quantity <br/>
                             <input type="number"
+                                min="1"
                                 className="publishTextInput"
                                 onChange={(change) => {
                                     this.setState({
@@ -108,7 +114,7 @@ class PublishPins extends Component {
                                             this.props.onValuesChange(this.state.unPublishedPins);
                                         });
                                 }}
-                            value={pin.quantity}/>
+                            value={pin.quantity || 1}/>
                         </label>
 
                         <br/>

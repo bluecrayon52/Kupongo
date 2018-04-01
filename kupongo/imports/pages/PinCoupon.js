@@ -165,8 +165,11 @@ class PinCoupon extends Component {
 
     // TODO(david): Add logic to update changes in database.
 
-    let isSelected = this.state.selectedTemplate._id === this.state.templates[index].id;
-
+    let isSelected = this.state.selectedTemplate._id === this.state.templates[index]._id;
+    console.log('[PinCoupons] updateTemplate this.state.selectedTemplate._id: ' + this.state.selectedTemplate._id);
+    console.log('[PinCoupons] updateTemplate this.state.templates[index].id: ' + this.state.templates[index]._id);
+    console.log('[PinCoupons] updateTemplate isSelected: ' + isSelected);
+    
     templates[index] = template;
 
     this.setState({
