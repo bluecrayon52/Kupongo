@@ -13,10 +13,6 @@ class PinMap extends Component {
             onClick={this.props.onClick}
             defaultZoom={15}
             defaultCenter={{lat: 36.069827, lng: -79.809468}}
-            center={{
-              lat: this.props.centerLat || 36.069827,
-              lng: this.props.centerLng || -79.809468,
-            }}
         >
           {pins.map((marker, index) => {
             return (
