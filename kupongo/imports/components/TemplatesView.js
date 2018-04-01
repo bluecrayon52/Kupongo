@@ -71,6 +71,7 @@ class TemplatesView extends Component {
               onClick={() => {
                 Popup.plugins().newTemplate((values) => {
                   values.salesInfo = this.props.salesInfo;
+                  console.log('[TemplateView] newTemplate callback values.productCtg: ' + values.productCtg);
                   this.props.addTemplate(new CouponTemplate(values));
                 });
               }}
@@ -99,6 +100,7 @@ Popup.registerPlugin('newTemplate', function (callback) {
         className: 'saveTemplateButton',
         action: () => {
           console.log('[TemplateView]: newTemplate saveTemplateButton, title: '+ values.title);
+          console.log('[TemplateView] newTemplate saveTemplateButton, productCtg: ' + values.productCtg);
           callback(values);
           Popup.close();
         }

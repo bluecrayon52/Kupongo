@@ -27,7 +27,7 @@ class EditTemplate extends Component {
       description:  this.props.description || '',    // editable 2
       title:        this.props.title || '',          // editable 1
       instructions: this.props.instructions || '',   // editable 3
-      productCtg:   this.props.prouctCtg || '',      // editable 4
+      productCtg:   this.props.productCtg || '',      // editable 4
       layout:       this.props.layout,               // editable 8 (not used for now)
 
     };
@@ -84,11 +84,12 @@ class EditTemplate extends Component {
             Product Category<br/>
               <Dropdown options={options} 
                 onChange={(option) => {
-                  this.setState({prouctCtg: option}, () => {
+                  console.log('[EditTemplate] Product Category option.value: ' + option.value);
+                  this.setState({productCtg: option.value}, () => {
                     this.props.onValuesChange(this.state);
                   });
                 }} 
-              value={this.state.prouctCtg} placeholder="Select an Option" />
+              value={this.state.productCtg} placeholder="Select an Option" />
           </label>
 
           <br/>

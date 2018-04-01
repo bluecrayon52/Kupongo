@@ -166,9 +166,6 @@ class PinCoupon extends Component {
     // TODO(david): Add logic to update changes in database.
 
     let isSelected = this.state.selectedTemplate._id === this.state.templates[index]._id;
-    console.log('[PinCoupons] updateTemplate this.state.selectedTemplate._id: ' + this.state.selectedTemplate._id);
-    console.log('[PinCoupons] updateTemplate this.state.templates[index].id: ' + this.state.templates[index]._id);
-    console.log('[PinCoupons] updateTemplate isSelected: ' + isSelected);
     
     templates[index] = template;
 
@@ -182,7 +179,7 @@ class PinCoupon extends Component {
   // remove a coupon template independently from pinned coupons
   removeTemplate(index) {
     let templates = [...this.state.templates];
-    console.log('[PinCoupon]: removeTemplate, templates[index].title: '+templates[index].title);
+    console.log('[PinCoupon] removeTemplate, templates[index].title: '+templates[index].title);
     Meteor.call('removeCouponTemplate', this.state.salesInfo._id, templates[index]);
 
     // remove the template from the client side array
@@ -194,11 +191,12 @@ class PinCoupon extends Component {
   }
 
   addTemplate(template) {
-    console.log('[PinCoupon]: addTemplate, title: '+ template.title);
+    console.log('[PinCoupon] addTemplate, title: '+ template.title);
+    console.log('[PinCoupon] addTemplate, productCtg: '+ template.productCtg)
     let templates = [...this.state.templates];
 
     Meteor.call('insertCouponTemplate', this.state.salesInfo._id, template.toMongoDoc(), (err, result) => {
-      console.log('[PinCoupon]: insertCouponTemplate result: '+result+', err: '+err);
+      console.log('[PinCoupon] insertCouponTemplate result: '+result+', err: '+err);
       template._id = result;
     });
     templates.push(template);

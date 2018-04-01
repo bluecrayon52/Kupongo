@@ -14,7 +14,9 @@ if (Meteor.isServer) {
 
 class CouponTemplate {
   constructor(values) {
-    console.log('[CouponTemplate]: constructor values: '+values.title);
+    console.log('[CouponTemplate]: constructor values.title: '+ values.title);
+    console.log('[CouponTemplate]: constructor values.productCtg: '+ values.productCtg);
+
     this._id              = values._id || ''; //  template ID (MongoDB ID to quickly query this information.)
     this.upcCode          = values.upcCode; // redacted until redemption is initiated
     this.qrImage          = values.qrImage; // redacted until redemption is initiated
@@ -22,7 +24,7 @@ class CouponTemplate {
     this.description      = values.description;
     this.title            = values.title;
     this.instructions     = values.instructions;
-    this.productCtg      = values.productCtg; // product category
+    this.productCtg       = values.productCtg; // product category
     this.layout           = values.layout;  // graphic format template (not used for now)
 
     if (values.hasOwnProperty('salesInfo'))
