@@ -108,7 +108,7 @@ Popup.registerPlugin('newTemplate', function (callback) {
 });
 
 Popup.registerPlugin('editTemplate', function (template, callback) {
-  let values = {};
+  let values = template;
   let onValuesChange = (newValues) => {
     values = newValues;
   };
