@@ -286,6 +286,20 @@ Meteor.methods({
 
     },
 
+    'updateCouponTemplate'(userID, couponTemplate) {
+      validateSalesUser(userID, couponTemplate, function(error, message){
+        if (error) {
+          console.log('[server/main]: updateCoupon, validateSalesUser resulted in an error for userID: '+userID);
+          throw new Meteor.Error(error, message);
+        } else {
+         CouponTemplateDB.update({_id: coupon._id}, {$set: coupon}, function(){
+            console.log('[server/main]: updateCouponTemplate for coupon.title: '+couponTemplate.title+' was successful!');
+            return true
+          });
+        }
+      });
+    },
+
     'updateCoupon'(userID, coupon) {
       validateSalesUser(userID, coupon, function(error, message){
         if (error) {
