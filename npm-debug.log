@@ -1,0 +1,152 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'react-native@lates' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.0
+4 verbose config Skipping project config: /Users/nathaniel/.npmrc. (matches userconfig)
+5 silly loadCurrentTree Starting
+6 silly install loadCurrentTree
+7 silly install readLocalPackageData
+8 silly fetchPackageMetaData react-native@lates
+9 silly fetchNamedPackageData react-native
+10 silly mapToRegistry name react-native
+11 silly mapToRegistry using default registry
+12 silly mapToRegistry registry https://registry.npmjs.org/
+13 silly mapToRegistry data Result {
+13 silly mapToRegistry   raw: 'react-native',
+13 silly mapToRegistry   scope: null,
+13 silly mapToRegistry   escapedName: 'react-native',
+13 silly mapToRegistry   name: 'react-native',
+13 silly mapToRegistry   rawSpec: '',
+13 silly mapToRegistry   spec: 'latest',
+13 silly mapToRegistry   type: 'tag' }
+14 silly mapToRegistry uri https://registry.npmjs.org/react-native
+15 verbose request uri https://registry.npmjs.org/react-native
+16 verbose request no auth needed
+17 info attempt registry request try #1 at 8:26:39 PM
+18 verbose request id c16e68e9e244de3e
+19 verbose etag "5abd1561-15f95b"
+20 verbose lastModified Thu, 29 Mar 2018 16:33:37 GMT
+21 http request GET https://registry.npmjs.org/react-native
+22 http 304 https://registry.npmjs.org/react-native
+23 verbose headers { date: 'Sun, 01 Apr 2018 00:26:39 GMT',
+23 verbose headers   via: '1.1 varnish',
+23 verbose headers   'cache-control': 'max-age=300',
+23 verbose headers   etag: '"5abd1561-15f95b"',
+23 verbose headers   age: '13441',
+23 verbose headers   connection: 'keep-alive',
+23 verbose headers   'x-served-by': 'cache-dca17734-DCA',
+23 verbose headers   'x-cache': 'HIT',
+23 verbose headers   'x-cache-hits': '2',
+23 verbose headers   'x-timer': 'S1522542400.512104,VS0,VE0',
+23 verbose headers   vary: 'Accept-Encoding, Accept' }
+24 silly get cb [ 304,
+24 silly get   { date: 'Sun, 01 Apr 2018 00:26:39 GMT',
+24 silly get     via: '1.1 varnish',
+24 silly get     'cache-control': 'max-age=300',
+24 silly get     etag: '"5abd1561-15f95b"',
+24 silly get     age: '13441',
+24 silly get     connection: 'keep-alive',
+24 silly get     'x-served-by': 'cache-dca17734-DCA',
+24 silly get     'x-cache': 'HIT',
+24 silly get     'x-cache-hits': '2',
+24 silly get     'x-timer': 'S1522542400.512104,VS0,VE0',
+24 silly get     vary: 'Accept-Encoding, Accept' } ]
+25 verbose etag https://registry.npmjs.org/react-native from cache
+26 verbose get saving react-native to /Users/nathaniel/.npm/registry.npmjs.org/react-native/.cache.json
+27 verbose correctMkdir /Users/nathaniel/.npm correctMkdir not in flight; initializing
+28 silly fetchNamedPackageData No valid target from cache, forcing network
+29 verbose request uri https://registry.npmjs.org/react-native
+30 verbose request no auth needed
+31 info attempt registry request try #1 at 8:26:39 PM
+32 http request GET https://registry.npmjs.org/react-native
+33 http 200 https://registry.npmjs.org/react-native
+34 verbose headers { 'content-type': 'application/json; charset=UTF-8',
+34 verbose headers   server: 'UploadServer',
+34 verbose headers   'cache-control': 'max-age=300',
+34 verbose headers   'last-modified': 'Thu, 29 Mar 2018 16:33:37 GMT',
+34 verbose headers   etag: '"5abd1561-15f95b"',
+34 verbose headers   'x-npm-region': 'US-East',
+34 verbose headers   'content-encoding': 'gzip',
+34 verbose headers   'content-length': '52898',
+34 verbose headers   'accept-ranges': 'bytes',
+34 verbose headers   date: 'Sun, 01 Apr 2018 00:26:39 GMT',
+34 verbose headers   via: '1.1 varnish',
+34 verbose headers   age: '13441',
+34 verbose headers   connection: 'keep-alive',
+34 verbose headers   'x-served-by': 'cache-dca17734-DCA',
+34 verbose headers   'x-cache': 'HIT',
+34 verbose headers   'x-cache-hits': '3',
+34 verbose headers   'x-timer': 'S1522542400.580612,VS0,VE0',
+34 verbose headers   vary: 'Accept-Encoding, Accept' }
+35 silly get cb [ 200,
+35 silly get   { 'content-type': 'application/json; charset=UTF-8',
+35 silly get     server: 'UploadServer',
+35 silly get     'cache-control': 'max-age=300',
+35 silly get     'last-modified': 'Thu, 29 Mar 2018 16:33:37 GMT',
+35 silly get     etag: '"5abd1561-15f95b"',
+35 silly get     'x-npm-region': 'US-East',
+35 silly get     'content-encoding': 'gzip',
+35 silly get     'content-length': '52898',
+35 silly get     'accept-ranges': 'bytes',
+35 silly get     date: 'Sun, 01 Apr 2018 00:26:39 GMT',
+35 silly get     via: '1.1 varnish',
+35 silly get     age: '13441',
+35 silly get     connection: 'keep-alive',
+35 silly get     'x-served-by': 'cache-dca17734-DCA',
+35 silly get     'x-cache': 'HIT',
+35 silly get     'x-cache-hits': '3',
+35 silly get     'x-timer': 'S1522542400.580612,VS0,VE0',
+35 silly get     vary: 'Accept-Encoding, Accept' } ]
+36 verbose get saving react-native to /Users/nathaniel/.npm/registry.npmjs.org/react-native/.cache.json
+37 verbose correctMkdir /Users/nathaniel/.npm correctMkdir not in flight; initializing
+38 silly fetchPackageMetaData Error: No compatible version found: react-native@lates
+38 silly fetchPackageMetaData Valid install targets:
+38 silly fetchPackageMetaData 0.55.0-rc.2, 0.55.0-rc.1, 0.55.0-rc.0, 0.54.4, 0.54.3, 0.54.2, 0.54.1, 0.54.0, 0.54.0-rc.4, 0.54.0-rc.3, 0.54.0-rc.2, 0.54.0-rc.0, 0.53.3, 0.53.2, 0.53.0, 0.53.0-rc.0, 0.52.3, 0.52.2, 0.52.1, 0.52.0, 0.52.0-rc.0, 0.51.1, 0.51.0, 0.51.0-rc.3, 0.51.0-rc.2, 0.50.4, 0.50.3, 0.50.2, 0.50.1, 0.50.0, 0.50.0-rc.2, 0.50.0-rc.1, 0.50.0-rc.0, 0.49.5, 0.49.3, 0.49.2, 0.49.1, 0.49.0, 0.49.0-rc.6, 0.49.0-rc.5, 0.49.0-rc.4, 0.49.0-rc.2, 0.48.4, 0.48.3, 0.48.2, 0.48.1, 0.48.0, 0.48.0-rc.1, 0.48.0-rc.0, 0.47.2, 0.47.1, 0.47.0, 0.47.0-rc.5, 0.47.0-rc.4, 0.47.0-rc.3, 0.47.0-rc.2, 0.47.0-rc.1, 0.47.0-rc.0, 0.46.4, 0.46.3, 0.46.2, 0.46.1, 0.46.0, 0.46.0-rc.2, 0.46.0-rc.1, 0.46.0-rc.0, 0.45.1, 0.45.0, 0.45.0-rc.3, 0.45.0-rc.2, 0.45.0-rc.1, 0.45.0-rc.0, 0.44.3, 0.44.2, 0.44.1, 0.44.0, 0.44.0-rc.0, 0.43.4, 0.43.3, 0.43.2, 0.43.1, 0.43.0, 0.43.0-rc.4, 0.43.0-rc.3, 0.43.0-rc.2, 0.43.0-rc.1, 0.43.0-rc.0, 0.42.3, 0.42.2, 0.42.0, 0.42.0-rc.3, 0.42.0-rc.2, 0.42.0-rc.1, 0.42.0-rc.0, 0.41.2, 0.41.1, 0.41.0, 0.41.0-rc.1, 0.41.0-rc.0, 0.40.0, 0.40.0-rc.2, 0.40.0-rc.1, 0.40.0-rc.0, 0.39.2, 0.39.1, 0.39.0, 0.39.0-rc.0, 0.38.1, 0.38.0, 0.38.0-rc.1, 0.38.0-rc.0, 0.37.0, 0.37.0-rc.4, 0.37.0-rc.3, 0.37.0-rc.2, 0.37.0-rc.0, 0.36.1, 0.36.0, 0.36.0-rc.1, 0.36.0-rc.0, 0.35.0, 0.35.0-rc.0, 0.34.1, 0.34.0, 0.34.0-rc.0, 0.33.1, 0.33.0, 0.33.0-rc.1, 0.33.0-rc.0, 0.32.1, 0.32.0, 0.32.0-rc.0, 0.31.0, 0.31.0-rc.1, 0.31.0-rc.0, 0.30.0, 0.30.0-rc.0, 0.29.2, 0.29.1, 0.29.0, 0.29.0-rc.3, 0.29.0-rc.2, 0.29.0-rc.1, 0.29.0-rc.0, 0.28.0, 0.28.0-rc.0, 0.27.2, 0.27.1, 0.27.0, 0.27.0-rc3, 0.27.0-rc2, 0.27.0-rc1, 0.27.0-rc, 0.26.3, 0.26.2, 0.26.1, 0.26.0, 0.26.0-rc, 0.25.1, 0.25.0-rc, 0.24.1, 0.24.0, 0.24.0-rc5, 0.24.0-rc4, 0.24.0-rc3, 0.24.0-rc2, 0.24.0-rc1, 0.24.0-rc, 0.23.1, 0.23.0, 0.23.0-rc4, 0.23.0-rc3, 0.23.0-rc1, 0.22.2, 0.22.1, 0.22.0, 0.22.0-rc5, 0.22.0-rc4, 0.22.0-rc3, 0.22.0-rc, 0.21.0, 0.21.0-rc, 0.20.0, 0.20.0-rc1, 0.19.0, 0.19.0-rc, 0.18.1, 0.18.0, 0.18.0-rc, 0.17.0, 0.17.0-rc, 0.16.0, 0.16.0-rc, 0.15.0, 0.15.0-rc, 0.14.2, 0.14.1, 0.14.0, 0.14.0-rc, 0.13.2, 0.13.1, 0.13.0, 0.13.0-rc, 0.12.0, 0.12.0-rc, 0.11.4, 0.11.3, 0.11.2, 0.11.1, 0.11.0, 0.11.0-rc, 0.10.1, 0.10.0, 0.10.0-rc, 0.9.0, 0.9.0-rc, 0.8.0, 0.8.0-rc.2, 0.8.0-rc, 0.7.1, 0.7.0-rc.2, 0.7.0-rc, 0.6.0, 0.6.0-rc, 0.5.0, 0.5.0-rc1, 0.4.4, 0.4.3, 0.4.2, 0.4.1, 0.4.0, 0.3.11, 0.3.10, 0.3.9, 0.3.8, 0.3.7, 0.3.6, 0.3.5, 0.3.4, 0.3.3, 0.3.2, 0.3.1, 0.3.0, 0.2.1, 0.2.0, 0.1.0, 0.0.6, 0.0.5, 0.0.0
+38 silly fetchPackageMetaData
+38 silly fetchPackageMetaData     at pickVersionFromRegistryDocument (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:178:16)
+38 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+38 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/lib/utils/pulse-till-done.js:20:8
+38 silly fetchPackageMetaData     at saved (/usr/local/lib/node_modules/npm/lib/cache/caching-client.js:174:7)
+38 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:241:18
+38 silly fetchPackageMetaData     at FSReqWrap.oncomplete (fs.js:123:15)
+38 silly fetchPackageMetaData  error for react-native@lates { Error: No compatible version found: react-native@lates
+38 silly fetchPackageMetaData Valid install targets:
+38 silly fetchPackageMetaData 0.55.0-rc.2, 0.55.0-rc.1, 0.55.0-rc.0, 0.54.4, 0.54.3, 0.54.2, 0.54.1, 0.54.0, 0.54.0-rc.4, 0.54.0-rc.3, 0.54.0-rc.2, 0.54.0-rc.0, 0.53.3, 0.53.2, 0.53.0, 0.53.0-rc.0, 0.52.3, 0.52.2, 0.52.1, 0.52.0, 0.52.0-rc.0, 0.51.1, 0.51.0, 0.51.0-rc.3, 0.51.0-rc.2, 0.50.4, 0.50.3, 0.50.2, 0.50.1, 0.50.0, 0.50.0-rc.2, 0.50.0-rc.1, 0.50.0-rc.0, 0.49.5, 0.49.3, 0.49.2, 0.49.1, 0.49.0, 0.49.0-rc.6, 0.49.0-rc.5, 0.49.0-rc.4, 0.49.0-rc.2, 0.48.4, 0.48.3, 0.48.2, 0.48.1, 0.48.0, 0.48.0-rc.1, 0.48.0-rc.0, 0.47.2, 0.47.1, 0.47.0, 0.47.0-rc.5, 0.47.0-rc.4, 0.47.0-rc.3, 0.47.0-rc.2, 0.47.0-rc.1, 0.47.0-rc.0, 0.46.4, 0.46.3, 0.46.2, 0.46.1, 0.46.0, 0.46.0-rc.2, 0.46.0-rc.1, 0.46.0-rc.0, 0.45.1, 0.45.0, 0.45.0-rc.3, 0.45.0-rc.2, 0.45.0-rc.1, 0.45.0-rc.0, 0.44.3, 0.44.2, 0.44.1, 0.44.0, 0.44.0-rc.0, 0.43.4, 0.43.3, 0.43.2, 0.43.1, 0.43.0, 0.43.0-rc.4, 0.43.0-rc.3, 0.43.0-rc.2, 0.43.0-rc.1, 0.43.0-rc.0, 0.42.3, 0.42.2, 0.42.0, 0.42.0-rc.3, 0.42.0-rc.2, 0.42.0-rc.1, 0.42.0-rc.0, 0.41.2, 0.41.1, 0.41.0, 0.41.0-rc.1, 0.41.0-rc.0, 0.40.0, 0.40.0-rc.2, 0.40.0-rc.1, 0.40.0-rc.0, 0.39.2, 0.39.1, 0.39.0, 0.39.0-rc.0, 0.38.1, 0.38.0, 0.38.0-rc.1, 0.38.0-rc.0, 0.37.0, 0.37.0-rc.4, 0.37.0-rc.3, 0.37.0-rc.2, 0.37.0-rc.0, 0.36.1, 0.36.0, 0.36.0-rc.1, 0.36.0-rc.0, 0.35.0, 0.35.0-rc.0, 0.34.1, 0.34.0, 0.34.0-rc.0, 0.33.1, 0.33.0, 0.33.0-rc.1, 0.33.0-rc.0, 0.32.1, 0.32.0, 0.32.0-rc.0, 0.31.0, 0.31.0-rc.1, 0.31.0-rc.0, 0.30.0, 0.30.0-rc.0, 0.29.2, 0.29.1, 0.29.0, 0.29.0-rc.3, 0.29.0-rc.2, 0.29.0-rc.1, 0.29.0-rc.0, 0.28.0, 0.28.0-rc.0, 0.27.2, 0.27.1, 0.27.0, 0.27.0-rc3, 0.27.0-rc2, 0.27.0-rc1, 0.27.0-rc, 0.26.3, 0.26.2, 0.26.1, 0.26.0, 0.26.0-rc, 0.25.1, 0.25.0-rc, 0.24.1, 0.24.0, 0.24.0-rc5, 0.24.0-rc4, 0.24.0-rc3, 0.24.0-rc2, 0.24.0-rc1, 0.24.0-rc, 0.23.1, 0.23.0, 0.23.0-rc4, 0.23.0-rc3, 0.23.0-rc1, 0.22.2, 0.22.1, 0.22.0, 0.22.0-rc5, 0.22.0-rc4, 0.22.0-rc3, 0.22.0-rc, 0.21.0, 0.21.0-rc, 0.20.0, 0.20.0-rc1, 0.19.0, 0.19.0-rc, 0.18.1, 0.18.0, 0.18.0-rc, 0.17.0, 0.17.0-rc, 0.16.0, 0.16.0-rc, 0.15.0, 0.15.0-rc, 0.14.2, 0.14.1, 0.14.0, 0.14.0-rc, 0.13.2, 0.13.1, 0.13.0, 0.13.0-rc, 0.12.0, 0.12.0-rc, 0.11.4, 0.11.3, 0.11.2, 0.11.1, 0.11.0, 0.11.0-rc, 0.10.1, 0.10.0, 0.10.0-rc, 0.9.0, 0.9.0-rc, 0.8.0, 0.8.0-rc.2, 0.8.0-rc, 0.7.1, 0.7.0-rc.2, 0.7.0-rc, 0.6.0, 0.6.0-rc, 0.5.0, 0.5.0-rc1, 0.4.4, 0.4.3, 0.4.2, 0.4.1, 0.4.0, 0.3.11, 0.3.10, 0.3.9, 0.3.8, 0.3.7, 0.3.6, 0.3.5, 0.3.4, 0.3.3, 0.3.2, 0.3.1, 0.3.0, 0.2.1, 0.2.0, 0.1.0, 0.0.6, 0.0.5, 0.0.0
+38 silly fetchPackageMetaData
+38 silly fetchPackageMetaData     at pickVersionFromRegistryDocument (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:178:16)
+38 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+38 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/lib/utils/pulse-till-done.js:20:8
+38 silly fetchPackageMetaData     at saved (/usr/local/lib/node_modules/npm/lib/cache/caching-client.js:174:7)
+38 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:241:18
+38 silly fetchPackageMetaData     at FSReqWrap.oncomplete (fs.js:123:15) code: 'ETARGET' }
+39 silly rollbackFailedOptional Starting
+40 silly rollbackFailedOptional Finishing
+41 silly runTopLevelLifecycles Finishing
+42 silly install printInstalled
+43 verbose stack Error: No compatible version found: react-native@lates
+43 verbose stack Valid install targets:
+43 verbose stack 0.55.0-rc.2, 0.55.0-rc.1, 0.55.0-rc.0, 0.54.4, 0.54.3, 0.54.2, 0.54.1, 0.54.0, 0.54.0-rc.4, 0.54.0-rc.3, 0.54.0-rc.2, 0.54.0-rc.0, 0.53.3, 0.53.2, 0.53.0, 0.53.0-rc.0, 0.52.3, 0.52.2, 0.52.1, 0.52.0, 0.52.0-rc.0, 0.51.1, 0.51.0, 0.51.0-rc.3, 0.51.0-rc.2, 0.50.4, 0.50.3, 0.50.2, 0.50.1, 0.50.0, 0.50.0-rc.2, 0.50.0-rc.1, 0.50.0-rc.0, 0.49.5, 0.49.3, 0.49.2, 0.49.1, 0.49.0, 0.49.0-rc.6, 0.49.0-rc.5, 0.49.0-rc.4, 0.49.0-rc.2, 0.48.4, 0.48.3, 0.48.2, 0.48.1, 0.48.0, 0.48.0-rc.1, 0.48.0-rc.0, 0.47.2, 0.47.1, 0.47.0, 0.47.0-rc.5, 0.47.0-rc.4, 0.47.0-rc.3, 0.47.0-rc.2, 0.47.0-rc.1, 0.47.0-rc.0, 0.46.4, 0.46.3, 0.46.2, 0.46.1, 0.46.0, 0.46.0-rc.2, 0.46.0-rc.1, 0.46.0-rc.0, 0.45.1, 0.45.0, 0.45.0-rc.3, 0.45.0-rc.2, 0.45.0-rc.1, 0.45.0-rc.0, 0.44.3, 0.44.2, 0.44.1, 0.44.0, 0.44.0-rc.0, 0.43.4, 0.43.3, 0.43.2, 0.43.1, 0.43.0, 0.43.0-rc.4, 0.43.0-rc.3, 0.43.0-rc.2, 0.43.0-rc.1, 0.43.0-rc.0, 0.42.3, 0.42.2, 0.42.0, 0.42.0-rc.3, 0.42.0-rc.2, 0.42.0-rc.1, 0.42.0-rc.0, 0.41.2, 0.41.1, 0.41.0, 0.41.0-rc.1, 0.41.0-rc.0, 0.40.0, 0.40.0-rc.2, 0.40.0-rc.1, 0.40.0-rc.0, 0.39.2, 0.39.1, 0.39.0, 0.39.0-rc.0, 0.38.1, 0.38.0, 0.38.0-rc.1, 0.38.0-rc.0, 0.37.0, 0.37.0-rc.4, 0.37.0-rc.3, 0.37.0-rc.2, 0.37.0-rc.0, 0.36.1, 0.36.0, 0.36.0-rc.1, 0.36.0-rc.0, 0.35.0, 0.35.0-rc.0, 0.34.1, 0.34.0, 0.34.0-rc.0, 0.33.1, 0.33.0, 0.33.0-rc.1, 0.33.0-rc.0, 0.32.1, 0.32.0, 0.32.0-rc.0, 0.31.0, 0.31.0-rc.1, 0.31.0-rc.0, 0.30.0, 0.30.0-rc.0, 0.29.2, 0.29.1, 0.29.0, 0.29.0-rc.3, 0.29.0-rc.2, 0.29.0-rc.1, 0.29.0-rc.0, 0.28.0, 0.28.0-rc.0, 0.27.2, 0.27.1, 0.27.0, 0.27.0-rc3, 0.27.0-rc2, 0.27.0-rc1, 0.27.0-rc, 0.26.3, 0.26.2, 0.26.1, 0.26.0, 0.26.0-rc, 0.25.1, 0.25.0-rc, 0.24.1, 0.24.0, 0.24.0-rc5, 0.24.0-rc4, 0.24.0-rc3, 0.24.0-rc2, 0.24.0-rc1, 0.24.0-rc, 0.23.1, 0.23.0, 0.23.0-rc4, 0.23.0-rc3, 0.23.0-rc1, 0.22.2, 0.22.1, 0.22.0, 0.22.0-rc5, 0.22.0-rc4, 0.22.0-rc3, 0.22.0-rc, 0.21.0, 0.21.0-rc, 0.20.0, 0.20.0-rc1, 0.19.0, 0.19.0-rc, 0.18.1, 0.18.0, 0.18.0-rc, 0.17.0, 0.17.0-rc, 0.16.0, 0.16.0-rc, 0.15.0, 0.15.0-rc, 0.14.2, 0.14.1, 0.14.0, 0.14.0-rc, 0.13.2, 0.13.1, 0.13.0, 0.13.0-rc, 0.12.0, 0.12.0-rc, 0.11.4, 0.11.3, 0.11.2, 0.11.1, 0.11.0, 0.11.0-rc, 0.10.1, 0.10.0, 0.10.0-rc, 0.9.0, 0.9.0-rc, 0.8.0, 0.8.0-rc.2, 0.8.0-rc, 0.7.1, 0.7.0-rc.2, 0.7.0-rc, 0.6.0, 0.6.0-rc, 0.5.0, 0.5.0-rc1, 0.4.4, 0.4.3, 0.4.2, 0.4.1, 0.4.0, 0.3.11, 0.3.10, 0.3.9, 0.3.8, 0.3.7, 0.3.6, 0.3.5, 0.3.4, 0.3.3, 0.3.2, 0.3.1, 0.3.0, 0.2.1, 0.2.0, 0.1.0, 0.0.6, 0.0.5, 0.0.0
+43 verbose stack
+43 verbose stack     at pickVersionFromRegistryDocument (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:178:16)
+43 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+43 verbose stack     at /usr/local/lib/node_modules/npm/lib/utils/pulse-till-done.js:20:8
+43 verbose stack     at saved (/usr/local/lib/node_modules/npm/lib/cache/caching-client.js:174:7)
+43 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:241:18
+43 verbose stack     at FSReqWrap.oncomplete (fs.js:123:15)
+44 verbose cwd /Users/nathaniel/Workspace/Kupongo/Kupongo
+45 error Darwin 17.4.0
+46 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "--save" "react-native@lates"
+47 error node v6.11.0
+48 error npm  v3.10.10
+49 error code ETARGET
+50 error notarget No compatible version found: react-native@lates
+50 error notarget Valid install targets:
+50 error notarget 0.55.0-rc.2, 0.55.0-rc.1, 0.55.0-rc.0, 0.54.4, 0.54.3, 0.54.2, 0.54.1, 0.54.0, 0.54.0-rc.4, 0.54.0-rc.3, 0.54.0-rc.2, 0.54.0-rc.0, 0.53.3, 0.53.2, 0.53.0, 0.53.0-rc.0, 0.52.3, 0.52.2, 0.52.1, 0.52.0, 0.52.0-rc.0, 0.51.1, 0.51.0, 0.51.0-rc.3, 0.51.0-rc.2, 0.50.4, 0.50.3, 0.50.2, 0.50.1, 0.50.0, 0.50.0-rc.2, 0.50.0-rc.1, 0.50.0-rc.0, 0.49.5, 0.49.3, 0.49.2, 0.49.1, 0.49.0, 0.49.0-rc.6, 0.49.0-rc.5, 0.49.0-rc.4, 0.49.0-rc.2, 0.48.4, 0.48.3, 0.48.2, 0.48.1, 0.48.0, 0.48.0-rc.1, 0.48.0-rc.0, 0.47.2, 0.47.1, 0.47.0, 0.47.0-rc.5, 0.47.0-rc.4, 0.47.0-rc.3, 0.47.0-rc.2, 0.47.0-rc.1, 0.47.0-rc.0, 0.46.4, 0.46.3, 0.46.2, 0.46.1, 0.46.0, 0.46.0-rc.2, 0.46.0-rc.1, 0.46.0-rc.0, 0.45.1, 0.45.0, 0.45.0-rc.3, 0.45.0-rc.2, 0.45.0-rc.1, 0.45.0-rc.0, 0.44.3, 0.44.2, 0.44.1, 0.44.0, 0.44.0-rc.0, 0.43.4, 0.43.3, 0.43.2, 0.43.1, 0.43.0, 0.43.0-rc.4, 0.43.0-rc.3, 0.43.0-rc.2, 0.43.0-rc.1, 0.43.0-rc.0, 0.42.3, 0.42.2, 0.42.0, 0.42.0-rc.3, 0.42.0-rc.2, 0.42.0-rc.1, 0.42.0-rc.0, 0.41.2, 0.41.1, 0.41.0, 0.41.0-rc.1, 0.41.0-rc.0, 0.40.0, 0.40.0-rc.2, 0.40.0-rc.1, 0.40.0-rc.0, 0.39.2, 0.39.1, 0.39.0, 0.39.0-rc.0, 0.38.1, 0.38.0, 0.38.0-rc.1, 0.38.0-rc.0, 0.37.0, 0.37.0-rc.4, 0.37.0-rc.3, 0.37.0-rc.2, 0.37.0-rc.0, 0.36.1, 0.36.0, 0.36.0-rc.1, 0.36.0-rc.0, 0.35.0, 0.35.0-rc.0, 0.34.1, 0.34.0, 0.34.0-rc.0, 0.33.1, 0.33.0, 0.33.0-rc.1, 0.33.0-rc.0, 0.32.1, 0.32.0, 0.32.0-rc.0, 0.31.0, 0.31.0-rc.1, 0.31.0-rc.0, 0.30.0, 0.30.0-rc.0, 0.29.2, 0.29.1, 0.29.0, 0.29.0-rc.3, 0.29.0-rc.2, 0.29.0-rc.1, 0.29.0-rc.0, 0.28.0, 0.28.0-rc.0, 0.27.2, 0.27.1, 0.27.0, 0.27.0-rc3, 0.27.0-rc2, 0.27.0-rc1, 0.27.0-rc, 0.26.3, 0.26.2, 0.26.1, 0.26.0, 0.26.0-rc, 0.25.1, 0.25.0-rc, 0.24.1, 0.24.0, 0.24.0-rc5, 0.24.0-rc4, 0.24.0-rc3, 0.24.0-rc2, 0.24.0-rc1, 0.24.0-rc, 0.23.1, 0.23.0, 0.23.0-rc4, 0.23.0-rc3, 0.23.0-rc1, 0.22.2, 0.22.1, 0.22.0, 0.22.0-rc5, 0.22.0-rc4, 0.22.0-rc3, 0.22.0-rc, 0.21.0, 0.21.0-rc, 0.20.0, 0.20.0-rc1, 0.19.0, 0.19.0-rc, 0.18.1, 0.18.0, 0.18.0-rc, 0.17.0, 0.17.0-rc, 0.16.0, 0.16.0-rc, 0.15.0, 0.15.0-rc, 0.14.2, 0.14.1, 0.14.0, 0.14.0-rc, 0.13.2, 0.13.1, 0.13.0, 0.13.0-rc, 0.12.0, 0.12.0-rc, 0.11.4, 0.11.3, 0.11.2, 0.11.1, 0.11.0, 0.11.0-rc, 0.10.1, 0.10.0, 0.10.0-rc, 0.9.0, 0.9.0-rc, 0.8.0, 0.8.0-rc.2, 0.8.0-rc, 0.7.1, 0.7.0-rc.2, 0.7.0-rc, 0.6.0, 0.6.0-rc, 0.5.0, 0.5.0-rc1, 0.4.4, 0.4.3, 0.4.2, 0.4.1, 0.4.0, 0.3.11, 0.3.10, 0.3.9, 0.3.8, 0.3.7, 0.3.6, 0.3.5, 0.3.4, 0.3.3, 0.3.2, 0.3.1, 0.3.0, 0.2.1, 0.2.0, 0.1.0, 0.0.6, 0.0.5, 0.0.0
+51 error notarget This is most likely not a problem with npm itself.
+51 error notarget In most cases you or one of your dependencies are requesting
+51 error notarget a package version that doesn't exist.
+52 verbose exit [ 1, true ]
