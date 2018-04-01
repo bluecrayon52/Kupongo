@@ -92,39 +92,6 @@ class PinCoupon extends Component {
     );
   }
 
-  // TODO(david): Remove once template database is all ready for use.
-  fetchTemplatesForUser() {
-    return [
-      new CouponTemplate({
-        _id: '12nsdf',
-        company: 'Coke',
-        upcCode: '25OFF',
-        description: '25% off your next coke!',
-        title: 'Coke for 25% off',
-        instances: 10,
-        experiationDate: new Date('March 30, 2018')
-      }),
-      new CouponTemplate({
-        _id: '843nv',
-        company: 'Coke',
-        upcCode: '10OFF',
-        description: '25% off your next coke!',
-        title: 'Coke for 10% off',
-        instances: 10,
-        experiationDate: new Date('March 30, 2018')
-      }),
-      new CouponTemplate({
-        _id: 'skdand',
-        company: 'Coke',
-        upcCode: 'FREECOKEBABY',
-        description: 'One whole free coke!',
-        title: 'FREE COKE',
-        instances: 10,
-        experiationDate: new Date('March 30, 2018')
-      })
-    ];
-  }
-
   componentWillReceiveProps(newProps) {
     this.setState({
       templates: newProps.templates || this.state.templates
@@ -164,8 +131,15 @@ class PinCoupon extends Component {
     });
 
     // TODO(david): Add logic to update changes in database.
+    Meteor.call('updateCouponTemplate', this.state.salesInfo._id, this.state.salesInfo.companyName, template._id, template.toMongoDoc(), (err, result) => {
+      if (err) {
+        console.log('Template update failed.')
+      }
+    });
 
-    let isSelected = this.state.selectedTemplate._id === this.state.templates[index]._id;
+    let isSelected = false;
+    if (this.state.selectedTemplate)
+      isSelected = this.state.selectedTemplate._id === this.state.templates[index]._id;
     
     templates[index] = template;
 
