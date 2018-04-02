@@ -15,20 +15,20 @@ class EditTemplate extends Component {
 
   constructor(props) {
     super(props);
-
+    console.log('[EditTemplate] constructor: ' + this.props.getTemp().title);
     this.state = {
     
       _id:          this.props._id,
       salesID:      this.props.salesID,
       companyName:  this.props.companyName,
-      upcCode:      this.props.upcCode || '',        // editable 5
-      qrImage:      this.props.qrImage,              // editable 6
-      couponImage:  this.props.couponImage || [],    // editable 7
-      description:  this.props.description || '',    // editable 2
-      title:        this.props.title || '',          // editable 1
-      instructions: this.props.instructions || '',   // editable 3
-      productCtg:   this.props.productCtg || '',      // editable 4
-      layout:       this.props.layout,               // editable 8 (not used for now)
+      upcCode:      this.props.upcCode      || this.props.getTemp().upcCode || '',        // editable 5
+      qrImage:      this.props.qrImage,                                                   // editable 6
+      couponImage:  this.props.couponImage  || [],                                        // editable 7
+      description:  this.props.description  || this.props.getTemp().description || '',    // editable 2
+      title:        this.props.title        || this.props.getTemp().title || '',          // editable 1
+      instructions: this.props.instructions || this.props.getTemp().instructions || '',   // editable 3
+      productCtg:   this.props.productCtg   || this.props.getTemp().productCtg || '',     // editable 4
+      layout:       this.props.layout,                                                    // editable 8 (not used for now)
 
     };
   }
@@ -46,7 +46,6 @@ class EditTemplate extends Component {
               smoothScrolling={true}
               horizontal={false}
           >
-          {/* <span>{this.props.errorMessage}</span> */}
 
           <label htmlFor="">
             Title <br/>

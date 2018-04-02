@@ -8,7 +8,6 @@ import Popup from 'react-popup';
 import CouponTemplate from '../api/CouponTemplate';
 import ScrollArea from 'react-scrollbar';
 
-
 class TemplatesView extends Component {
 
   constructor(props) {
@@ -85,15 +84,22 @@ class TemplatesView extends Component {
 // === Popup prompts =====
 Popup.registerPlugin('newTemplate', function (callback) {
   let values = {};
+  let temp = {};
   let errorMessage = '';
+
   let onValuesChange = (newValues) => {
     values = newValues;
   };
+
+  let getTemp = () => {
+    return temp;
+  };
+
   this.create({
     title: 'Create Template',
-    content: <EditTemplate
-        onValuesChange={onValuesChange}
-    />,
+
+    content: <EditTemplate onValuesChange={onValuesChange} getTemp={getTemp}/>,
+
     buttons: {
       left: ['cancel'],
       right: [{
@@ -103,19 +109,30 @@ Popup.registerPlugin('newTemplate', function (callback) {
           var isEmpty = Object.keys(values).length === 0;
           if(values.upcCode) {
           var isnum = /^\d+$/.test(values.upcCode);
-          var rightLength = values.upcCode.length === 6 |  values.upcCode.length === 12;
+          var rightLength = values.upcCode.length === 6 || values.upcCode.length === 12;
           } 
-          if(isEmpty) errorMessage ='You must set the title, description, instructions, and upc code!';
+          if (isEmpty) errorMessage ='You must set the title, description, instructions, and upc code!';
           else if (!values.title) errorMessage = 'The title must be set!';
-          else if(!values.description) errorMessage = 'The description must be set!';
-          else if(!values.instructions) errorMessage = 'The instructions must be set!';
-          else if(!values.upcCode) errorMessage = 'The upc code must be set!'
+          else if (!values.description) errorMessage = 'The description must be set!';
+          else if (!values.instructions) errorMessage = 'The instructions must be set!';
+          else if (!values.upcCode) errorMessage = 'The upc code must be set!'
           else if (!isnum) errorMessage = 'The upc code must be all digits!';
           else if (!rightLength) errorMessage = 'The upc code must be either 6 or 12 digits!';
+
           if(errorMessage) {
+            temp = values;
             Popup.create({
               title: 'Template Incomplete',
-              content: errorMessage
+              content: errorMessage,
+              buttons: {
+                right: [{
+                  text: 'Ok',
+                  action: () => {
+                    errorMessage = '';
+                    Popup.close();
+                  }
+                }]
+              }
             }, true);
           } else {
               callback(values);
@@ -129,15 +146,22 @@ Popup.registerPlugin('newTemplate', function (callback) {
 
 Popup.registerPlugin('editTemplate', function (template, callback) {
   let values = template;
+  let temp = {};
+  let errorMessage = '';
+
   let onValuesChange = (newValues) => {
     values = newValues;
   };
+
+  let getTemp = () => {
+    return temp;
+  };
+
   this.create({
     title: 'Edit Template',
-    content: <EditTemplate
-        {...template}
-        onValuesChange={onValuesChange}
-    />,
+
+    content: <EditTemplate {...template} onValuesChange={onValuesChange} getTemp={getTemp}/>,
+
     buttons: {
       left: ['cancel'],
       right: [{
@@ -147,19 +171,30 @@ Popup.registerPlugin('editTemplate', function (template, callback) {
           var isEmpty = Object.keys(values).length === 0;
           if(values.upcCode) {
           var isnum = /^\d+$/.test(values.upcCode);
-          var rightLength = values.upcCode.length === 6 |  values.upcCode.length === 12;
+          var rightLength = values.upcCode.length === 6 || values.upcCode.length === 12;
           } 
-          if(isEmpty) errorMessage ='You must set the title, description, instructions, and upc code!';
+          if (isEmpty) errorMessage ='You must set the title, description, instructions, and upc code!';
           else if (!values.title) errorMessage = 'The title must be set!';
-          else if(!values.description) errorMessage = 'The description must be set!';
-          else if(!values.instructions) errorMessage = 'The instructions must be set!';
-          else if(!values.upcCode) errorMessage = 'The upc code must be set!'
+          else if (!values.description) errorMessage = 'The description must be set!';
+          else if (!values.instructions) errorMessage = 'The instructions must be set!';
+          else if (!values.upcCode) errorMessage = 'The upc code must be set!'
           else if (!isnum) errorMessage = 'The upc code must be all digits!';
           else if (!rightLength) errorMessage = 'The upc code must be either 6 or 12 digits!';
+
           if(errorMessage) {
+            temp = values;
             Popup.create({
               title: 'Template Incomplete',
-              content: errorMessage
+              content: errorMessage,
+              buttons: {
+                right: [{
+                  text: 'Ok',
+                  action: () => {
+                    errorMessage = '';
+                    Popup.close();
+                  }
+                }]
+              }
             }, true);
           } else {
               callback(values);
