@@ -6,6 +6,7 @@ import {CouponDB} from './../imports/api/Coupon';
 import Customer, {UserDB} from './../imports/api/UserDoc';
 import {CompanyDB} from './../imports/api/CompanyDoc';
 import {validateSalesUser} from './../imports/srvr/ServerFunctions';
+import {validateSalesUserForTemplate} from './../imports/srvr/ServerFunctions';
 import {addNewUser} from './../imports/srvr/ServerFunctions';
 import {validateUser} from './../imports/srvr/ServerFunctions';
 import {validateMobileUser} from './../imports/srvr/ServerFunctions';
@@ -286,13 +287,15 @@ Meteor.methods({
 
     },
 
-    'updateCouponTemplate'(userID, couponTemplate) {
-      validateSalesUser(userID, couponTemplate, function(error, message){
+    'updateCouponTemplate'(userID, companyName, templateId, couponTemplate) {
+      validateSalesUserForTemplate(userID, companyName, function(error, message){
         if (error) {
           console.log('[server/main]: updateCoupon, validateSalesUser resulted in an error for userID: '+userID);
           throw new Meteor.Error(error, message);
         } else {
-         CouponTemplateDB.update({_id: coupon._id}, {$set: coupon}, function(){
+          console.log(couponTemplate._id);
+         CouponTemplateDB.update({_id: templateId}, {$set: couponTemplate}, function(err, result){
+            console.log(err, result);
             console.log('[server/main]: updateCouponTemplate for coupon.title: '+couponTemplate.title+' was successful!');
             return true
           });

@@ -45,6 +45,34 @@ function validateSalesUser(userID, coupon, callback){
 export {validateSalesUser};
 
 
+// TODO: May want to migrate to using a function like this instead, since the above function relies on a coupon object only.
+/**
+ * Checks if the sales user is allowed to make the changes.
+ * @param userId: Id of the sales user.
+ * @param companyName: name of the company they work for.
+ */
+function validateSalesUserForTemplate(userId, companyName, callback) {
+  console.log('[ServerFunctions]: validateSalesUser');
+  // Get the company document
+  const companyDoc = CompanyDB.findOne({'companyName': companyName});
+  if (companyDoc) {
+    const userDoc = UserDB.findOne({'_id': userId});
+    if (userDoc) {
+      callback(null, null)
+    } else {
+      callback("Create-Coupon-Failure", "The user trying to insert a coupon " +
+          "does not exist. Please sign up with a store account and try again")
+    }
+  } else {
+    callback("Create-Coupon-Failure", "The user trying to insert a coupon " +
+        "claims to be working with a company missing from our system. Please contact " +
+        "us in order to figure out why your company is not listed.")
+  }
+}
+
+export {validateSalesUserForTemplate}
+
+
 
 
 /*
