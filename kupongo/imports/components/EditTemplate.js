@@ -46,6 +46,7 @@ class EditTemplate extends Component {
               smoothScrolling={true}
               horizontal={false}
           >
+          {/* <span>{this.props.errorMessage}</span> */}
 
           <label htmlFor="">
             Title <br/>

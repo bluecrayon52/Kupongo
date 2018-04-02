@@ -85,6 +85,7 @@ class TemplatesView extends Component {
 // === Popup prompts =====
 Popup.registerPlugin('newTemplate', function (callback) {
   let values = {};
+  let errorMessage = '';
   let onValuesChange = (newValues) => {
     values = newValues;
   };
@@ -99,10 +100,27 @@ Popup.registerPlugin('newTemplate', function (callback) {
         text: 'Save Template',
         className: 'saveTemplateButton',
         action: () => {
-          console.log('[TemplateView]: newTemplate saveTemplateButton, title: '+ values.title);
-          console.log('[TemplateView] newTemplate saveTemplateButton, productCtg: ' + values.productCtg);
-          callback(values);
-          Popup.close();
+          var isEmpty = Object.keys(values).length === 0;
+          if(values.upcCode) {
+          var isnum = /^\d+$/.test(values.upcCode);
+          var rightLength = values.upcCode.length === 6 |  values.upcCode.length === 12;
+          } 
+          if(isEmpty) errorMessage ='You must set the title, description, instructions, and upc code!';
+          else if (!values.title) errorMessage = 'The title must be set!';
+          else if(!values.description) errorMessage = 'The description must be set!';
+          else if(!values.instructions) errorMessage = 'The instructions must be set!';
+          else if(!values.upcCode) errorMessage = 'The upc code must be set!'
+          else if (!isnum) errorMessage = 'The upc code must be all digits!';
+          else if (!rightLength) errorMessage = 'The upc code must be either 6 or 12 digits!';
+          if(errorMessage) {
+            Popup.create({
+              title: 'Template Incomplete',
+              content: errorMessage
+            }, true);
+          } else {
+              callback(values);
+              Popup.close();
+            }
         }
       }]
     }
@@ -126,12 +144,33 @@ Popup.registerPlugin('editTemplate', function (template, callback) {
         text: 'Save Template',
         className: 'saveTemplateButton',
         action: () => {
-          callback(values);
-          Popup.close();
+          var isEmpty = Object.keys(values).length === 0;
+          if(values.upcCode) {
+          var isnum = /^\d+$/.test(values.upcCode);
+          var rightLength = values.upcCode.length === 6 |  values.upcCode.length === 12;
+          } 
+          if(isEmpty) errorMessage ='You must set the title, description, instructions, and upc code!';
+          else if (!values.title) errorMessage = 'The title must be set!';
+          else if(!values.description) errorMessage = 'The description must be set!';
+          else if(!values.instructions) errorMessage = 'The instructions must be set!';
+          else if(!values.upcCode) errorMessage = 'The upc code must be set!'
+          else if (!isnum) errorMessage = 'The upc code must be all digits!';
+          else if (!rightLength) errorMessage = 'The upc code must be either 6 or 12 digits!';
+          if(errorMessage) {
+            Popup.create({
+              title: 'Template Incomplete',
+              content: errorMessage
+            }, true);
+          } else {
+              callback(values);
+              Popup.close();
+            }
         }
       }]
     }
   });
 });
+
+
 
 export default TemplatesView;
