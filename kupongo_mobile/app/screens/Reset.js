@@ -1,10 +1,10 @@
 /**
- * Initial screen to login users.
+ * Reset password for customer that forget password
  */
 
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
-import {onSignIn} from './../config/auth';
+
 
 import {
   StyleSheet,
@@ -13,16 +13,14 @@ import {
   View,
   TextInput
 } from 'react-native';
-
-
-export default class Login extends Component {
+class Reset extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pressed: 'Not pressed'
+      pressed: 'Not pressed',
+      newPassword: ''
     }
   }
-
   render() {
     return (
         <View style={styles.container}>
@@ -30,63 +28,67 @@ export default class Login extends Component {
             Welcome to Kupongo!
           </Text>
           <Text style={styles.instructions}>
-            To get started, login.
+            Update your Password
           </Text>
           <TextInput
               style={styles.input}
               placeholder="Email"
               ref="emailInput"
               name="email"
-              value={this.state.email}
               onChangeText={(text) => this.setState({email: text})}
           />
-          <TextInput
+		<TextInput
               style={styles.input}
-              placeholder="Password"
-              ref="passwordinput"
+              placeholder="Enter New Password"
+              ref="password"
               name="password"
-              value={this.state.password}
+	      secureTextEntry={true}
               onChangeText={(text) => this.setState({password: text})}
-              secureTextEntry={true}
           />
+
 
           <Button
               onPress={() => {
-                this.processLogin();
-              }
-              }
-              title="Login"
+                this.reset();
+              }}
+              title="Submit"
           />
-
-          <Text style={styles.instructions}
-                onPress={() => this.props.navigation.navigate('Register')}>
-            Don't have an Account? Sign up !
-          </Text>
-	<Text style={styles.instructions}
-                onPress={() => this.props.navigation.navigate('Recoverpassword')}>
-            Forgot Password?
-          </Text>
-
         </View>
     );
   }
-
-  processLogin() {
+  reset() {
     const email = this.state.email;
     const password = this.state.password;
-    /* Re-route this to meteor register server when it works */
-    Meteor.call('loginUser', email, password, (err, result) => {
-      if (result) {
-        onSignIn(result).then(() => this.props.screenProps.onLogin(result));
-      }
-      else {
-        alert("Incorrect information entered.");
-        this.setState({email: ''});
-        this.setState({password: ''});
-      }
-    });
-  }
+    const minLengthPassword = 12;
+    const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{12,}$/;''
+    if (password.length < minLengthPassword){
+      console.log("Pasword not minimum length.");
+              alert("Password must be AT LEAST 12 character long");
+} else{
+  if(!regularExpression.test(password)){
+    console.log("Password needs one special character and one upper case.");
+    alert("Passwords MUST contain AT LEAST one special character and one upper case character.");
+  } else if (!regularExpression.test(password)) {
+          console.log("Password must have at least one special character and one number.");
+          alert("Password must have at least one special character and one number.");
+        }
+        else{
+      Meteor.call('resetLostPassword', email, password, (err, result) =>
+  {
+          if (result) {
+            console.log("Password reset successful");
+            this.props.navigation.navigate('Main');
+          }
+          else {
+            alert("Failed to reset password.");
+            this.props.navigation.navigate('Main');
+          }
+        });
 
+  }
+}
+
+  }
   componentWillMount() {
     // Make sure you run "npm run start" on the kupongo project so the server is up.
     // This connects to that Meteor server. Once the AWS server is up, replace the ip address with the url of the server.
@@ -111,13 +113,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  input: {
-    paddingHorizontal: 10,
-    width: 115,
-  },
   instructions: {
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
   },
+  input: {
+    paddingHorizontal: 10,
+    width: 160,
+  }
 });
+
+export default Reset;

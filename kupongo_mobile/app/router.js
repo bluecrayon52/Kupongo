@@ -12,6 +12,8 @@ import Home from './screens/Home';
 import Wallet from './screens/Wallet';
 import Profile from './screens/Profile';
 import Updatepassword from './screens/Updatepassword';
+import Recoverpassword from './screens/Recoverpassword';
+import Reset from './screens/Reset';
 
 
 import {StackNavigator, TabNavigator} from 'react-navigation';
@@ -34,6 +36,18 @@ const Kupongo = StackNavigator({
     screen: Updatepassword,
     navigationOptions: {
       title: "Updatepassword"
+    }
+  },
+  Recoverpassword: {
+    screen: Recoverpassword,
+    navigationOptions: {
+      title: "Recoverpassword"
+    }
+  },
+  Reset: {
+    screen: Reset,
+    navigationOptions: {
+      title: "Reset"
     }
   }
   // Other screens go here too in the same format

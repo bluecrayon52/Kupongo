@@ -210,6 +210,15 @@ Meteor.methods({
       html: "<a href='http://localhost:3000/reset'> link </a>",
     });
   },
+//Mobile Recover password email
+ 'mobileRecoverPasswordEmail'(email) {
+   Email.send({
+     to: email,
+     from: "kupongoteam@kupongo.com",
+     subject: "Password recovery",
+     html: /*link this to mobile Reset.js page */ "Link to reset page",
+   });
+ },
 
   //Set new password if lost
   'resetLostPassword'(email, password) {
