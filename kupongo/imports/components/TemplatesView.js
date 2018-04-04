@@ -55,8 +55,21 @@ class TemplatesView extends Component {
 
                     <button className="tool"
                       onClick={() => {
-                        // TODO(david): Add "are you sure" prompt.
-                        this.props.removeTemplate(index);
+                        Popup.create({
+                          title: 'Delete Template',
+                          content: 'Are you sure you want to delete this Coupon Template?',
+                          buttons:{
+                            left: ['cancel'],
+                            right:[{
+                              text: 'Delete',
+                              action: () => {
+                                this.props.removeTemplate(index);
+                                Popup.close();
+                              }
+                            }]
+
+                          }
+                        })
                       }}
                     >Delete
                     </button>

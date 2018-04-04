@@ -19,8 +19,10 @@ class EditTemplate extends Component {
     this.state = {
     
       _id:          this.props._id,
+      
       salesID:      this.props.salesID,
       companyName:  this.props.companyName,
+
       upcCode:      this.props.upcCode      || this.props.getTemp().upcCode || '',        // editable 5
       qrImage:      this.props.qrImage,                                                   // editable 6
       couponImage:  this.props.couponImage  || [],                                        // editable 7

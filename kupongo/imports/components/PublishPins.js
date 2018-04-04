@@ -13,7 +13,7 @@ class PublishPins extends Component {
         this.state = {...this.props};
     }
     render() {
-        // console.log('[PublishPins]: render, this.state.unPublishedPins[0].title: '+this.state.unPublishedPins[0]._id);
+
         // first dynamically render a Panel for each coupon pin location 
         var pins = this.state.unPublishedPins.map((pin, i) => {    
             return (
