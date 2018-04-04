@@ -111,6 +111,7 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     },  ()=>  {
+                                            console.log('Testing index' + this.state.unPublishedPins[i].quantity);
                                             this.props.onValuesChange(this.state.unPublishedPins);
                                         });
                                 }}
