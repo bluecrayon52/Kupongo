@@ -148,7 +148,8 @@
                 }
 
     .mm-popup__box--popover {
-        width: 300px;
+        width: 45%;
+        /* height: 705px; */
         margin-left: -150px;
     }
 

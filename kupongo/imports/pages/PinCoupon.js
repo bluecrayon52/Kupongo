@@ -55,7 +55,7 @@ class PinCoupon extends Component {
 
           <div className="pinningContainer">
           
-            <TemplatesView
+            <TemplatesView 
                 templates={this.state.templates}
                 salesInfo={this.state.salesInfo}
                 selectedTemplate={this.state.selectedTemplate}
@@ -73,12 +73,12 @@ class PinCoupon extends Component {
             />
           </div>
           <div className="mapTools">
-            <button
+            <button className='publishBtn'
                 onClick={() => {
                   console.log('[PinCoupon]: onClick Publish pin this.state.pins[0].title: '+this.state.pins[0].title);
                   let unpublishedPins = this.state.pins;
                   console.log('[PinCoupon]: onClick Publish pins unpublishedPins[0]: '+unpublishedPins[0].title);
-                  Popup.plugins().newCoupons(unpublishedPins, (pinsToPublish) => {
+                  Popup.plugins().newCoupons(unpublishedPins, document.body ,(pinsToPublish) => {
                     console.log('[PinCoupon]: onClick Publish pins newCoupon callback pinsToPublish[0].title: '+pinsToPublish[0].title);
                     this.state.pins = pinsToPublish;
                     console.log('[PinCoupon]: onClick Publish pins newCoupon callback this.state.pins[0].title: '+this.state.pins[0].title);
@@ -206,7 +206,7 @@ class PinCoupon extends Component {
 }
 
   // === Popup prompts =====
-  Popup.registerPlugin('newCoupons', function (unPublishedPins, callback) {
+  Popup.registerPlugin('newCoupons', function (unPublishedPins, target, callback) {
    console.log('[PinCoupon]: Popup newCoupons unPublishedPins[0].title: '+unPublishedPins[0].title);
 
     let onValuesChange = (newValues) => {
@@ -215,11 +215,19 @@ class PinCoupon extends Component {
 
     this.create({
       title: 'Publish Coupons',
+      className: 'popover',
       content: <PublishPins
           // {...unPublishedPins}
           onValuesChange={onValuesChange}
           unPublishedPins={unPublishedPins}
       />,
+      noOverlay: true,
+      position: function (box) {
+        box.style.top  = 160 + 'px';
+        box.style.left = 0 + 'px';
+        box.style.margin = 0;
+        box.style.opacity = 1;
+        },
       buttons: {
         left: ['cancel'],
         right: [{
