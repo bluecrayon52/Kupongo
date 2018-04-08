@@ -105,7 +105,8 @@ class PublishPins extends Component {
                                         unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
                                             if (index === i) {
                                                 return {
-                                                    ...pin, 
+                                                    ...pin,
+                                                    currentQuantity: change.target.value,
                                                     quantity: change.target.value
                                                 };
                                             } else return pin;
@@ -117,9 +118,7 @@ class PublishPins extends Component {
                                 }}
                             value={pin.quantity || 1}/>
                         </label>
-
                         <br/>
-
                         <div className="dateContainer">
                             Preview Date:<br/>
                             <DateTimePicker className="dateTimePicker5"

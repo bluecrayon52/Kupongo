@@ -92,6 +92,7 @@ Meteor.startup(function () {
       "eastLong":         54.111232,
       "westLong":         54.333333,
       "quantity":         12,
+      "currentQuantity":  12,
       "preViewingDate":   new Date(),  // default date of pinning
       "collectStartDate": new Date(),  // default date of pinning
       "collectEndDate":   new Date(new Date().getTime() + (60*60*24* 1000)),  // default collectStartDate + 24 hrs
@@ -150,7 +151,6 @@ Meteor.startup(function () {
       console.log(couponTemp)
     }
   });
-
 
 
   if (CompanyDB.find({companyName: companyName}).count() === 0){
@@ -241,6 +241,9 @@ Meteor.methods({
         }
       });
   },
+  'getUserInfo'(id) {
+    return UserDB.findOne({_id: id});
+  },
 
     //Login user
     'login'(email, password) {
@@ -272,7 +275,7 @@ Meteor.methods({
         if(error) {
           throw new Meteor.Error(error, message);
         } else {
-          consle.log('[server/main]', 'returning true');
+          console.log('[server/main]', 'returning true');
           return true;
         }
       });
@@ -479,6 +482,9 @@ Meteor.methods({
         },
         collectEndDate: {
           $gt: today
+        },
+        currentQuantity: {
+          $gt: 0
         }
       },
       { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
@@ -491,7 +497,7 @@ Meteor.methods({
         const today = new Date();
         const startDate = new Date(coupon.collectStartDate);
         const endDate = new Date(coupon.collectEndDate);
-        if (today < startDate || today > endDate) {
+        if (today < startDate || today > endDate || coupon.currentQuantity <= 0) {
           return false;
         }
         UserDB.update({"_id" : userId}, {$addToSet: {"couponList" : couponId}}, function(err, result){
@@ -499,7 +505,13 @@ Meteor.methods({
           if(err){
             throw new Meteor.Error("Error adding to collected List. Collection Failed", err)
           }
-          else{
+        });
+        // Now update the coupon
+        const current = coupon.currentQuantity;
+        CouponDB.update({'_id': couponId}, {$set: {currentQuantity: current - 1}}, (err, result) => {
+          if (err) {
+            throw new Meteor.Error('Error in updating the coupon document.');
+          } else {
             return true;
           }
         });

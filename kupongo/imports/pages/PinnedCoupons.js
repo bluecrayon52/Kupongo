@@ -57,6 +57,7 @@ class PinnedCoupons extends Component {
               
             />
             <PinMap
+                pinnedView={true}
                 pins={this.state.pins}
                 centerLat={this.state.centerLat}
                 centerLng={this.state.centerLng}

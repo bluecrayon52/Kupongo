@@ -52,6 +52,11 @@ class CouponPinMarker extends Component {
               <CouponPreview
                   coupon={this.props.pin}
               />
+              {this.props.pinnedView &&
+                  <div>
+                    {this.props.pin.currentQuantity} / {this.props.pin.quantity}
+                  </div>
+              }
               <button
                   onClick={() => this.props.onRemovePin(this.props.index)}
               >Delete

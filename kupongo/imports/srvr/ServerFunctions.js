@@ -402,12 +402,8 @@ function addNewMobileUser(email, password, firstName, lastName, phoneNumber, add
     } else {
         //Account not taken
         const saltRounds = 10;
-        bcrypt.hash(password, saltRounds, Meteor.bindEnvironment(function (err, hash) {
-            UserDB.insert(new Customer({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, address: address}).toMongoDoc());
-        }));
-        return true;
         const hash = bcrypt.hashSync(password, saltRounds);
-        const id = UserDB.insert({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, phoneNumber: phoneNumber});
+        const id = UserDB.insert({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber});
         return UserDB.findOne({_id: id});
     }
 }
