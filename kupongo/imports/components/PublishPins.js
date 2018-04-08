@@ -15,79 +15,19 @@ class PublishPins extends Component {
     render() {
 
         // first dynamically render a Panel for each coupon pin location 
-        var pins = this.state.unPublishedPins.map((pin, i) => {    
+        var pins = this.state.unPublishedPins.map((pin, i) => { 
             return (
-                <Panel eventKey={i} key={i}>
+                <Panel eventKey={i} key={i} className='publishPanel'>
                     <Panel.Heading>
-                        <Panel.Title toggle>{pin.title}</Panel.Title>
+                        <Panel.Title toggle onClick={() => this.props.onSelectTemplate(pin)}>{pin.title}</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body collapsible>
-
-                        {/* <label htmlFor="">
-                            Title <br/>
-                            <input type="text"
-                                className="publishTextInput"
-                                onChange={(change) => {
-                                    this.setState({
-                                        unPublishedPins: this.state.unPublishedPins.map((pin, index) => {
-                                            if (index === i) {
-                                                return {
-                                                    ...pin, 
-                                                    title: change.target.value
-                                                };
-                                            } else return pin; 
-                                        })
-                                    },  () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
-                                        });
-                                }}
-                            value={pin.title}/>
-                        </label> */}
-                       
-                        {/* <label htmlFor="">
-                            Description <br/>
-                            <textarea className="publishTextInputArea"
-                                onChange={(change) => {
-                                    this.setState({
-                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
-                                            if (index === i) {
-                                                return {
-                                                    ...pin, 
-                                                    description: change.target.value
-                                                };
-                                            } else return pin;
-                                        })
-                                    },  ()=>  {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
-                                        });
-                                }}
-                            value={pin.description}/>
-                        </label> */}
 
                         <span htmlFor="">
                         {pin.description}
                         </span> 
 
                         <hr/>
-                        {/* <label htmlFor="">
-                            Instructions <br/>
-                            <textarea className="publishTextInputArea"
-                                onChange={(change) => {
-                                    this.setState({
-                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
-                                            if (index === i) {
-                                                return {
-                                                    ...pin, 
-                                                    instructions: change.target.value
-                                                };
-                                            } else return pin;
-                                        })
-                                    },  ()=>  {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
-                                        });
-                                }}
-                            value={pin.instructions}/>
-                        </label> */}
 
                         <span htmlFor="">
                         {pin.instructions}

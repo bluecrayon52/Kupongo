@@ -19,6 +19,7 @@ class PinCoupon extends Component {
 
   constructor(props) {
     super(props);
+    
     this.state = {
       // Placeholder name until user back-end is done.
       salesInfo: this.props.salesInfo  || {
@@ -54,7 +55,7 @@ class PinCoupon extends Component {
           <p>Select a template and click on the map to place the coupon.</p>
 
           <div className="pinningContainer">
-          
+
             <TemplatesView 
                 templates={this.state.templates}
                 salesInfo={this.state.salesInfo}
@@ -74,17 +75,15 @@ class PinCoupon extends Component {
           </div>
           <div className="mapTools">
             <button className='publishBtn'
-                onClick={() => {
-                  console.log('[PinCoupon]: onClick Publish pin this.state.pins[0].title: '+this.state.pins[0].title);
+                onClick={
+                  () => {                               
                   let unpublishedPins = this.state.pins;
-                  console.log('[PinCoupon]: onClick Publish pins unpublishedPins[0]: '+unpublishedPins[0].title);
-                  Popup.plugins().newCoupons(unpublishedPins, document.body ,(pinsToPublish) => {
-                    console.log('[PinCoupon]: onClick Publish pins newCoupon callback pinsToPublish[0].title: '+pinsToPublish[0].title);
+                  Popup.plugins().newCoupons(unpublishedPins, this, (pinsToPublish) => {
                     this.state.pins = pinsToPublish;
-                    console.log('[PinCoupon]: onClick Publish pins newCoupon callback this.state.pins[0].title: '+this.state.pins[0].title);
                     this.publishCoupons(); 
                   });
-                }}
+                }
+              }
             >Publish pins
             </button>
           </div>
@@ -115,6 +114,7 @@ class PinCoupon extends Component {
     this.setState({
       selectedTemplate: template
     });
+    console.log('[PinCoupons] selectTemplate this.state.selectedTemplate.title: ' + this.state.selectedTemplate.title)
   }
 
   updateTemplate(index, template) {
@@ -202,24 +202,25 @@ class PinCoupon extends Component {
     this.setState({
       pins: pins
     });
+    console.log('[PinCoupon] addPin pin.title: ' + pin.title)
   }
 }
 
   // === Popup prompts =====
-  Popup.registerPlugin('newCoupons', function (unPublishedPins, target, callback) {
+  Popup.registerPlugin('newCoupons', function (unPublishedPins, that, callback){
    console.log('[PinCoupon]: Popup newCoupons unPublishedPins[0].title: '+unPublishedPins[0].title);
 
     let onValuesChange = (newValues) => {
       unPublishedPins = newValues;
     };
-
+    
     this.create({
       title: 'Publish Coupons',
       className: 'popover',
       content: <PublishPins
-          // {...unPublishedPins}
           onValuesChange={onValuesChange}
           unPublishedPins={unPublishedPins}
+          onSelectTemplate={that.selectTemplate.bind(that)}
       />,
       noOverlay: true,
       position: function (box) {
