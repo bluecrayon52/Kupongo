@@ -13,6 +13,7 @@ import {MAP_STYLE} from '../config/MapStyles';
 import CouponCallout from '../components/CouponCallout';
 
 import Meteor, {createContainer} from 'react-native-meteor';
+import {IP} from './../config/constants';
 
 
 // TODO(david): Move to a utils file and import this instead.
@@ -63,6 +64,7 @@ class LiveCouponMap extends Component {
       coupons: []
     };
     this.state.user.couponList = new Set(this.state.user.couponList);
+    console.log(this.state.user.couponList);
   }
 
   render() {
@@ -217,8 +219,7 @@ class LiveCouponMap extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = 'localhost';
-    Meteor.connect(`ws://${ip}:3000/websocket`)
+    Meteor.connect(`ws://${IP}:3000/websocket`)
   }
 
   componentWillReceiveProps(props) {

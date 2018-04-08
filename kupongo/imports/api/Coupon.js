@@ -31,7 +31,8 @@ class Coupon {
     this.westLong         = values.westLong;
     this.centerLat        = values.centerLat;
     this.centerLong       = values.centerLong;
-    this.quantity         = values.quantity; // default 1
+    this.quantity         = values.quantity || 1; // default 1
+    this.currentQuantity  = values.currentQuantity || 1;
     this.preViewingDate   = values.preViewingDate || new Date();    // default date of pinning
     this.collectStartDate = values.collectStartDate || new Date();  // default date of pinning
     this.collectEndDate   = values.collectEndDate || new Date();    // default collectStartDate + 24 hrs
@@ -88,7 +89,6 @@ class Coupon {
    */
   toMongoDoc() {
     console.log('[Coupon]: toMongoDoc this.title: '+this.title);
-    // TODO(david): Maybe there is a better way of doing this?
     return {
       salesID:          this.salesID,
       templateId:       this.templateId,
@@ -108,7 +108,8 @@ class Coupon {
       westLong:         this.westLong,
       centerLat:        this.centerLat,
       centerLong:       this.centerLong,
-      quantity:         this.quantity,
+      quantity:         parseInt(this.quantity),
+      currentQuantity:  parseInt(this.currentQuantity),
       preViewingDate:   this.preViewingDate,  // default date of pinning
       collectStartDate: this.collectStartDate,  // default date of pinning
       collectEndDate:   this.collectEndDate,  // default collectStartDate + 24 hrs

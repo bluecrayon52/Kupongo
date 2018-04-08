@@ -5,6 +5,7 @@
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
 import {onSignIn} from './../config/auth';
+import {IP} from './../config/constants';
 
 import {
   StyleSheet,
@@ -94,8 +95,7 @@ export default class Login extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = 'localhost';
-    Meteor.connect(`ws://${ip}:3000/websocket`)
+    Meteor.connect(`ws://${IP}:3000/websocket`)
   }
 }
 
