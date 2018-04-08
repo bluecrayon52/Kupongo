@@ -6,6 +6,7 @@ import "../css/PublishPins.css";
 import ScrollArea from 'react-scrollbar';
 import DateTimePicker from 'react-datetime-picker'
 import {Accordian,PanelGroup, Panel} from 'react-bootstrap'; 
+import NumericInput from 'react-numeric-input';
 
 class PublishPins extends Component {
     constructor(props) {
@@ -37,26 +38,29 @@ class PublishPins extends Component {
 
                         <label htmlFor="">
                             Quantity <br/>
-                            <input type="number"
+                            {/* <input type="number" */}
+                                {/* min="1" */}
+                            <NumericInput
+                                className="publishQuantityInput"
                                 min="1"
-                                className="publishTextInput"
-                                onChange={(change) => {
+                                // style={ false }
+                                onChange={(valueAsNumber) => {
                                     this.setState({
                                         unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
                                             if (index === i) {
                                                 return {
                                                     ...pin,
-                                                    currentQuantity: change.target.value,
-                                                    quantity: change.target.value
+                                                    currentQuantity: valueAsNumber,
+                                                    quantity: valueAsNumber
                                                 };
                                             } else return pin;
                                         })
                                     },  ()=>  {
-                                            console.log('Testing index' + this.state.unPublishedPins[i].quantity);
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            this.props.onValuesChange(this.state.unPublishedPins[i].currentQuantity, i, 'currentQuantity');
+                                            this.props.onValuesChange(this.state.unPublishedPins[i].quantity, i, 'quantity');
                                         });
                                 }}
-                            value={pin.quantity || 1}/>
+                                value={pin.quantity || 1}/>
                         </label>
                         <br/>
                         <div className="dateContainer">
@@ -74,7 +78,7 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            this.props.onValuesChange(this.state.unPublishedPins[i].preViewingDate, i, 'preViewingDate');
                                     });
                                  }}
                             value={pin.preViewingDate}/>
@@ -97,7 +101,7 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            this.props.onValuesChange(this.state.unPublishedPins[i].collectStartDate, i, 'collectStartDate');
                                     });
                                  }}
                             value={pin.collectStartDate}/>
@@ -120,7 +124,7 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            this.props.onValuesChange(this.state.unPublishedPins[i].collectEndDate, i, 'collectEndDate');
                                     });
                                  }}
                             value={pin.collectEndDate}/>
@@ -143,7 +147,7 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            this.props.onValuesChange(this.state.unPublishedPins[i].redeemStartDate, i, 'redeemStartDate');
                                     });
                                  }}
                             value={pin.redeemStartDate}/>
@@ -166,7 +170,7 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            this.props.onValuesChange(this.state.unPublishedPins[i].redeemEndDate, i, 'redeemEndDate');
                                     });
                                  }}
                             value={pin.redeemEndDate}/>

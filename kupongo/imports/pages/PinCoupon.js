@@ -19,7 +19,7 @@ class PinCoupon extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       // Placeholder name until user back-end is done.
       salesInfo: this.props.salesInfo  || {
@@ -210,9 +210,18 @@ class PinCoupon extends Component {
   Popup.registerPlugin('newCoupons', function (unPublishedPins, that, callback){
    console.log('[PinCoupon]: Popup newCoupons unPublishedPins[0].title: '+unPublishedPins[0].title);
 
-    let onValuesChange = (newValues) => {
-      unPublishedPins = newValues;
+    let onValuesChange = (newValue, index, key) => {
+      console.log('[PinCoupon] newCoupon, onValuesChange, newValue: '+ newValue);
+      console.log('[PinCoupon] newCoupon, onValuesChange, index: '+ index);
+      console.log('[PinCoupon] newCoupon, onValuesChange, key: '+ key);
+      unPublishedPins[index][key] = newValue;
+      console.log('[PinCoupon] newCoupon, onValuesChange. unPublishedPins[index][key]: ' + unPublishedPins[index][key]);
     };
+
+    // let onValuesChange = (newValues) => {
+    //   console.log('[PinCoupon]: newCoupon, onValuesChange called');
+    //   unPublishedPins = newValues;
+    // };
     
     this.create({
       title: 'Publish Coupons',
