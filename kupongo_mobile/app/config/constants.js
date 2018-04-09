@@ -3,4 +3,4 @@
  */
 
 // Fill in your IP address here.
-export const IP = '';
+export const IP = 'localhost';
