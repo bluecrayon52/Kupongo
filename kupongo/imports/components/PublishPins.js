@@ -41,7 +41,7 @@ class PublishPins extends Component {
                             Quantity (defaults to 1)<br/>
                             <NumericInput
                                 className="publishQuantityInput"
-                                min="1"
+                                min={1}
                                 // style={ false }
                                 onChange={(valueAsNumber) => {
                                     this.setState({

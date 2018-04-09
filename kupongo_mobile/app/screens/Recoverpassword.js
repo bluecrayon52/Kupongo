@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
+import {IP} from './../config/constants';
 import {
   StyleSheet,
   Text,
@@ -52,16 +53,15 @@ Meteor.call('mobileRecoverPasswordEmail', email);
         console.log("Email sent.");
         this.props.navigation.navigate('Main');
 }
-componentWillMount() {
-  // Make sure you run "npm run start" on the kupongo project so the server is up.
-  // This connects to that Meteor server. Once the AWS server is up, replace the ip address with the url of the server.
-  // If you are on Android, find your network IP address, the one which your WiFi is using.
-  // If you are on iOS, use localhost instead of your IP address.
-  // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
-  //       user their own.
-  let ip = 'localhost';
-  Meteor.connect(`ws://${ip}:3000/websocket`)
-}
+  componentWillMount() {
+    // Make sure you run "npm run start" on the kupongo project so the server is up.
+    // This connects to that Meteor server. Once the AWS server is up, replace the ip address with the url of the server.
+    // If you are on Android, find your network IP address, the one which your WiFi is using.
+    // If you are on iOS, use localhost instead of your IP address.
+    // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
+    //       user their own.
+    Meteor.connect(`ws://${IP}:3000/websocket`);
+  }
 }
 
 const styles = StyleSheet.create({

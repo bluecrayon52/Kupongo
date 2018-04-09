@@ -47,7 +47,7 @@ class PinCoupon extends Component {
     return (
         <div>
           <Header
-              userInfo={this.props.location.state.userInfo}
+              // userInfo={this.props.location.state.userInfo}
           />
           <Popup/>
           <h1>Pin your coupons</h1>
@@ -207,7 +207,7 @@ class PinCoupon extends Component {
 
   // === Popup prompts =====
   Popup.registerPlugin('newCoupons', function (unPublishedPins, that, callback){
-    let temp = unPublishedPins;
+    // let temp = unPublishedPins;
 
     let onValuesChange = (newValue, index, key) => {
       unPublishedPins[index][key] = newValue;
@@ -224,7 +224,7 @@ class PinCoupon extends Component {
           onValuesChange={onValuesChange}
           unPublishedPins={unPublishedPins}
           onSelectTemplate={that.selectTemplate.bind(that)}
-          getTemp={getTemp}
+          // getTemp={getTemp}
       />,
       noOverlay: true,
       position: function (box) {
@@ -266,7 +266,7 @@ class PinCoupon extends Component {
 
             if (errorMessage){
               console.log('errorMessage: ' + errorMessage);
-              temp = unPublishedPins;
+              // temp = unPublishedPins;
               Popup.create({
                 title: 'Coupon Date Errors',
                 content: errorMessage,
