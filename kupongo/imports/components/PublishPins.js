@@ -6,6 +6,7 @@ import "../css/PublishPins.css";
 import ScrollArea from 'react-scrollbar';
 import DateTimePicker from 'react-datetime-picker'
 import {Accordian,PanelGroup, Panel} from 'react-bootstrap'; 
+import NumericInput from 'react-numeric-input';
 
 class PublishPins extends Component {
     constructor(props) {
@@ -15,79 +16,20 @@ class PublishPins extends Component {
     render() {
 
         // first dynamically render a Panel for each coupon pin location 
-        var pins = this.state.unPublishedPins.map((pin, i) => {    
+        var pins = this.state.unPublishedPins.map((pin, i) => { 
+            j = i +1;
             return (
-                <Panel eventKey={i} key={i}>
+                <Panel eventKey={i} key={i} className='publishPanel'>
                     <Panel.Heading>
-                        <Panel.Title toggle>{pin.title}</Panel.Title>
+                        <Panel.Title toggle onClick={() => this.props.onSelectTemplate(pin)}>{pin.title+' '+j}</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body collapsible>
-
-                        {/* <label htmlFor="">
-                            Title <br/>
-                            <input type="text"
-                                className="publishTextInput"
-                                onChange={(change) => {
-                                    this.setState({
-                                        unPublishedPins: this.state.unPublishedPins.map((pin, index) => {
-                                            if (index === i) {
-                                                return {
-                                                    ...pin, 
-                                                    title: change.target.value
-                                                };
-                                            } else return pin; 
-                                        })
-                                    },  () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
-                                        });
-                                }}
-                            value={pin.title}/>
-                        </label> */}
-                       
-                        {/* <label htmlFor="">
-                            Description <br/>
-                            <textarea className="publishTextInputArea"
-                                onChange={(change) => {
-                                    this.setState({
-                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
-                                            if (index === i) {
-                                                return {
-                                                    ...pin, 
-                                                    description: change.target.value
-                                                };
-                                            } else return pin;
-                                        })
-                                    },  ()=>  {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
-                                        });
-                                }}
-                            value={pin.description}/>
-                        </label> */}
 
                         <span htmlFor="">
                         {pin.description}
                         </span> 
 
                         <hr/>
-                        {/* <label htmlFor="">
-                            Instructions <br/>
-                            <textarea className="publishTextInputArea"
-                                onChange={(change) => {
-                                    this.setState({
-                                        unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
-                                            if (index === i) {
-                                                return {
-                                                    ...pin, 
-                                                    instructions: change.target.value
-                                                };
-                                            } else return pin;
-                                        })
-                                    },  ()=>  {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
-                                        });
-                                }}
-                            value={pin.instructions}/>
-                        </label> */}
 
                         <span htmlFor="">
                         {pin.instructions}
@@ -96,31 +38,40 @@ class PublishPins extends Component {
                         <hr/>
 
                         <label htmlFor="">
-                            Quantity <br/>
-                            <input type="number"
-                                min="1"
-                                className="publishTextInput"
-                                onChange={(change) => {
+                            Quantity (defaults to 1)<br/>
+                            <NumericInput
+                                className="publishQuantityInput"
+                                min={1}
+                                // style={ false }
+                                onChange={(valueAsNumber) => {
                                     this.setState({
                                         unPublishedPins: this.state.unPublishedPins.map((pin, index)=>{
                                             if (index === i) {
                                                 return {
                                                     ...pin,
-                                                    currentQuantity: change.target.value,
-                                                    quantity: change.target.value
+                                                    currentQuantity: valueAsNumber,
+                                                    quantity: valueAsNumber
                                                 };
                                             } else return pin;
                                         })
                                     },  ()=>  {
-                                            console.log('Testing index' + this.state.unPublishedPins[i].quantity);
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            if(this.state.unPublishedPins[i].currentQuantity){
+                                                this.props.onValuesChange(this.state.unPublishedPins[i].currentQuantity, i, 'currentQuantity');
+                                            } else {
+                                                this.props.onValuesChange(1, i, 'currentQuantity');
+                                            }
+                                            if(this.state.unPublishedPins[i].quantity){
+                                                this.props.onValuesChange(this.state.unPublishedPins[i].quantity, i, 'quantity');
+                                            } else {
+                                                this.props.onValuesChange(1, i, 'quantity');
+                                            }
                                         });
                                 }}
-                            value={pin.quantity || 1}/>
+                                value={pin.quantity}/>
                         </label>
                         <br/>
                         <div className="dateContainer">
-                            Preview Date:<br/>
+                            Preview Date (default today):<br/>
                             <DateTimePicker className="dateTimePicker5"
                                 minDate={new Date()}
                                 onChange={(date) => {
@@ -134,7 +85,13 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            var pVD = new Date(this.state.unPublishedPins[i].preViewingDate);
+                                            var today = new Date();
+                                            if(pVD.getTime() < today.getTime()){
+                                                this.props.onValuesChange(today, i, 'preViewingDate');
+                                            } else {
+                                                this.props.onValuesChange(pVD, i, 'preViewingDate');
+                                            }
                                     });
                                  }}
                             value={pin.preViewingDate}/>
@@ -143,8 +100,9 @@ class PublishPins extends Component {
                         <br/>
 
                         <div className="dateContainer">
-                            Collection Start Date:<br/>
+                            Collection Start Date (default today):<br/>
                             <DateTimePicker className="dateTimePicker4"
+                                required={true}
                                 minDate={new Date()}
                                 onChange={(date) => {
                                     this.setState({
@@ -157,7 +115,13 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            var cSD = new Date(this.state.unPublishedPins[i].collectStartDate);
+                                            var today = new Date();
+                                            if(cSD.getTime() < today.getTime()){
+                                                this.props.onValuesChange(today, i, 'collectStartDate');
+                                            } else {
+                                                this.props.onValuesChange(cSD, i, 'collectStartDate');
+                                            }
                                     });
                                  }}
                             value={pin.collectStartDate}/>
@@ -166,8 +130,9 @@ class PublishPins extends Component {
                         <br/>
 
                         <div className="dateContainer">
-                            Collection End Date:<br/>
+                            Collection End Date (default today plus 24 hours):<br/>
                             <DateTimePicker className="dateTimePicker3"
+                                required={true}
                                 minDate={new Date()}
                                 onChange={(date) => {
                                     this.setState({
@@ -180,7 +145,14 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            var cED = new Date(this.state.unPublishedPins[i].collectEndDate);
+                                            var today = new Date();
+                                            if (cED.getTime() < today.getTime()){
+                                                var todayPlus24 = new Date(today.getTime() + (60*60*24* 1000));
+                                                this.props.onValuesChange(todayPlus24, i, 'collectEndDate');
+                                            } else {
+                                                this.props.onValuesChange(cED, i, 'collectEndDate');
+                                            }
                                     });
                                  }}
                             value={pin.collectEndDate}/>
@@ -189,8 +161,9 @@ class PublishPins extends Component {
                         <br/>
 
                         <div className="dateContainer">
-                            Redemption Start Date:<br/>
+                            Redemption Start Date (default today):<br/>
                             <DateTimePicker className="dateTimePicker2"
+                                required={true}
                                 minDate={new Date()}
                                 onChange={(date) => {
                                     this.setState({
@@ -203,7 +176,13 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            var rSD = new Date(this.state.unPublishedPins[i].redeemStartDate);
+                                            var today = new Date();
+                                            if (rSD.getTime() < today.getTime()){
+                                                this.props.onValuesChange(today, i, 'redeemStartDate');
+                                            } else {
+                                                this.props.onValuesChange(rSD, i, 'redeemStartDate');
+                                            }
                                     });
                                  }}
                             value={pin.redeemStartDate}/>
@@ -212,8 +191,9 @@ class PublishPins extends Component {
                          <br/>
 
                         <div className="dateContainer">
-                            Redemption End Date:<br/>
+                            Redemption End Date (default today plus 30 days):<br/>
                             <DateTimePicker className="dateTimePicker"
+                                required={true}
                                 minDate={new Date()}
                                 onChange={(date) => {
                                     this.setState({
@@ -226,7 +206,14 @@ class PublishPins extends Component {
                                             } else return pin;
                                         })
                                     }, () => {
-                                            this.props.onValuesChange(this.state.unPublishedPins);
+                                            var rED = new Date(this.state.unPublishedPins[i].redeemEndDate);
+                                            var today = new Date();
+                                            if(rED.getTime() < today.getTime()) {
+                                                var todayPlus30 = new Date(today.getTime() + (60*60*24*30 * 1000));
+                                                this.props.onValuesChange(todayPlus30, i, 'redeemEndDate');
+                                            } else {
+                                                this.props.onValuesChange(rED, i, 'redeemEndDate');
+                                            }
                                     });
                                  }}
                             value={pin.redeemEndDate}/>

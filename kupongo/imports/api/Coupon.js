@@ -35,9 +35,9 @@ class Coupon {
     this.currentQuantity  = values.currentQuantity || 1;
     this.preViewingDate   = values.preViewingDate || new Date();    // default date of pinning
     this.collectStartDate = values.collectStartDate || new Date();  // default date of pinning
-    this.collectEndDate   = values.collectEndDate || new Date();    // default collectStartDate + 24 hrs
+    this.collectEndDate   = values.collectEndDate || new Date(new Date().getTime() + (60*60*24* 1000)); // default collectStartDate + 24 hrs
     this.redeemStartDate  = values.redeemStartDate || new Date();   // default date of pinning
-    this.redeemEndDate    = values.redeemEndDate || new Date();     // default redeemStartDate + 30 days
+    this.redeemEndDate    = values.redeemEndDate || new Date(new Date().getTime() + (60*60*24*30 * 1000));     // default redeemStartDate + 30 days
 
     // UI attributes.
     // TODO(david): Change this so that we use upperLat and lowerLat instead.
@@ -110,7 +110,7 @@ class Coupon {
       centerLong:       this.centerLong,
       quantity:         parseInt(this.quantity),
       currentQuantity:  parseInt(this.currentQuantity),
-      preViewingDate:   this.preViewingDate,  // default date of pinning
+      preViewingDate:   this.preViewingDate, // default date of pinning
       collectStartDate: this.collectStartDate,  // default date of pinning
       collectEndDate:   this.collectEndDate,  // default collectStartDate + 24 hrs
       redeemStartDate:  this.redeemStartDate, // default date of pinning

@@ -23,7 +23,9 @@ class CouponPinMarker extends Component {
         icon = this.props.selectedPin._id === this.props.pin._id ? 'assets/highlighted_coupon.png' : 'assets/coupon_icon.png';
       }
     } else {
-      icon = (this.props.pin.templateId === this.props.selectedTemplate._id) ? 'assets/highlighted_coupon.png' : 'assets/coupon_icon.png';
+      icon = (this.props.pin.templateId === this.props.selectedTemplate._id
+      || this.props.pin.centerLat === this.props.selectedTemplate.centerLat && this.props.pin.centerLong === this.props.selectedTemplate.centerLong
+      ) ? 'assets/highlighted_coupon.png' : 'assets/coupon_icon.png';
     }
     return (
         <Marker

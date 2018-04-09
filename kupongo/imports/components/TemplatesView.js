@@ -98,8 +98,6 @@ class TemplatesView extends Component {
 Popup.registerPlugin('newTemplate', function (callback) {
   let values = {};
   let temp = {};
-  let errorMessage = '';
-
   let onValuesChange = (newValues) => {
     values = newValues;
   };
@@ -119,6 +117,7 @@ Popup.registerPlugin('newTemplate', function (callback) {
         text: 'Save Template',
         className: 'saveTemplateButton',
         action: () => {
+          let errorMessage = '';
           var isEmpty = Object.keys(values).length === 0;
           if(values.upcCode) {
           var isnum = /^\d+$/.test(values.upcCode);
@@ -141,7 +140,6 @@ Popup.registerPlugin('newTemplate', function (callback) {
                 right: [{
                   text: 'Ok',
                   action: () => {
-                    errorMessage = '';
                     Popup.close();
                   }
                 }]
@@ -160,8 +158,6 @@ Popup.registerPlugin('newTemplate', function (callback) {
 Popup.registerPlugin('editTemplate', function (template, callback) {
   let values = template;
   let temp = {};
-  let errorMessage = '';
-
   let onValuesChange = (newValues) => {
     values = newValues;
   };
@@ -181,6 +177,7 @@ Popup.registerPlugin('editTemplate', function (template, callback) {
         text: 'Save Template',
         className: 'saveTemplateButton',
         action: () => {
+          let errorMessage = '';
           var isEmpty = Object.keys(values).length === 0;
           if(values.upcCode) {
           var isnum = /^\d+$/.test(values.upcCode);
@@ -203,7 +200,6 @@ Popup.registerPlugin('editTemplate', function (template, callback) {
                 right: [{
                   text: 'Ok',
                   action: () => {
-                    errorMessage = '';
                     Popup.close();
                   }
                 }]

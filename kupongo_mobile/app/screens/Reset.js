@@ -4,8 +4,7 @@
 
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
-
-
+import {IP} from './../config/constants';
 import {
   StyleSheet,
   Text,
@@ -13,6 +12,7 @@ import {
   View,
   TextInput
 } from 'react-native';
+
 class Reset extends Component {
   constructor(props) {
     super(props);
@@ -96,8 +96,7 @@ class Reset extends Component {
     // If you are on iOS, use localhost instead of your IP address.
     // NOTE: Before you push changes to github, remove your IP address as it just isn't needed, everyone will just
     //       user their own.
-    let ip = 'localhost';
-    Meteor.connect(`ws://${ip}:3000/websocket`)
+    Meteor.connect(`ws://${IP}:3000/websocket`);
   }
 }
 

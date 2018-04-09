@@ -19,6 +19,7 @@ class PinCoupon extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       // Placeholder name until user back-end is done.
       salesInfo: this.props.salesInfo  || {
@@ -46,7 +47,7 @@ class PinCoupon extends Component {
     return (
         <div>
           <Header
-              userInfo={this.props.location.state.userInfo}
+              // userInfo={this.props.location.state.userInfo}
           />
           <Popup/>
           <h1>Pin your coupons</h1>
@@ -54,7 +55,7 @@ class PinCoupon extends Component {
           <p>Select a template and click on the map to place the coupon.</p>
 
           <div className="pinningContainer">
-          
+
             <TemplatesView 
                 templates={this.state.templates}
                 salesInfo={this.state.salesInfo}
@@ -74,17 +75,15 @@ class PinCoupon extends Component {
           </div>
           <div className="mapTools">
             <button className='publishBtn'
-                onClick={() => {
-                  console.log('[PinCoupon]: onClick Publish pin this.state.pins[0].title: '+this.state.pins[0].title);
+                onClick={
+                  () => {                               
                   let unpublishedPins = this.state.pins;
-                  console.log('[PinCoupon]: onClick Publish pins unpublishedPins[0]: '+unpublishedPins[0].title);
-                  Popup.plugins().newCoupons(unpublishedPins, document.body ,(pinsToPublish) => {
-                    console.log('[PinCoupon]: onClick Publish pins newCoupon callback pinsToPublish[0].title: '+pinsToPublish[0].title);
+                  Popup.plugins().newCoupons(unpublishedPins, this, (pinsToPublish) => {
                     this.state.pins = pinsToPublish;
-                    console.log('[PinCoupon]: onClick Publish pins newCoupon callback this.state.pins[0].title: '+this.state.pins[0].title);
                     this.publishCoupons(); 
                   });
-                }}
+                }
+              }
             >Publish pins
             </button>
           </div>
@@ -202,24 +201,30 @@ class PinCoupon extends Component {
     this.setState({
       pins: pins
     });
+    console.log('[PinCoupon] addPin pin.collectEndDate: ' + pin.collectEndDate);
   }
 }
 
   // === Popup prompts =====
-  Popup.registerPlugin('newCoupons', function (unPublishedPins, target, callback) {
-   console.log('[PinCoupon]: Popup newCoupons unPublishedPins[0].title: '+unPublishedPins[0].title);
+  Popup.registerPlugin('newCoupons', function (unPublishedPins, that, callback){
+    // let temp = unPublishedPins;
 
-    let onValuesChange = (newValues) => {
-      unPublishedPins = newValues;
+    let onValuesChange = (newValue, index, key) => {
+      unPublishedPins[index][key] = newValue;
     };
 
+    let getTemp = (index, key) => {
+      return temp[index][key];
+    };
+    
     this.create({
       title: 'Publish Coupons',
       className: 'popover',
       content: <PublishPins
-          // {...unPublishedPins}
           onValuesChange={onValuesChange}
           unPublishedPins={unPublishedPins}
+          onSelectTemplate={that.selectTemplate.bind(that)}
+          // getTemp={getTemp}
       />,
       noOverlay: true,
       position: function (box) {
@@ -234,9 +239,51 @@ class PinCoupon extends Component {
           text: 'Save Coupons',
           className: 'saveCouponsButton',
           action: () => {
-            console.log('[PinCoupon]: Popup newCoupons saveCouponsButton unPublishedPins[0].title: '+unPublishedPins[0].title);
+            let errorMessage ='';
+            let today = new Date().getTime();
+            // let's do some validation 
+            unPublishedPins.some((pin, i)=>{
+              j = i + 1;
+              // reset erroneously set preViewingDate
+              if (pin.preViewingDate.getTime() > pin.collectStartDate.getTime()) { 
+                pin.preViewingDate = pin.collectStartDate;
+              } 
+
+              if (pin.collectEndDate.getTime() <= pin.collectStartDate.getTime()) {
+                errorMessage = 'At '+pin.title+' '+j+' the collection end date cannot be set before or at the same time as the collection start date!';
+                return true;
+              }
+              else if (pin.redeemStartDate.getTime() < pin.collectStartDate.getTime()) {
+                errorMessage = 'At '+pin.title+' '+j+' the redemption start date cannot be set before the collection start date!';
+                return true;
+              }
+              else if (pin.redeemEndDate.getTime() < pin.redeemStartDate.getTime()) {
+                errorMessage = 'At '+pin.title+' '+j+' the redemption end date cannot be set before the redemption start date!';
+                return true;
+              }
+
+            });
+
+            if (errorMessage){
+              console.log('errorMessage: ' + errorMessage);
+              // temp = unPublishedPins;
+              Popup.create({
+                title: 'Coupon Date Errors',
+                content: errorMessage,
+                buttons: {
+                  right: [{
+                    text: 'Ok',
+                    action: () => {
+                      Popup.close();
+                    }
+                  }]
+                }
+              }, true);
+            }
+            else {
             callback(unPublishedPins);
             Popup.close();
+            }
           }
         }]
       }
