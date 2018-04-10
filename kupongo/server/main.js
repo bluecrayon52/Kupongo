@@ -180,6 +180,20 @@ Meteor.startup(function () {
 
 Meteor.methods({
 
+  //Get the initial quantity of coupons
+  'getCouponQuantity'(couponId) {
+    console.log("Returning quantity of coupon");
+    var result = CouponDB.findOne({"_id":couponId}).quantity;
+    return result;
+  },
+
+  //Get the current quantity of coupons
+  'getCurrentCouponQuantity'(couponId) {
+    console.log("Returning current quantity of coupons");
+    var result = CouponDB.findOne({"_id":couponId}).currentQuantity;
+    return result;
+  },
+
   //Update user password
   'updatePassword'(email, oldPassword, newPassword){
     return updateUserPassword(email, oldPassword, newPassword, function(error, message){

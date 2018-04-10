@@ -1,0 +1,59 @@
+.monitoringContainer {
+    display: inline-block;
+    padding-left: 100px;
+    width: 90%;
+    text-align: center;
+}
+
+.h1 {
+    text-align: center;
+}
+
+.scrollArea {
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+}
+
+.selected {
+    border: 4px solid #a1dfa6 !important;
+}
+
+.couponTools {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.tool {
+    display: inline-block;
+    margin: 8px;
+}
+
+.singleCoupon {
+    display: inline-block;
+    margin: 10px;
+}
+
+.couponContainer {
+    font-family: 'Open Sans', sans-serif;
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #fcfcfc;
+    box-shadow: 0 2px 5px #d2d2d2;
+    border: 1px solid #d9d9d9;
+}
+
+.couponTitle {
+    text-align: center;
+    padding: 5px;
+    height: 50px;
+    font-family: 'Julius Sans One', sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-bottom: 4px solid #aee3b2;
+}
+
+.couponDescription {
+    color: #575757;
+}
