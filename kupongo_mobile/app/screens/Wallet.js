@@ -3,11 +3,13 @@
  */
 import React, {Component} from 'react';
 import Meteor from 'react-native-meteor';
+import WalletDetail from './WalletDetail';
 import {
   StyleSheet,
   Text,
   View, 
-  FlatList
+  FlatList,
+  TouchableOpacity
 } from 'react-native';
 import { Card, ListItem, Button } from 'react-native-elements'
 
@@ -52,22 +54,30 @@ class Wallet extends Component {
   }
   
   render() {
+    const { navigate } = this.props.navigation;
     console.log('[Wallet]: render running . . . . . ');
     console.log('[Wallet]: render this.state.coupons.length: ' + this.state.coupons.length);
     console.log('[Wallet]: render this.state.coupons[0].title: ' + this.state.coupons[0].title);
     return (
       <FlatList 
-        style={{margin:0}}
+        contentContainerStyle={styles.contentContainer}
         data={this.state.coupons}
         numColumns={3}
         keyExtractor={item => item._id }
         renderItem={({item}) => (
           console.log('[Wallet]: FlatList renderItem item.title: '+item.title),
-          <Card 
-            titleStyle={styles.cardTitle} 
-            containerStyle={styles.couponCard} 
-            title={item.title} 
-          />  
+          <TouchableOpacity
+            style={styles.touchable}
+            onPress={()=> navigate('Detail', {coupon: item})}
+          >
+            <Card 
+              titleStyle={styles.cardTitle} 
+              containerStyle={styles.couponCard} 
+              title={item.title} 
+            >  
+              <Text style={styles.cardText}>{item.description}</Text>
+            </Card>
+          </TouchableOpacity>
         )}
       />
     );
@@ -75,13 +85,44 @@ class Wallet extends Component {
 }
 
 const styles = StyleSheet.create({
+
+  contentContainer: {
+    backgroundColor: '#afdfcd',
+    flex: 1,
+    paddingTop: 20,
+    paddingLeft: 5
+    // help: 'help'
+  },
+
+  touchable: {
+    flex: 1,
+    height: 130,
+    maxWidth: 130,
+    alignItems: 'center',
+    margin:5
+  },
+
   couponCard: {
     flex: 1,
-    height: 130
+    height: 130,
+    minWidth: 130,
+    backgroundColor: 'white',
+    margin: 5,
+    // help: 'help'
   },
 
   cardTitle: {
-    fontSize: 12
+    margin:0,
+    padding: 0,
+    fontSize: 12,
+    // borderBottomWidth: 10,
+    // borderBottomColor: '#aee3b2',
+    // borderStyle: 'solid',
+    // help:'help'
+  },
+  cardText: {
+    fontSize: 10,
+    //help: 'help'
   }
 });
 
