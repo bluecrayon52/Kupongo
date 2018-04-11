@@ -69,20 +69,18 @@ Meteor.startup(function () {
   // Test coupon
   CouponDB.insert(
     {
-      // "salesID":          "j128934h912",
       "salesID":          "safns",
       "templateId":       "s90ajr897123h79eb1rn",
-      // "companyName":      "Something Inc.",
       "companyName":      "Coke",
-      "upcCode":          "89181891871", // redacted until redemption is initiated
-      "description":      "A fake coupon for nothing",
-      "title":            "The fake coupon",
-      //"instructions":     "Redeem me",
-      //"productCtg":      {"Jewelery",},
+      "upcCode":          "891818234654", // redacted until redemption is initiated
+      "description":      "This is the description",
+      "title":            "Test Coupon 1",
+      "instructions":     "These are the instructions",
+      "productCtg":       "Electronics",
       // [TODO] pass just lat and long to Coupon constructor and calculate uppers and lowers internally.
       "lng":              -79.809468,
       "lat":              36.069827,
-      "layout":           "DW91n2ne",
+      "layout":           "testLayout",
       "location": {
         "type": "Point",
         "coordinates": [-79.809468, 36.069827]
@@ -133,9 +131,10 @@ Meteor.startup(function () {
   var couponTemplate = {
     "salesID":          "safns",
     "companyName":      "Coke",
-    "upcCode":          "89181891871", // redacted until redemption is initiated
-    "title":            "The fake coupon",
-    "instructions":     "These are the Instructions",
+    "upcCode":          "891818234654", // redacted until redemption is initiated
+    "title":            "Test Coupon 1",
+    "instructions":     "These are the instructions",
+    "description":      "This is the description",
     "productCtg":       "Electronics",
     "layout":           "testLayout",
   }
@@ -270,8 +269,8 @@ Meteor.methods({
 
 
     //Login mobile user
-    'registerMobileUser'(email, password, firstName, lastName, phoneNumber, address) {
-      return addNewMobileUser(email, password, firstName, lastName, phoneNumber, address, function(error, message){
+    'registerMobileUser'(mobileUser) {
+      return addNewMobileUser(mobileUser, function(error, message){
         if(error) {
           throw new Meteor.Error(error, message);
         } else {
@@ -411,6 +410,7 @@ Meteor.methods({
 
     // Gets the list of coupons that have been collected by that user
     'getCollectedCoupons'(userID){
+      console.log('[server/main]: getCollectedCoupons called for userID: ' + userID);
       getCollectedCoupons(userID, function(err, result){
         if(err){
           throw new Meteor.Error(err, result)

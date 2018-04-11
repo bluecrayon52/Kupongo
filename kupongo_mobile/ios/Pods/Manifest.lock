@@ -10,9 +10,13 @@ DEPENDENCIES:
   - GoogleMaps
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - GoogleMaps
+
 EXTERNAL SOURCES:
   yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
+    :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
   GoogleMaps: 42f91c68b7fa2f84d5c86597b18ceb99f5414c7f
@@ -20,4 +24,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f9849a1d9c852fd77211911009a7ca247b37d5ca
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

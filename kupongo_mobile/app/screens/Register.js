@@ -124,7 +124,23 @@ export default class Register extends Component {
         /* Re-route this to meteor register server when it works  */
         else {
 
-          Meteor.call('registerMobileUser', email, password, firstName, lastName, phoneNumber, address, (err, result) => {
+          // I would rather use a new Customer class from UserDoc.js here 
+          // but could not import it without getting an 'unable to resolve module' error
+          const mobileUser = {
+            email:          email,
+            password:       password,
+            firstName:      firstName,
+            lastName:       lastName,
+            phoneNumber:    phoneNumber,
+            address:        address,
+            signUpDate:     new Date(),
+            lastSignInDate: new Date(),
+            couponWallet:   [],
+            couponList:     []
+          }
+
+          Meteor.call('registerMobileUser', mobileUser, (err, result) => {
+            console.log('[Register]: mobileUser.firstName: ' + mobileUser.firstName);
             if (result) {
               console.log("register was successful");
               // Meteor.call('sendEmail', email); //send email

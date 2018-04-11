@@ -222,7 +222,7 @@ function getCollectedCoupons(userID, callback){
         }
         else{
             // Get the coupons that are in their userDoc in redacted form
-            CouponDB.find({"_id": { "$in": userRes.couponWallet}},
+            CouponDB.find({"_id": { "$in": userRes.couponList}},
             { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
             function(couponErr, couponRes){
                 if(couponErr){
@@ -395,15 +395,16 @@ export {validateMobileUser};
     Returns:        Callback if account is already taken, otherwise insert new user
                     data into database
 */
-function addNewMobileUser(email, password, firstName, lastName, phoneNumber, address){
-    if(UserDB.find({'email':email}).count() > 0) {
+function addNewMobileUser(mobileUser){
+    if(UserDB.find({'email':mobileUser.email}).count() > 0) {
         //Account is already taken
         callback('Account Exist Error', 'Account taken: This email has already been assigned to an existing account.');
     } else {
         //Account not taken
         const saltRounds = 10;
-        const hash = bcrypt.hashSync(password, saltRounds);
-        const id = UserDB.insert({ email: email, password: hash, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber});
+        const hash = bcrypt.hashSync(mobileUser.password, saltRounds);
+        mobileUser.password = hash;
+        const id = UserDB.insert(mobileUser);
         return UserDB.findOne({_id: id});
     }
 }
