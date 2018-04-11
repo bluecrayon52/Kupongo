@@ -119,7 +119,7 @@ function canRedeemCoupon(userID, couponID, callback){
     }
     else{
       // Check if the coupon is in their collection.
-      if(userRes.couponWallet == null || userRes.couponWallet.indexOf(couponID) == -1){
+      if(userRes.couponList == null || userRes.couponList.indexOf(couponID) == -1){
         callback({"code": "Coupon not collected", "message":"The coupon you are attempting to "
         +"redeem has not been collected yet. Please collect the coupon before trying to redeem it."}, null, null)
       }
@@ -189,6 +189,9 @@ function couponIsCollectable(userID, couponID, callback){
       }
       else if(couponDoc.collectStartDate <= new Date() && couponDoc.collectEndDate >= new Date()){
         callback("This coupon is not elligible for collection at this time", false)
+      }
+      else if(couponDoc.quantity < 1){
+        callback("We ran out of this coupon, sorry! Please try again next time.", false)
       }
       else{
         callback(null, true)

@@ -449,6 +449,12 @@ Meteor.methods({
               return true;
             }
           })
+          CouponDB.update({"_id" : couponID}, {$inc: {"currentQuantity" : -1}}, function(err, result){
+            if(err){
+              // TODO Create an error logging system for errors that the user shouldn't see
+              console.log(err)
+            }
+          })
         }
         else{
           throw new Meteor.Error("Collection Unsuccessful", error)
