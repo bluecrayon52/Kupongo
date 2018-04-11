@@ -61,9 +61,9 @@ const WalletScreens = StackNavigator({
   },
   Detail: {
     screen: WalletDetail,
-    navigationOptions: {
-      title: 'Coupon Details'
-    }
+    // navigationOptions: {
+    //   title: 'Coupon Details'
+    // }
   }
   // TODO(Nathan): Add the rest of the screens you want here (like detailed view, redemption view, etc.)
 });
