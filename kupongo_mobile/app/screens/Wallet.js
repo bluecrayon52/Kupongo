@@ -26,6 +26,7 @@ class Wallet extends Component {
   };
   
   componentWillMount() {
+    //----------------------------------------------------[Dummy Data]----------------------------------------------------// 
     console.log('[Wallet]: componentWillMount running . . . . . ')
     let res = [
       {_id: '1', companyName: 'Company 1', title: 'Coupon 1', description: 'Description 1', instructions: 'Instructuons 1'}, 
@@ -42,6 +43,8 @@ class Wallet extends Component {
     this.setState({
       coupons: res
     })
+
+    //----------------------------------------------------[Request to server/main]----------------------------------------------------// 
     // console.log('[Wallet]: calling getCollectedCoupons for user._id: ' + this.state.user._id);
     // // call server for coupons based on ids in couponList 
     // Meteor.call('getCollectedCoupons', this.state.user._id, (err, res) => {
@@ -56,8 +59,8 @@ class Wallet extends Component {
   render() {
     const { navigate } = this.props.navigation;
     console.log('[Wallet]: render running . . . . . ');
-    console.log('[Wallet]: render this.state.coupons.length: ' + this.state.coupons.length);
-    console.log('[Wallet]: render this.state.coupons[0].title: ' + this.state.coupons[0].title);
+    // console.log('[Wallet]: render this.state.coupons.length: ' + this.state.coupons.length);
+    // console.log('[Wallet]: render this.state.coupons[0].title: ' + this.state.coupons[0].title);
     return (
       <FlatList 
         contentContainerStyle={styles.contentContainer}
