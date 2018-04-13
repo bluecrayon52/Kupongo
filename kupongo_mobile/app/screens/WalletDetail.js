@@ -7,6 +7,7 @@ import {
     View, 
     Button,
   } from 'react-native';
+import { Card, ListItem, Button } from 'react-native-elements'
   
 class WalletDetail extends Component {
     // dynamically set the header 
