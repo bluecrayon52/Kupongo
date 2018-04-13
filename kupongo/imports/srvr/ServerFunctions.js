@@ -219,23 +219,23 @@ export {couponIsCollectable};
 */
 function getCollectedCoupons(userID, callback){
     // Get the user document
-    UserDB.find({"_id":userID}, function(userErr, userRes){
-        if(userErr){
-            callback(userErr, userRes)
+    UserDB.find({"_id":userID}).map( function(userRes){
+        if(!userRes){
+            callback("Unable to locate the user", "The ID provided for checking this collection is not valid")
         }
         else{
             // Get the coupons that are in their userDoc in redacted form
-            CouponDB.find({"_id": { "$in": userRes.couponList}},
-            { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 },
-            function(couponErr, couponRes){
-                if(couponErr){
-                    callback(couponErr, couponRes)
-                }
-                else{
-                    // Return the list of coupons
-                    callback(null, couponRes)
-                }
-            })
+          callback(null, CouponDB.find({"_id": { "$in": userRes.couponList}},
+            { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 }).fetch())
+            // function(couponErr, couponRes){
+            //     if(couponErr){
+            //         callback(couponErr, couponRes)
+            //     }
+            //     else{
+            //         // Return the list of coupons
+            //         callback(null, couponRes.fetch())
+            //     }
+            // })
         }
     })
 }

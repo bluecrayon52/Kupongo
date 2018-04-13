@@ -29,9 +29,9 @@ Meteor.startup(function () {
   let userId = 'safns';
   let token = 'token1';
 
-  // let user = UserDB.findOne({"_id":'qXWfYLk87k2pxtXWd'})
-  // let coupon = CouponDB.findOne({"_id":'H8kp39dfGyi8kvN3r'})
-  // console.log(user)
+   let user = UserDB.findOne({"_id":'qXWfYLk87k2pxtXWd'})
+   let coupon = CouponDB.findOne({"_id":'H8kp39dfGyi8kvN3r'})
+   console.log(user)
   // console.log(coupon)
   // //
   // Meteor.call("redeemCoupon", user._id, coupon._id, function(err, res){
@@ -45,15 +45,22 @@ Meteor.startup(function () {
   //   }
   // })
 
-  // Meteor.call("collectCoupon", user._id, coupon._id, function(err, res){
-  //   if(err){
-  //     console.log(err)
-  //     console.log(res)
-  //   }
-  //   else{
-  //     console.log("Coupon Collected")//
-  //   }
-  // })
+  Meteor.call("collectCoupon", user._id, coupon._id, function(err, res){
+    if(err){
+      // console.log(err)
+      // console.log(res)
+      // console.log(user._id)
+    }
+    else{
+      console.log("Coupon Collected")//
+    }
+  })
+
+  Meteor.call("getCollectedCoupons", user._id, function(err, res){
+      console.log(err)
+      console.log(res)
+      console.log(other)
+  })
 
 
 
@@ -67,109 +74,109 @@ Meteor.startup(function () {
 
 
   // Test coupon
-  CouponDB.insert(
-    {
-      "salesID":          "safns",
-      "templateId":       "s90ajr897123h79eb1rn",
-      "companyName":      "Coke",
-      "upcCode":          "891818234654", // redacted until redemption is initiated
-      "description":      "This is the description",
-      "title":            "Test Coupon 1",
-      "instructions":     "These are the instructions",
-      "productCtg":       "Electronics",
-      // [TODO] pass just lat and long to Coupon constructor and calculate uppers and lowers internally.
-      "lng":              -79.809468,
-      "lat":              36.069827,
-      "layout":           "testLayout",
-      "location": {
-        "type": "Point",
-        "coordinates": [-79.809468, 36.069827]
-      },
-      "upperLat":         -35.12380,
-      "lowerLat":         -35.11111,
-      "eastLong":         54.111232,
-      "westLong":         54.333333,
-      "quantity":         12,
-      "currentQuantity":  12,
-      "preViewingDate":   new Date(),  // default date of pinning
-      "collectStartDate": new Date(),  // default date of pinning
-      "collectEndDate":   new Date(new Date().getTime() + (60*60*24* 1000)),  // default collectStartDate + 24 hrs
-      "redeemStartDate":  new Date(), // default date of pinning
-      "redeemEndDate":    new Date(new Date().getTime() + (60*60*24*30 * 1000)), // default redeemStartDate + 30 days
-    }, function(error, result){
-      console.log("Error = " + error)
-      console.log("Resulting id = " + result)
-      //let coupon =
-      console.log(CouponDB.find({"_id":result}).fetch())
-      UserDB.find({}).forEach(function(doc){
-        if(doc._id != "safns"){
-          console.log("USER = " + doc._id)
-          Meteor.call("collectCoupon", doc._id, result, function(err, res){
-            if(err){
-              console.log(err)
-              console.log(res)
-            }
-            else{
-              console.log("COUPON COLLECTED")
-              console.log("Coupon ID = " + doc.couponList[0])
-              // Try to redeem it
-              Meteor.call("redeemCoupon", doc._id, result, function(err2, res2){
-                console.log("Err = " + err2)
-                console.log("Res = " + res2)
-              })
-            }
-
-          })
-        }
-      })
-
-      //console.log(coupon)
-
-    }
-  )
-
-  var couponTemplate = {
-    "salesID":          "safns",
-    "companyName":      "Coke",
-    "upcCode":          "891818234654", // redacted until redemption is initiated
-    "title":            "Test Coupon 1",
-    "instructions":     "These are the instructions",
-    "description":      "This is the description",
-    "productCtg":       "Electronics",
-    "layout":           "testLayout",
-  }
-
-  CouponTemplateDB.insert(couponTemplate, function(err, result){
-    if(err){
-      throw new Meteor.Error(error, result)
-    }
-    else{
-      console.log("result = " + result)
-      let couponTemp = CouponTemplateDB.find({"_id":result}).fetch()
-      console.log("Template = ")
-      console.log(couponTemp)
-    }
-  });
-
-
-  if (CompanyDB.find({companyName: companyName}).count() === 0){
-    CompanyDB.insert({
-      companyName: companyName,
-      usedTokens: [token]
-    });
-  }
-
-  if (UserDB.find({_id: userId}).count() === 0) {
-    UserDB.insert({_id: userId, companyName: companyName, authenticationToken: token});
-  }
-
-  // Test user account, may need to add more fields but this will do for now.
-  let customerId = 'asdaf';
-  if (UserDB.find({_id: customerId}).count() === 0) {
-    UserDB.insert({"_id": customerId,
-      "email": "user@gmail.com", "password": "password",
-      "couponList": [], "lastLatitude":35.113, "lastLongitude": 54.12});
-  }
+  // CouponDB.insert(
+  //   {
+  //     "salesID":          "safns",
+  //     "templateId":       "s90ajr897123h79eb1rn",
+  //     "companyName":      "Coke",
+  //     "upcCode":          "891818234654", // redacted until redemption is initiated
+  //     "description":      "This is the description",
+  //     "title":            "Test Coupon 1",
+  //     "instructions":     "These are the instructions",
+  //     "productCtg":       "Electronics",
+  //     // [TODO] pass just lat and long to Coupon constructor and calculate uppers and lowers internally.
+  //     "lng":              -79.809468,
+  //     "lat":              36.069827,
+  //     "layout":           "testLayout",
+  //     "location": {
+  //       "type": "Point",
+  //       "coordinates": [-79.809468, 36.069827]
+  //     },
+  //     "upperLat":         -35.12380,
+  //     "lowerLat":         -35.11111,
+  //     "eastLong":         54.111232,
+  //     "westLong":         54.333333,
+  //     "quantity":         12,
+  //     "currentQuantity":  12,
+  //     "preViewingDate":   new Date(),  // default date of pinning
+  //     "collectStartDate": new Date(),  // default date of pinning
+  //     "collectEndDate":   new Date(new Date().getTime() + (60*60*24* 1000)),  // default collectStartDate + 24 hrs
+  //     "redeemStartDate":  new Date(), // default date of pinning
+  //     "redeemEndDate":    new Date(new Date().getTime() + (60*60*24*30 * 1000)), // default redeemStartDate + 30 days
+  //   }, function(error, result){
+  //     console.log("Error = " + error)
+  //     console.log("Resulting id = " + result)
+  //     //let coupon =
+  //     console.log(CouponDB.find({"_id":result}).fetch())
+  //     UserDB.find({}).forEach(function(doc){
+  //       if(doc._id != "safns"){
+  //         console.log("USER = " + doc._id)
+  //         Meteor.call("collectCoupon", doc._id, result, function(err, res){
+  //           if(err){
+  //             console.log(err)
+  //             console.log(res)
+  //           }
+  //           else{
+  //             console.log("COUPON COLLECTED")
+  //             console.log("Coupon ID = " + doc.couponList[0])
+  //             // Try to redeem it
+  //             Meteor.call("redeemCoupon", doc._id, result, function(err2, res2){
+  //               console.log("Err = " + err2)
+  //               console.log("Res = " + res2)
+  //             })
+  //           }
+  //
+  //         })
+  //       }
+  //     })
+  //
+  //     //console.log(coupon)
+  //
+  //   }
+  // )
+  //
+  // var couponTemplate = {
+  //   "salesID":          "safns",
+  //   "companyName":      "Coke",
+  //   "upcCode":          "891818234654", // redacted until redemption is initiated
+  //   "title":            "Test Coupon 1",
+  //   "instructions":     "These are the instructions",
+  //   "description":      "This is the description",
+  //   "productCtg":       "Electronics",
+  //   "layout":           "testLayout",
+  // }
+  //
+  // CouponTemplateDB.insert(couponTemplate, function(err, result){
+  //   if(err){
+  //     throw new Meteor.Error(error, result)
+  //   }
+  //   else{
+  //     console.log("result = " + result)
+  //     let couponTemp = CouponTemplateDB.find({"_id":result}).fetch()
+  //     console.log("Template = ")
+  //     console.log(couponTemp)
+  //   }
+  // });
+  //
+  //
+  // if (CompanyDB.find({companyName: companyName}).count() === 0){
+  //   CompanyDB.insert({
+  //     companyName: companyName,
+  //     usedTokens: [token]
+  //   });
+  // }
+  //
+  // if (UserDB.find({_id: userId}).count() === 0) {
+  //   UserDB.insert({_id: userId, companyName: companyName, authenticationToken: token});
+  // }
+  //
+  // // Test user account, may need to add more fields but this will do for now.
+  // let customerId = 'asdaf';
+  // if (UserDB.find({_id: customerId}).count() === 0) {
+  //   UserDB.insert({"_id": customerId,
+  //     "email": "user@gmail.com", "password": "password",
+  //     "couponList": [], "lastLatitude":35.113, "lastLongitude": 54.12});
+  // }
 
 
 
@@ -430,6 +437,7 @@ Meteor.methods({
           throw new Meteor.Error(err, result)
         }
         else{
+          console.log(result)
           return result;
         }
       })
@@ -441,7 +449,7 @@ Meteor.methods({
         console.log("Collecting coupon = " + couponID);
         if(isCollectable){
           // Collect the coupon
-          UserDB.update({"_id" : userID}, {$addToSet: {"couponWallet" : couponID}}, function(err, result){
+          UserDB.update({"_id" : userID}, {$addToSet: {"couponList" : couponID}}, function(err, result){
             if(err){
               throw new Meteor.Error("Error adding to collected List. Collection Failed", err)
             }
@@ -473,7 +481,7 @@ Meteor.methods({
           // Remove the coupon from the user's document and return the full coupon
           // console.log("Coupon being removed = ")
           // console.log(couponDoc)
-          UserDB.update({"_id": userID}, {"$pull": {"couponWallet" : couponID}}, function(err, docsAffected){
+          UserDB.update({"_id": userID}, {"$pull": {"couponList" : couponID}}, function(err, docsAffected){
             if(err){
               throw new Meteor.Error("Database Error", err)
             }
