@@ -16,6 +16,7 @@ import Recoverpassword from './screens/Recoverpassword';
 import Reset from './screens/Reset';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import WalletDetail from './screens/WalletDetail';
+import RedeemView from './screens/RedeemView';
 
 
 const Kupongo = StackNavigator({
@@ -61,9 +62,10 @@ const WalletScreens = StackNavigator({
   },
   Detail: {
     screen: WalletDetail,
-    // navigationOptions: {
-    //   title: 'Coupon Details'
-    // }
+  },
+
+  Redeem: {
+    screen: RedeemView,
   }
   // TODO(Nathan): Add the rest of the screens you want here (like detailed view, redemption view, etc.)
 });

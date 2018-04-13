@@ -11,7 +11,7 @@ import {
   FlatList,
   TouchableOpacity
 } from 'react-native';
-import { Card, ListItem, Button } from 'react-native-elements'
+import { Card } from 'react-native-elements'
 
 class Wallet extends Component {
   constructor(props) {
