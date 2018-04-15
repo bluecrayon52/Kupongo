@@ -217,6 +217,7 @@ export {couponIsCollectable};
                                 1) Error Code - Null if no error, otherwise contains error name
                                 2) Error Description or the list of collected coupons
 */
+
 function getCollectedCoupons(userID, callback){
     // Get the user document
     UserDB.find({"_id":userID}).map( function(userRes){
@@ -240,6 +241,7 @@ function getCollectedCoupons(userID, callback){
     })
 }
 export {getCollectedCoupons};
+
 
 /*
     Title: 				getRedactedCoupons
@@ -348,7 +350,7 @@ function validateUser(email, password, callback){
     const hashedPassword = user.password;
     const res = bcrypt.compareSync(password, hashedPassword);
     if(res === true){
-      console.log('[srvr/ServerFunctions]','returning true');
+      console.log('[srvr/ServerFunctions] validateUser','returning true');
       callback(null, null);
       // Hide password as we pass it to front-end.
       delete user.password;
@@ -368,13 +370,13 @@ export {validateUser};
 					      login
 */
 function validateMobileUser(email, password, callback){
-    console.log(email, password);
+    console.log('[srvr/ServerFunctions] validateMobileUser email: '+email+ ', password: '+password);
     let user = UserDB.findOne({email: email});
-    console.log(user);
+    console.log('[srvr/ServerFunctions] validateMobileUser user:'+user);
     const hashedPassword = user.password;
     const res = bcrypt.compareSync(password, hashedPassword);
     if(res === true){
-      console.log('[srvr/ServerFunctions]','returning true');
+      console.log('[srvr/ServerFunctions] validateMobileUser','returning true');
       callback(null, null);
       // Hide password as we pass it to front-end.
       delete user.password;
@@ -449,7 +451,7 @@ function updateUserPassword(email, oldPassword, newPassword) {
     var oldHashedPassword = UserDB.findOne({'email': email}).password;
     const res = bcrypt.compareSync(oldPassword, oldHashedPassword);
     if (res === true) {
-        console.log('[srvr/ServerFunctions]', 'returning true');
+        console.log('[srvr/ServerFunctions] updateUserPassword', 'returning true');
         const saltRounds = 10;
         bcrypt.hash(newPassword, saltRounds, Meteor.bindEnvironment(function (err, hash) {
             UserDB.update({'_id': userId}, {$set: {password: hash}});

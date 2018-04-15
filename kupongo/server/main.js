@@ -25,42 +25,42 @@ Meteor.startup(function () {
   //Setting up sending emails to users
   process.env.MAIL_URL = "smtps://postmaster%40sandbox3d6f88d2622745958ead25b71d9b550a.mailgun.org:7a0f7e08c7801f36350d8ebcac04cc1d-db1f97ba-0cf37926@smtp.mailgun.org:465";
   // Add dummy user and company.
-  let companyName = 'Coke';
-  let userId = 'safns';
-  let token = 'token1';
+  // let companyName = 'Coke';
+  // let userId = 'safns';
+  // let token = 'token1';
 
-   let user = UserDB.findOne({"_id":'qXWfYLk87k2pxtXWd'})
-   let coupon = CouponDB.findOne({"_id":'H8kp39dfGyi8kvN3r'})
-   console.log(user)
-  // console.log(coupon)
+  //  let user = UserDB.findOne({"_id":'qXWfYLk87k2pxtXWd'})
+  //  let coupon = CouponDB.findOne({"_id":'H8kp39dfGyi8kvN3r'})
+  //  console.log(user)
+  // // console.log(coupon)
+  // // //
+  // // Meteor.call("redeemCoupon", user._id, coupon._id, function(err, res){
+  // //   if(err){
+  // //     console.log(err)
+  // //     console.log(res)
+  // //   }
+  // //   else{
+  // //     console.log("COUPON REDEEMED")
   // //
-  // Meteor.call("redeemCoupon", user._id, coupon._id, function(err, res){
+  // //   }
+  // // })
+
+  // Meteor.call("collectCoupon", user._id, coupon._id, function(err, res){
   //   if(err){
-  //     console.log(err)
-  //     console.log(res)
+  //     // console.log(err)
+  //     // console.log(res)
+  //     // console.log(user._id)
   //   }
   //   else{
-  //     console.log("COUPON REDEEMED")
-  //
+  //     console.log("Coupon Collected")//
   //   }
   // })
 
-  Meteor.call("collectCoupon", user._id, coupon._id, function(err, res){
-    if(err){
-      // console.log(err)
-      // console.log(res)
-      // console.log(user._id)
-    }
-    else{
-      console.log("Coupon Collected")//
-    }
-  })
-
-  Meteor.call("getCollectedCoupons", user._id, function(err, res){
-      console.log(err)
-      console.log(res)
-      console.log(other)
-  })
+  // Meteor.call("getCollectedCoupons", user._id, function(err, res){
+  //     console.log(err)
+  //     console.log(res)
+  //     console.log(other)
+  // })
 
 
 
@@ -188,14 +188,14 @@ Meteor.methods({
 
   //Get the initial quantity of coupons
   'getCouponQuantity'(couponId) {
-    console.log("Returning quantity of coupon");
+    console.log("[server/main] getCouponQuantity, Returning quantity of coupon");
     var result = CouponDB.findOne({"_id":couponId}).quantity;
     return result;
   },
 
   //Get the current quantity of coupons
   'getCurrentCouponQuantity'(couponId) {
-    console.log("Returning current quantity of coupons");
+    console.log("[server/main] getCurrentCouponQuantity, Returning current quantity of coupons");
     var result = CouponDB.findOne({"_id":couponId}).currentQuantity;
     return result;
   },
@@ -271,7 +271,7 @@ Meteor.methods({
         if(error) {
           throw new Meteor.Error(error, message);
         } else {
-          console.log('[server/main]', 'returning true');
+          console.log('[server/main] login,', 'returning true');
           return true;
         }
       });
@@ -282,7 +282,7 @@ Meteor.methods({
         if(error) {
           throw new Meteor.Error(error, message);
         } else {
-          console.log('[server/main]', 'returning true');
+          console.log('[server/main] loginUser,', 'returning true');
           return true;
         }
       });
@@ -295,7 +295,7 @@ Meteor.methods({
         if(error) {
           throw new Meteor.Error(error, message);
         } else {
-          console.log('[server/main]', 'returning true');
+          console.log('[server/main] registerMobileUser,', 'returning true');
           return true;
         }
       });
@@ -322,7 +322,7 @@ Meteor.methods({
     'updateCouponTemplate'(userID, companyName, templateId, couponTemplate) {
       validateSalesUserForTemplate(userID, companyName, function(error, message){
         if (error) {
-          console.log('[server/main]: updateCoupon, validateSalesUser resulted in an error for userID: '+userID);
+          console.log('[server/main]: updateCouponTemplate, validateSalesUser resulted in an error for userID: '+userID);
           throw new Meteor.Error(error, message);
         } else {
           console.log(couponTemplate._id);
@@ -404,8 +404,8 @@ Meteor.methods({
 
     // Updates the user's current location so the subscription will give nearby items
     'updateCurrentLocation'(userID, lat, lng){
-      console.log("Lat = " + lat)
-      console.log("Long = " + lng)
+      console.log("[server/main] updateCurrentLocation, Lat = " + lat)
+      console.log("[server/main] updateCurrentLocation, Long = " + lng)
       // TODO Create a security system so a user cannot change someone else's location
       UserDB.update({'_id': userID}, {$set: {'lastLatitude': lat, 'lastLongitude': lng}}, function(err, res){
         if(err){
@@ -437,8 +437,22 @@ Meteor.methods({
           throw new Meteor.Error(err, result)
         }
         else{
+          console.log('[server/main]: getCollectedCoupons result:')
           console.log(result)
           return result;
+        }
+      })
+    },
+
+    'getCollectedCouponsBeta'(userID) {
+      return UserDB.find({"_id":userID}).map( function(userRes) {
+        if(!userRes)  {
+            console.log("Unable to locate the user", "The ID provided for checking this collection is not valid")
+        }
+        else  {
+            // Get the coupons that are in their userDoc in redacted form
+          return CouponDB.find({"_id": { "$in": userRes.couponList}},
+            { "salesID":0, "templateID":0, "upcCode":0, "qrImage":0 }).fetch();
         }
       })
     },
@@ -446,7 +460,7 @@ Meteor.methods({
     // Places the coupon in the user's collected list if they are within the coupon's area
     'collectCoupon'(userID, couponID){
       couponIsCollectable(userID, couponID, function(error, isCollectable){
-        console.log("Collecting coupon = " + couponID);
+        console.log("[server/main] collectCoupon, Collecting coupon = " + couponID);
         if(isCollectable){
           // Collect the coupon
           UserDB.update({"_id" : userID}, {$addToSet: {"couponList" : couponID}}, function(err, result){
@@ -460,7 +474,7 @@ Meteor.methods({
           CouponDB.update({"_id" : couponID}, {$inc: {"currentQuantity" : -1}}, function(err, result){
             if(err){
               // TODO Create an error logging system for errors that the user shouldn't see
-              console.log(err)
+              console.log('[server/main] collectCoupon error: '+err)
             }
           })
         }
