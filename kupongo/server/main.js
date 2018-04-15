@@ -444,6 +444,8 @@ Meteor.methods({
       })
     },
 
+    // this is a blocking version of the above function without the use of callbacks
+    // if a server side method uses callbacks, the client side callback result will be undefined
     'getCollectedCouponsBeta'(userID) {
       return UserDB.find({"_id":userID}).map( function(userRes) {
         if(!userRes)  {
