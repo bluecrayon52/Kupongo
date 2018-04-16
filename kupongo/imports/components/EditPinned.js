@@ -135,7 +135,7 @@ class EditPinned extends Component {
               value={this.state.redeemEndDate}/>
             </div>
             
-            <div class='dateSeparator'></div> 
+            <div className='dateSeparator'></div> 
           </ScrollArea>
         </div>
     );

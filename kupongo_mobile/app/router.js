@@ -17,6 +17,7 @@ import Reset from './screens/Reset';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import WalletDetail from './screens/WalletDetail';
 import RedeemView from './screens/RedeemView';
+import {Image} from 'react-native';
 
 
 const Kupongo = StackNavigator({
@@ -83,21 +84,37 @@ export const KupongoMain = TabNavigator({
   LiveMap: {
     screen: LiveCouponMap,
     navigationOptions: {
-      title: "Live Map of Coupons"
+      title: 'Map',
+      tabBarIcon: ({tintColor})=> (<Image source={require('../assets/ic_map_2x.png')} style={{width: 22, height: 22, tintColor: 'black'}}></Image>)
     }
   },
   Wallet: {
     screen: WalletScreens,
     navigationOptions: {
-      title: 'Wallet'
+      title: 'Wallet',
+      tabBarIcon: ({tintColor})=> (<Image source={require('../assets/ic_account_balance_wallet_2x.png')} style={{width: 22, height: 22, tintColor: 'black'}}></Image>)
     }
   },
   Profile: {
     screen: ProfileScreens,
     navigationOptions: {
-      title: 'Profile'
+      title: 'Profile',
+      tabBarIcon: ({tintColor})=> (<Image source={require('../assets/ic_account_circle_2x.png')} style={{width: 22, height: 22, tintColor: 'black'}}></Image>)
     }
   }
+}, {
+  tabBarPosition: 'bottom',
+  swipeEnabled: false,
+  tabBarOptions: {
+    activeTintColor: 'black',
+    activeBackgroundColor: '#e8e5e5',
+    inactiveTintColor: 'black',
+    inactiveBackgroundColor: '#fcfcfc',
+    labelStyle: {
+      fontSize: 12,
+      padding: 0
+    }
+  } 
 });
 
 export default Kupongo;

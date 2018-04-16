@@ -23,9 +23,9 @@ class EditTemplate extends Component {
       salesID:      this.props.salesID,
       companyName:  this.props.companyName,
 
-      upcCode:      this.props.upcCode      || this.props.getTemp().upcCode || '',        // editable 5
-      qrImage:      this.props.qrImage,                                                   // editable 6
-      couponImage:  this.props.couponImage  || [],                                        // editable 7
+      upcCode:      this.props.upcCode      || this.props.getTemp().upcCode || '',        // editable 5 
+      qrImage:      this.props.qrImage      || this.props.getTemp().qrImage || '',        // editable 6 (image)
+      couponImage:  this.props.couponImage  || this.props.getTemp().couponImage || '',    // editable 7 (image)
       description:  this.props.description  || this.props.getTemp().description || '',    // editable 2
       title:        this.props.title        || this.props.getTemp().title || '',          // editable 1
       instructions: this.props.instructions || this.props.getTemp().instructions || '',   // editable 3

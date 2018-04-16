@@ -86,6 +86,7 @@ class Wallet extends Component {
               titleStyle={styles.cardTitle} 
               containerStyle={styles.couponCard} 
               title={item.title} 
+              dividerStyle={styles.cardDivider}
             >  
               <Text style={styles.cardText}>{item.description}</Text>
             </Card>
@@ -99,7 +100,7 @@ class Wallet extends Component {
 const styles = StyleSheet.create({
 
   contentContainer: {
-    backgroundColor: '#afdfcd',
+    backgroundColor: '#aee3b2',
     flex: 1,
     paddingTop: 20,
     paddingLeft: 5
@@ -118,8 +119,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 130,
     minWidth: 130,
-    backgroundColor: 'white',
+    backgroundColor: '#fcfcfc',
     margin: 5,
+    shadowColor: '#d2d2d2',
+    borderColor: '#d9d9d9',
+    borderRadius: 10,
     // help: 'help'
   },
 
@@ -127,11 +131,17 @@ const styles = StyleSheet.create({
     margin:0,
     padding: 0,
     fontSize: 12,
-    // borderBottomWidth: 10,
-    // borderBottomColor: '#aee3b2',
-    // borderStyle: 'solid',
+    // fontFamily: 'sans-serif',
+    fontWeight: 'bold',
     // help:'help'
   },
+
+  cardDivider: {
+    backgroundColor: '#aee3b2',
+    height: 3,
+    // help: 'help'
+  },
+
   cardText: {
     fontSize: 10,
     //help: 'help'
