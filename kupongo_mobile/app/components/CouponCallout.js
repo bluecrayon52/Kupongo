@@ -55,7 +55,11 @@ class CouponCallout extends Component {
 // Utils functions
 // TODO(david): Move to a utils file.
 function dateToString(date) {
-  return `Gone in ${differenceInDays(date, new Date())} days`;
+  const diff = differenceInDays(date, new Date());
+  if (diff === 1)
+    return `Gone in ${diff} day`;
+  else
+    return `Gone in ${diff} days`;
 }
 
 function differenceInDays(date1, date2) {
